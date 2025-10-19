@@ -4,9 +4,9 @@ An interactive e-learning platform designed to teach kids the fundamentals of co
 
 ## 👥 Team Members
 
-* [Barabas Catalin-Gabriela]
-* [Dan Maria-Andrada]
-* [Grec Carina-Gabriela]
+* Barabas Catalin-Gabriel
+* Dan Maria-Andrada
+* Grec Carina-Gabriela
 
 ---
 
