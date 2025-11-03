@@ -4,6 +4,7 @@ package ro.techvault.user_service.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.techvault.user_service.dtos.CreateUserRequestDTO;
+import ro.techvault.user_service.dtos.InternalUserResponse;
 import ro.techvault.user_service.dtos.UserResponseDTO;
 import ro.techvault.user_service.enums.AccountStatus;
 import ro.techvault.user_service.models.Admin;
@@ -91,6 +92,19 @@ public class UserServiceImpl implements UserService {
                 user.getRole(),
                 user.getStatus(),
                 user.getCreatedAt()
+        );
+    }
+
+    @Override
+    public InternalUserResponse getUserDetailsByEmail(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
+        return new InternalUserResponse(
+                user.getId(),
+                user.getEmail(),
+                user.getPasswordHash(),
+                user.getRole(),
+                user.getStatus()
         );
     }
 }
