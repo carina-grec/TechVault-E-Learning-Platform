@@ -1,4 +1,4 @@
-package ro.techvault.grading_service;
+package ro.techvault.progress_service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
