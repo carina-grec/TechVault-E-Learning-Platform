@@ -6,7 +6,7 @@ import ro.techvault.authservice.dtos.CreateUserRequestDTO;
 import ro.techvault.authservice.dtos.InternalUserResponse;
 import ro.techvault.authservice.dtos.UserResponseDTO;
 
-@FeignClient(name = "user-service", url="localhost:8081")
+@FeignClient(name = "USER-SERVICE")
 public interface UserServiceClient {
 
     @PostMapping("/api/users/internal/create")
