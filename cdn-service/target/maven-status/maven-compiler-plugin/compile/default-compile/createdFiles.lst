@@ -1,0 +1,5 @@
+ro\techvault\cdnservice\services\StorageService$StoredObject.class
+ro\techvault\cdnservice\config\MinioConfig.class
+ro\techvault\cdnservice\controllers\CdnController.class
+ro\techvault\cdnservice\CdnServiceApplication.class
+ro\techvault\cdnservice\services\StorageService.class

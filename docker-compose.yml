@@ -1,0 +1,304 @@
+networks:
+  techvault-network:
+    driver: bridge
+
+volumes:
+  minio-data:
+  pgdata:
+  piston-data:
+
+services:
+  eureka-server:
+    build:
+      context: ./eureka-server
+      dockerfile: Dockerfile
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - techvault-network
+    environment:
+      - EUREKA_CLIENT_REGISTER_WITH_EUREKA=false
+      - EUREKA_CLIENT_FETCH_REGISTRY=false
+      - EUREKA_INSTANCE_HOSTNAME=eureka-server
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - techvault-network
+
+  minio:
+    image: minio/minio:RELEASE.2024-01-31T20-20-33Z
+    container_name: minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio123
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio-data:/data
+    networks:
+      - techvault-network
+
+
+  # TechVault DB
+  postgres-db:
+    image: postgres:15
+    container_name: postgres-db
+    environment:
+      POSTGRES_DB: techvault_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - techvault-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # User Service (Port 8087)
+  user-service:
+    build:
+      context: ./user-service
+      dockerfile: Dockerfile
+    container_name: user-service
+    ports:
+      - "8087:8087"
+    depends_on:
+      eureka-server:
+        condition: service_started
+      postgres-db:
+        condition: service_healthy # Wait for DB to be ready
+    networks:
+      - techvault-network
+    environment:
+      # Tell Spring to use the Docker service name for the DB host
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-db:5432/techvault_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=admin
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - SERVER_PORT=8087
+      - EUREKA_INSTANCE_HOSTNAME=user-service
+
+  # Auth Service (Port 8082) - No Database
+  auth-service:
+    build:
+      context: ./auth-service
+      dockerfile: Dockerfile
+    container_name: auth-service
+    ports:
+      - "8082:8082"
+    depends_on:
+      eureka-server:
+        condition: service_started
+      user-service: # Make sure User Service is up first
+        condition: service_started
+      postgres-db:
+        condition: service_healthy
+    networks:
+      - techvault-network
+    environment:
+      # Tell Spring to find Eureka
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      # Tell Feign to find User Service at its Docker service name
+      - USER_SERVICE_URL=http://user-service:8087
+      - APP_JWT_SECRET=C3C7FD7427488AA29D126DAC8BA25DE4449B9D52BC46A85FA736FFE6D42D4A614E645267556B58703273357638792F423F4428472B4B6250655368566D
+      - APP_JWT_EXPIRATION-MS=86400000
+      - SERVER_PORT=8082
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-db:5432/techvault_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=admin
+      - EUREKA_INSTANCE_HOSTNAME=auth-service
+
+  # Content Service (Port 8083)
+  content-service:
+    build:
+      context: ./content-service
+      dockerfile: Dockerfile
+    container_name: content-service
+    ports:
+      - "8083:8083"
+    depends_on:
+      eureka-server:
+        condition: service_started
+      postgres-db:
+        condition: service_healthy
+    networks:
+      - techvault-network
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-db:5432/techvault_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=admin
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - SERVER_PORT=8083
+      - EUREKA_INSTANCE_HOSTNAME=content-service
+
+  # Progress Service (Port 8086)
+  progress-service:
+    build:
+      context: ./progress-service
+      dockerfile: Dockerfile
+    container_name: progress-service
+    ports:
+      - "8086:8086"
+    depends_on:
+      eureka-server:
+        condition: service_started
+      postgres-db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_started
+    networks:
+      - techvault-network
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-db:5432/techvault_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=admin
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - SPRING_RABBITMQ_HOST=rabbitmq # Use Docker service name
+      - SERVER_PORT=8086
+      - EUREKA_INSTANCE_HOSTNAME=progress-service
+
+  # Grading Service (Port 8085)
+  grading-service:
+    build:
+      context: ./grading-service
+      dockerfile: Dockerfile
+    container_name: grading-service
+    ports:
+      - "8085:8085"
+    depends_on:
+      eureka-server:
+        condition: service_started
+      postgres-db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_started
+      progress-service:
+        condition: service_started
+      piston-runtime-installer:
+        condition: service_completed_successfully
+    networks:
+      - techvault-network
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-db:5432/techvault_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=admin
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SERVER_PORT=8085
+      - EUREKA_INSTANCE_HOSTNAME=grading-service
+      - SPRING_JPA_HIBERNATE_DDLAUTO=update
+      - PISTON_BASE_URL=http://piston-service:2000/api/v2/execute
+      - PISTON_LANGUAGE_MAP_PYTHON=3.10.0
+      - PISTON_LANGUAGE_MAP_JAVASCRIPT=18.15.0
+      - PISTON_LANGUAGE_MAP_JAVA=15.0.2
+
+  cdn-service:
+    build:
+      context: ./cdn-service
+      dockerfile: Dockerfile
+    container_name: cdn-service
+    ports:
+      - "8090:8090"
+    depends_on:
+      minio:
+        condition: service_started
+    networks:
+      - techvault-network
+    environment:
+      - MINIO_ENDPOINT=http://minio:9000
+      - MINIO_ACCESS_KEY=minio
+      - MINIO_SECRET_KEY=minio123
+      - MINIO_BUCKET=cdn-media
+      - MINIO_PUBLIC_URL=http://localhost:9000
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+
+  # API Gateway (Port 8081) - No Database
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    container_name: api-gateway
+    ports:
+      - "8081:8081" # Your port from your properties
+    depends_on:
+      - eureka-server
+      # Wait for all main services to be running
+      - auth-service
+      - user-service
+      - content-service
+      - progress-service
+      - cdn-service
+    networks:
+      - techvault-network
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - SERVER_PORT=8081
+      - EUREKA_INSTANCE_HOSTNAME=api-gateway
+
+  piston-service:
+    build:
+      context: .
+      dockerfile: docker/piston.Dockerfile
+    container_name: piston-service
+    privileged: true
+    ports:
+      - "2000:2000"
+    volumes:
+      - piston-data:/piston/packages
+    environment:
+      - PISTON_USE_CGROUPS=false
+    networks:
+      - techvault-network
+
+  piston-runtime-installer:
+    image: curlimages/curl:8.11.1
+    container_name: piston-runtime-installer
+    depends_on:
+      piston-service:
+        condition: service_started
+    networks:
+      - techvault-network
+    entrypoint: ["/bin/sh","-c"]
+    command: |
+      set -euo pipefail
+      echo "Waiting for piston-service..."
+      until curl -sf http://piston-service:2000/api/v2/runtimes >/dev/null; do
+        sleep 2
+      done
+      for spec in python=3.10.0 java=15.0.2; do
+        lang="$${spec%%=*}"
+        ver="$${spec#*=}"
+        echo "Ensuring runtime $${lang}-$${ver} is installed"
+        curl -sf -X POST -H "Content-Type: application/json" \
+          -d "{\"language\":\"$${lang}\",\"version\":\"$${ver}\"}" \
+          http://piston-service:2000/api/v2/packages || true
+      done
+      echo "Runtime bootstrap completed."
+    restart: "no"
+
+  frontend-react:
+    build:
+      context: ./frontend-react
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: http://localhost:8081
+    container_name: frontend-react
+    ports:
+      - "5173:80"
+    depends_on:
+      - api-gateway
+    networks:
+      - techvault-network

@@ -1,0 +1,1 @@
+{"key":"378a4a8d-eda9-490f-97b4-bcef07ea8bd7-sample-image.png","url":"http://localhost:9000/cdn-media/378a4a8d-eda9-490f-97b4-bcef07ea8bd7-sample-image.png"}

@@ -128,3 +128,67 @@ This project is containerized using **Docker** for easy and consistent deploymen
 * As an admin, I can create a new Vault, add lessons, and publish changes safely.
 * As a moderator, I can review flagged content or comments and take action.
 
+---
+
+## Asynchronous Grading with RabbitMQ
+
+Learner submissions are decoupled from heavy grading work through RabbitMQ:
+
+1. **Progress Service → Queue** – When a learner calls `/api/submissions`, the service stores the request and publishes a `SubmissionGradingJob` message to the `grading-jobs-queue`.
+2. **Queue → Grading Service** – The Grading service subscribes to the same queue. Each job triggers a code execution on the Piston runner, aggregates per-test scores, and writes the final result back to the shared submissions table.
+3. **Learner Polling** – The learner immediately receives `202 Accepted` and later polls `/api/submissions/{id}` to read the status/score.
+
+Benefits:
+
+- **Scalability** – Grading workers can scale horizontally without impacting REST latency for learners.
+- **Fault tolerance** – Messages remain durable in RabbitMQ; even if the grading container crashes, jobs stay queued.
+- **Isolation** – Progress Service never spends CPU time compiling/running code, so it stays responsive under load.
+
+To inspect the queue locally:
+
+```bash
+docker compose up -d rabbitmq progress-service grading-service
+docker exec -it rabbitmq rabbitmqctl list_queues
+```
+
+---
+
+## CI/CD Pipeline
+
+Automated builds live in `.github/workflows/ci.yml` and currently run on the `4-ci-cd` branch.
+
+### Workflow steps
+
+1. **Build & test every Spring Boot service** (`mvn clean verify`) so Java regressions fail fast.
+2. **Build the React frontend** (`npm ci && npm run build`).
+3. **Build all Docker images** with `docker compose build`.
+4. **Smoke deploy** by running `docker compose up -d`, waiting 60 seconds, and failing if any container exits unexpectedly. This simulates “deploying to a local Docker environment” on each push.
+
+If any step fails, the workflow exits with a non-zero status and GitHub marks the commit/PR accordingly.
+
+### Observing runs
+
+- Open the **Actions** tab in GitHub, select “TechVault CI/CD”, and inspect logs for each step (Maven, npm, Docker, compose).
+
+### Running the pipeline locally
+
+Reproduce the same steps on your machine:
+
+```bash
+# Java services
+for dir in eureka-server auth-service user-service content-service progress-service grading-service cdn-service; do
+  (cd "$dir" && mvn -B clean verify)
+done
+
+# Frontend
+cd frontend && npm ci && npm run build && cd ..
+
+# Containers (requires Docker)
+docker compose build
+docker compose up -d
+sleep 60 && docker compose ps
+docker compose down -v
+```
+
+This mirrors the CI job so you can debug locally before pushing.
+

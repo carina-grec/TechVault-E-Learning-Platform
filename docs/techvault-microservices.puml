@@ -1,0 +1,126 @@
+@startuml
+' --- Layout ---
+left to right direction
+skinparam handwritten false
+skinparam linetype ortho
+skinparam componentStyle rectangle
+skinparam packageStyle rectangle
+skinparam defaultTextAlignment left
+title "TechVault – Final Microservice Architecture"
+
+package "Client & Edge" {
+    [Web / Postman Clients] as Clients
+    [API Gateway\n(Spring Cloud Gateway)] as Gateway <<component>>
+    Clients --> Gateway
+}
+
+package "Core Microservices" {
+
+    package "Auth Service" {
+        [Auth Controller] as AuthController
+        [Auth Facade] as AuthFacade
+        AuthController --> AuthFacade
+    }
+
+    package "User Service" {
+        [User REST API] as UserAPI
+        [User Repository] as UserRepo <<repository>>
+        UserAPI --> UserRepo
+    }
+
+    package "Content Service" {
+        [Public Content API] as ContentAPI
+        [Admin Content API] as AdminContentController
+        [Quest Factory] as QuestFactory
+        [Vault Repository] as VaultRepo <<repository>>
+        [Quest Repository] as QuestRepo <<repository>>
+        ContentAPI --> VaultRepo
+        AdminContentController --> QuestFactory
+        QuestFactory --> QuestRepo
+    }
+
+    package "Progress Service" {
+        [Submission Controller] as SubmissionController
+        [Badge Controller] as BadgeController
+        [Submission Repository] as SubmissionRepository <<repository>>
+        [Badge Repository] as BadgeRepository <<repository>>
+        SubmissionController --> SubmissionRepository
+        BadgeController --> BadgeRepository
+    }
+
+    package "Grading Service" {
+        [GradingJobConsumer] as GradingJobConsumer
+        [Submission Repository (read-only)] as GradingSubmissionRepo <<repository>>
+        GradingJobConsumer --> GradingSubmissionRepo
+    }
+
+    package "CDN Service" {
+        [UploadController] as UploadController
+    }
+
+    package "Piston Runner" {
+        [Piston API\n(Containerized runtime manager)] as PistonAPI
+        [Runtime Packages / Isolate Sandbox] as PistonRuntime
+        PistonAPI --> PistonRuntime
+    }
+}
+
+package "Shared Infrastructure" {
+    database "PostgreSQL\n(techvault_db)" as DB
+    queue "RabbitMQ\n(grading-jobs-queue)" as MQ
+    node "MinIO\n(Object Storage)" as MinIO
+}
+
+' --- Gateway routes ---
+Gateway --> AuthController : /api/auth/**
+Gateway --> UserAPI : /api/users/**
+Gateway --> ContentAPI : /api/quests, /api/vaults
+Gateway --> AdminContentController : /api/admin/**
+Gateway --> SubmissionController : /api/submissions/**
+Gateway --> BadgeController : /api/badges/**
+Gateway --> UploadController : /api/cdn/**
+
+' --- Service data access ---
+AuthFacade --> DB
+UserRepo --> DB
+VaultRepo --> DB
+QuestRepo --> DB
+SubmissionRepository --> DB
+BadgeRepository --> DB
+GradingSubmissionRepo --> DB
+
+' --- CDN interaction ---
+UploadController --> MinIO : PUT media
+ContentAPI --> MinIO : signed URLs / fetch metadata
+
+' --- Asynchronous grading flow ---
+SubmissionController --> MQ : publish SubmissionGradingJob
+MQ --> GradingJobConsumer : deliver job
+GradingJobConsumer --> PistonAPI : execute code
+GradingJobConsumer --> SubmissionRepository : update result
+
+' --- External notifications (future ready) ---
+package "External Services" {
+    [SMTP Server] as SMTP
+}
+BadgeController ..> SMTP : notify guardian (future)
+
+note right of PistonAPI
+  Runs locally (Docker) to avoid
+  GHCR restrictions.
+  Installs python/java runtimes.
+end note
+
+note bottom of MQ
+  RabbitMQ decouples the
+  learner submission flow
+  from heavy grading work.
+end note
+
+note bottom of UploadController
+  CDN service performs real
+  multipart uploads to MinIO
+  so vault media uses actual URLs.
+end note
+
+@enduml
