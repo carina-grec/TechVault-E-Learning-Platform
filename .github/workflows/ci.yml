@@ -73,7 +73,7 @@ jobs:
           echo "Waiting for application services to settle..."
           sleep 60
           docker compose ps
-          EXITED=$(docker compose ps --status=exited --services)
+          EXITED=$(docker compose ps --status=exited --services | grep -vE '^(piston-runtime-installer)$' || true)
           if [ -n "$EXITED" ]; then
             echo "These services exited unexpectedly: $EXITED"
             exit 1
