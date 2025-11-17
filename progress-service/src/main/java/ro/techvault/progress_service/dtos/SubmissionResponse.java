@@ -9,5 +9,9 @@ public record SubmissionResponse(
         UUID submissionId,
         UUID questId,
         SubmissionStatus status,
+        boolean success,
+        String stdout,
+        String stderr,
+        String resultsJson,
         Timestamp timestamp
 ) {}

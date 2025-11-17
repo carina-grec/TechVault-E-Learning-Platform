@@ -8,10 +8,18 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ro.techvault.authservice.clients.UserServiceClient;
-import ro.techvault.authservice.dtos.*;
+import ro.techvault.authservice.dtos.AuthResponse;
+import ro.techvault.authservice.dtos.AuthenticatedUserDto;
+import ro.techvault.authservice.dtos.CreateUserRequestDTO;
+import ro.techvault.authservice.dtos.InternalUserResponse;
+import ro.techvault.authservice.dtos.LoginRequest;
+import ro.techvault.authservice.dtos.RegistrationRequest;
+import ro.techvault.authservice.dtos.UserResponseDTO;
 import ro.techvault.authservice.enums.AccountStatus;
 import ro.techvault.authservice.security.JwtTokenProvider;
 import ro.techvault.authservice.service.AuthFacade;
+
+import java.util.UUID;
 
 @Service
 public class AuthFacadeImpl implements AuthFacade {
@@ -33,6 +41,7 @@ public class AuthFacadeImpl implements AuthFacade {
                 request.getEmail(),
                 hashedPassword,
                 request.getRole(),
+                resolveDisplayName(request),
                 request.getUsername(),
                 request.getAge()
         );
@@ -45,12 +54,7 @@ public class AuthFacadeImpl implements AuthFacade {
                 userResponse.getRole()
         );
 
-        return new AuthResponse(
-                jwtToken,
-                userResponse.getId(),
-                userResponse.getEmail(),
-                userResponse.getRole()
-        );
+        return new AuthResponse(jwtToken, mapToAuthenticatedUser(userResponse));
     }
 
     private static final Logger log = LoggerFactory.getLogger(AuthFacadeImpl.class);
@@ -118,11 +122,51 @@ public class AuthFacadeImpl implements AuthFacade {
         );
 
         // --- STEP 5: Return the response ---
-        return new AuthResponse(
-                jwtToken,
+        AuthenticatedUserDto authenticatedUser = new AuthenticatedUserDto(
                 user.id(),
                 user.email(),
+                user.displayName(),
                 user.role()
+        );
+
+        return new AuthResponse(jwtToken, authenticatedUser);
+    }
+
+    @Override
+    public AuthenticatedUserDto getCurrentUser(String authorizationHeader) {
+        String token = extractToken(authorizationHeader);
+        if (!jwtTokenProvider.validateToken(token)) {
+            throw new BadCredentialsException("Invalid session token.");
+        }
+
+        UUID userId = UUID.fromString(jwtTokenProvider.getUserIdFromJWT(token));
+        UserResponseDTO response = userServiceClient.getUserById(userId);
+        return mapToAuthenticatedUser(response);
+    }
+
+    private String extractToken(String authorizationHeader) {
+        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            throw new BadCredentialsException("Missing authorization header.");
+        }
+        return authorizationHeader.substring("Bearer ".length());
+    }
+
+    private String resolveDisplayName(RegistrationRequest request) {
+        if (request.getDisplayName() != null && !request.getDisplayName().isBlank()) {
+            return request.getDisplayName();
+        }
+        if (request.getUsername() != null && !request.getUsername().isBlank()) {
+            return request.getUsername();
+        }
+        return request.getEmail();
+    }
+
+    private AuthenticatedUserDto mapToAuthenticatedUser(UserResponseDTO userResponse) {
+        return new AuthenticatedUserDto(
+                userResponse.getId(),
+                userResponse.getEmail(),
+                userResponse.getDisplayName(),
+                userResponse.getRole()
         );
     }
 }

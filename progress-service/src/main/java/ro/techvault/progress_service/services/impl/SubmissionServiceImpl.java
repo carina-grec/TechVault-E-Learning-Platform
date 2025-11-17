@@ -2,6 +2,8 @@ package ro.techvault.progress_service.services.impl;
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ro.techvault.progress_service.config.MessagingConfig;
 import ro.techvault.progress_service.dtos.SubmissionGradingJob;
@@ -12,7 +14,9 @@ import ro.techvault.progress_service.models.Submission;
 import ro.techvault.progress_service.repositories.SubmissionRepository;
 import ro.techvault.progress_service.services.SubmissionService;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class SubmissionServiceImpl implements SubmissionService {
@@ -21,12 +25,10 @@ public class SubmissionServiceImpl implements SubmissionService {
     private SubmissionRepository submissionRepository;
 
     @Autowired
-    private RabbitTemplate rabbitTemplate; // Spring's tool for sending messages
+    private RabbitTemplate rabbitTemplate;
 
     @Override
     public SubmissionResponse createSubmission(SubmissionRequest request, UUID learnerId) {
-
-        // 1. Create and save the Submission as PENDING
         Submission submission = new Submission();
         submission.setLearnerId(learnerId);
         submission.setQuestId(request.questId());
@@ -35,23 +37,57 @@ public class SubmissionServiceImpl implements SubmissionService {
 
         Submission savedSubmission = submissionRepository.save(submission);
 
-        // 2. Create the "order ticket" (the message)
         SubmissionGradingJob job = new SubmissionGradingJob(
                 savedSubmission.getId(),
                 savedSubmission.getQuestId(),
                 savedSubmission.getSubmittedCode(),
-                request.language() // Pass the language
+                request.language()
         );
-
-        // 3. Publish the message to the queue
         rabbitTemplate.convertAndSend(MessagingConfig.GRADING_QUEUE_NAME, job);
+        return mapSubmission(savedSubmission);
+    }
 
-        // 4. Return the "PENDING" response to the user immediately
+    @Override
+    public Page<SubmissionResponse> getSubmissions(UUID learnerId, UUID questId, SubmissionStatus status, Pageable pageable) {
+        Page<Submission> page;
+        if (questId != null && status != null) {
+            page = submissionRepository.findByLearnerIdAndQuestIdAndStatus(learnerId, questId, status, pageable);
+        } else if (questId != null) {
+            page = submissionRepository.findByLearnerIdAndQuestId(learnerId, questId, pageable);
+        } else if (status != null) {
+            page = submissionRepository.findByLearnerIdAndStatus(learnerId, status, pageable);
+        } else {
+            page = submissionRepository.findByLearnerId(learnerId, pageable);
+        }
+        return page.map(this::mapSubmission);
+    }
+
+    @Override
+    public SubmissionResponse getSubmission(UUID learnerId, UUID submissionId) {
+        Submission submission = submissionRepository.findById(submissionId)
+                .filter(entity -> entity.getLearnerId().equals(learnerId))
+                .orElseThrow(() -> new RuntimeException("Submission not found"));
+        return mapSubmission(submission);
+    }
+
+    @Override
+    public List<SubmissionResponse> getRecentSubmissions(UUID learnerId, int limit) {
+        return submissionRepository.findTop5ByLearnerIdOrderByTimestampDesc(learnerId).stream()
+                .limit(limit)
+                .map(this::mapSubmission)
+                .collect(Collectors.toList());
+    }
+
+    private SubmissionResponse mapSubmission(Submission submission) {
         return new SubmissionResponse(
-                savedSubmission.getId(),
-                savedSubmission.getQuestId(),
-                savedSubmission.getStatus(),
-                savedSubmission.getTimestamp()
+                submission.getId(),
+                submission.getQuestId(),
+                submission.getStatus(),
+                submission.isSuccess(),
+                submission.getStdout(),
+                submission.getStderr(),
+                submission.getResultsJson(),
+                submission.getTimestamp()
         );
     }
 }

@@ -2,6 +2,10 @@ networks:
   techvault-network:
     driver: bridge
 
+volumes:
+  minio-data:
+  pgdata:
+
 services:
   eureka-server:
     build:
@@ -26,6 +30,21 @@ services:
     networks:
       - techvault-network
 
+  minio:
+    image: minio/minio:RELEASE.2024-01-31T20-20-33Z
+    container_name: minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio123
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio-data:/data
+    networks:
+      - techvault-network
+
 
   # TechVault DB
   postgres-db:
@@ -37,6 +56,8 @@ services:
       POSTGRES_PASSWORD: admin
     ports:
       - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
     networks:
       - techvault-network
     healthcheck:
@@ -175,7 +196,27 @@ services:
       - SPRING_RABBITMQ_HOST=rabbitmq
       - SERVER_PORT=8085
       - EUREKA_INSTANCE_HOSTNAME=grading-service
-      - SPRING_JPA_HIBERNATE_DDLAUTO=none
+      - SPRING_JPA_HIBERNATE_DDLAUTO=update
+
+  cdn-service:
+    build:
+      context: ./cdn-service
+      dockerfile: Dockerfile
+    container_name: cdn-service
+    ports:
+      - "8090:8090"
+    depends_on:
+      minio:
+        condition: service_started
+    networks:
+      - techvault-network
+    environment:
+      - MINIO_ENDPOINT=http://minio:9000
+      - MINIO_ACCESS_KEY=minio
+      - MINIO_SECRET_KEY=minio123
+      - MINIO_BUCKET=cdn-media
+      - MINIO_PUBLIC_URL=http://localhost:9000
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
 
   # API Gateway (Port 8081) - No Database
   api-gateway:
@@ -192,6 +233,7 @@ services:
       - user-service
       - content-service
       - progress-service
+      - cdn-service
     networks:
       - techvault-network
     environment:
@@ -199,3 +241,16 @@ services:
       - SERVER_PORT=8081
       - EUREKA_INSTANCE_HOSTNAME=api-gateway
 
+  frontend-react:
+    build:
+      context: ./frontend-react
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: http://localhost:8081
+    container_name: frontend-react
+    ports:
+      - "5173:80"
+    depends_on:
+      - api-gateway
+    networks:
+      - techvault-network

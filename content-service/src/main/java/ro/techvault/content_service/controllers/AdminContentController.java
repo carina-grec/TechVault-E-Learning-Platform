@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/admin/content")
+@RequestMapping("/api/admin")
 public class AdminContentController {
 
     @Autowired
@@ -22,23 +22,59 @@ public class AdminContentController {
 
     @PostMapping("/vaults")
     public ResponseEntity<VaultResponse> createVault(@RequestBody VaultCreateRequest request) {
-        VaultResponse newVault = contentService.createVault(request);
-        return new ResponseEntity<>(newVault, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body(contentService.createVault(request));
+    }
+
+    @PutMapping("/vaults/{vaultId}")
+    public ResponseEntity<VaultResponse> updateVault(
+            @PathVariable UUID vaultId,
+            @RequestBody VaultCreateRequest request
+    ) {
+        return ResponseEntity.ok(contentService.updateVault(vaultId, request));
+    }
+
+    @DeleteMapping("/vaults/{vaultId}")
+    public ResponseEntity<Void> deleteVault(@PathVariable UUID vaultId) {
+        contentService.deleteVault(vaultId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/vaults")
+    public ResponseEntity<List<VaultResponse>> listVaults(
+            @RequestParam(required = false) String difficulty,
+            @RequestParam(required = false) String theme,
+            @RequestParam(required = false) Boolean featured,
+            @RequestParam(required = false) String search
+    ) {
+        return ResponseEntity.ok(contentService.findVaults(difficulty, theme, featured, search));
     }
 
     @PostMapping("/quests")
     public ResponseEntity<QuestResponse> createQuest(@RequestBody QuestCreateRequest request) {
-        QuestResponse newQuest = contentService.createQuest(request);
-        return new ResponseEntity<>(newQuest, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body(contentService.createQuest(request));
     }
 
-    @GetMapping("/vaults")
-    public ResponseEntity<List<VaultResponse>> getAllVaults() {
-        return ResponseEntity.ok(contentService.getAllVaults());
+    @PutMapping("/quests/{questId}")
+    public ResponseEntity<QuestResponse> updateQuest(
+            @PathVariable UUID questId,
+            @RequestBody QuestCreateRequest request
+    ) {
+        return ResponseEntity.ok(contentService.updateQuest(questId, request));
     }
 
-    @GetMapping("/vaults/{id}")
-    public ResponseEntity<VaultResponse> getVaultById(@PathVariable("id") UUID id) {
-        return ResponseEntity.ok(contentService.getVaultById(id));
+    @DeleteMapping("/quests/{questId}")
+    public ResponseEntity<Void> deleteQuest(@PathVariable UUID questId) {
+        contentService.deleteQuest(questId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/quests")
+    public ResponseEntity<List<QuestResponse>> listQuests(
+            @RequestParam(required = false) UUID vaultId,
+            @RequestParam(required = false) String type,
+            @RequestParam(required = false) String difficulty
+    ) {
+        return ResponseEntity.ok(contentService.getQuests(vaultId, type, difficulty));
     }
 }
+

@@ -8,5 +8,6 @@ import java.util.UUID;
 
 public interface LearnerRepository extends JpaRepository<Learner, UUID> {
     Optional<Learner> findByUsername(String username);
+    Optional<Learner> findByUsernameIgnoreCase(String username);
     Boolean existsByUsername(String username);
 }

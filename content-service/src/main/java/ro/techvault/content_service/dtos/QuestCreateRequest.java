@@ -1,6 +1,7 @@
 package ro.techvault.content_service.dtos;
 
-import java.util.Map;
+import ro.techvault.content_service.enums.GradingStrategyType;
+
 import java.util.UUID;
 
 public record QuestCreateRequest(
@@ -9,8 +10,12 @@ public record QuestCreateRequest(
         String title,
         int order,
         int xpValue,
-
-        // A map to hold type-specific data
-        // For CODE_CHALLENGE: {"description": "...", "language": "java", "starterCode": "..."}
-        Map<String, Object> properties
+        String difficulty,
+        String worldTheme,
+        String estimatedTime,
+        String description,
+        String language,
+        String starterCode,
+        String hints,
+        GradingStrategyType gradingStrategy
 ) {}

@@ -13,9 +13,10 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 public class InternalUserResponse {
-    UUID id;
-    String email;
-    String passwordHash;
-    UserRole role;
-    AccountStatus status;
+    private UUID id;
+    private String email;
+    private String passwordHash;
+    private UserRole role;
+    private String displayName;
+    private AccountStatus status;
 }

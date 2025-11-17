@@ -1,0 +1,184 @@
+newman
+
+TechVault Backend Suite
+
+Gћэ Auth
+Gіі Admin Login
+  POST http://localhost:8081/api/auth/login [200 OK, 751B, 211ms]
+  Gъм  Status 200
+
+Gіі Guardian Login
+  POST http://localhost:8081/api/auth/login [200 OK, 758B, 153ms]
+  Gъм  Status 200
+
+Gіі Learner Login
+  POST http://localhost:8081/api/auth/login [200 OK, 759B, 145ms]
+  Gъм  Status 200
+
+Gіі Current User (Admin)
+  GET http://localhost:8081/api/auth/me [200 OK, 496B, 43ms]
+  Gъм  Status 200
+
+Gћэ CDN Utilities
+Gіі CDN - Upload Sample Image
+  POST http://localhost:8081/api/cdn/upload [200 OK, 362B, 97ms]
+  Gъм  Status 200
+
+Gћэ Learner APIs
+Gіі Vaults - List
+  GET http://localhost:8081/api/vaults [200 OK, 618B, 115ms]
+  1Gсф SyntaxError in test-script
+
+Gіі Vaults - Detail
+  GET http://localhost:8081/api/vaults/ [404 Not Found, 401B, 195ms]
+  Gъм  Status 200 or 404
+
+Gіі Quests - List
+  GET http://localhost:8081/api/quests [200 OK, 1.62kB, 46ms]
+  2Gсф SyntaxError in test-script
+
+Gіі Quests - Detail
+  GET http://localhost:8081/api/quests/ [404 Not Found, 401B, 18ms]
+  Gъм  Status 200 or 404
+
+Gіі Badges - Catalog
+  GET http://localhost:8081/api/badges/catalog [200 OK, 416B, 66ms]
+  Gъм  Status 200
+
+Gіі Badges - My Badges
+  GET http://localhost:8081/api/learner/badges [200 OK, 471B, 26ms]
+  Gъм  Status 200
+
+Gіі Progress - Summary
+  GET http://localhost:8081/api/learner/progress/summary [200 OK, 386B, 79ms]
+  Gъм  Status 200
+
+Gіі Progress - Vaults
+  GET http://localhost:8081/api/learner/progress/vaults [200 OK, 309B, 20ms]
+  Gъм  Status 200
+
+Gіі Submissions - List
+  GET http://localhost:8081/api/submissions [200 OK, 2.21kB, 73ms]
+  Gъм  Status 200
+
+Gіі Submissions - Recent
+  GET http://localhost:8081/api/submissions/recent?limit=5 [200 OK, 1.64kB, 68ms]
+  Gъм  Status 200
+
+Gіі Submissions - Create
+  POST http://localhost:8081/api/submissions [500 Internal Server Error, 340B, 328ms]
+  3. Accepted or error as expected
+
+Gћэ User Profile
+Gіі Profile - Get
+  GET http://localhost:8081/api/users/me [200 OK, 579B, 36ms]
+  Gъм  Status 200
+
+Gіі Profile - Update
+  PATCH http://localhost:8081/api/users/me [200 OK, 579B, 27ms]
+  Gъм  Status 200 or 204
+
+Gіі Profile - Change Password
+  PATCH http://localhost:8081/api/users/me/password [204 No Content, 153B, 243ms]
+  Gъм  Status 200 or 204 or 400
+
+Gћэ Guardian APIs
+Gіі Guardian - Learners
+  GET http://localhost:8081/api/guardians/me/learners [200 OK, 346B, 20ms]
+  Gъм  Status 200
+
+Gіі Guardian - Link Learner
+  POST http://localhost:8081/api/guardians/me/learners [201 Created, 349B, 38ms]
+  Gъм  Status 200 or 400
+
+Gіі Guardian - Learner Progress
+  GET http://localhost:8081/api/guardian/learners/11111111-1111-1111-1111-111111111111/progress [200 OK, 386B, 79ms]
+  Gъм  Status 200
+
+Gіі Guardian - Learner Submissions
+  GET http://localhost:8081/api/guardian/learners/11111111-1111-1111-1111-111111111111/submissions [200 OK, 2.21kB, 63ms]
+  Gъм  Status 200
+
+Gћэ Admin APIs
+Gіі Admin - Vaults List
+  GET http://localhost:8081/api/admin/vaults [200 OK, 618B, 42ms]
+  Gъм  Status 200
+
+Gіі Admin - Create Vault
+  POST http://localhost:8081/api/admin/vaults [201 Created, 502B, 34ms]
+  Gъм  Status 200 or 201
+
+Gіі Admin - Update Vault
+  PUT http://localhost:8081/api/admin/vaults/27ae1f6d-1e87-4331-925f-82cf4b8e7b92 [200 OK, 488B, 35ms]
+  Gъм  Status 200 or 204 or 404
+
+Gіі Admin - Delete Vault
+  DELETE http://localhost:8081/api/admin/vaults/27ae1f6d-1e87-4331-925f-82cf4b8e7b92 [204 No Content, 153B, 35ms]
+  Gъм  Status 200/204/404
+
+Gіі Admin - Quests List
+  GET http://localhost:8081/api/admin/quests [200 OK, 1.62kB, 47ms]
+  Gъм  Status 200
+
+Gіі Admin - Create Quest
+  POST http://localhost:8081/api/admin/quests [500 Internal Server Error, 341B, 115ms]
+  4. Status 200 or 201
+
+Gіі Admin - Update Quest
+  PUT http://localhost:8081/api/admin/quests/ [404 Not Found, 407B, 21ms]
+  Gъм  Status 200/204/404
+
+Gіі Admin - Delete Quest
+  DELETE http://localhost:8081/api/admin/quests/ [404 Not Found, 407B, 21ms]
+  Gъм  Status 200/204/404
+
+Gіі Admin - Metrics
+  GET http://localhost:8081/api/admin/metrics/overview [200 OK, 296B, 35ms]
+  Gъм  Status 200
+
+Gіі Admin - Users
+  GET http://localhost:8081/api/admin/users [200 OK, 1.08kB, 24ms]
+  Gъм  Status 200
+
+GіюGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіМGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіМGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЩ
+Gіщ                         Gіщ          executed Gіщ            failed Gіщ
+GіЃGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGі+GіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGі+GіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіё
+Gіщ              iterations Gіщ                 1 Gіщ                 0 Gіщ
+GіЃGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGі+GіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGі+GіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіё
+Gіщ                requests Gіщ                33 Gіщ                 0 Gіщ
+GіЃGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGі+GіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGі+GіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіё
+Gіщ            test-scripts Gіщ                33 Gіщ                 2 Gіщ
+GіЃGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGі+GіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGі+GіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіё
+Gіщ      prerequest-scripts Gіщ                 0 Gіщ                 0 Gіщ
+GіЃGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGі+GіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGі+GіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіё
+Gіщ              assertions Gіщ                31 Gіщ                 2 Gіщ
+GіЃGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіІGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіІGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіё
+Gіщ total run duration: 5.4s                                        Gіщ
+GіЃGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіё
+Gіщ total data received: 14.69kB (approx)                           Gіщ
+GіЃGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіё
+Gіщ average response time: 78ms [min: 18ms, max: 328ms, s.d.: 72ms] Gіщ
+GііGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіЧGіџ
+
+[31m  # [39m[31m failure        [39m[31m detail                                         [39m
+[90m    [39m[90m                [39m[90m                                                [39m
+ 1.  SyntaxError                                                    
+                     Identifier 'data' has already been declared    
+                     at test-script                                 
+                     inside "Learner APIs / Vaults - List"          
+[90m    [39m[90m                [39m[90m                                                [39m
+ 2.  SyntaxError                                                    
+                     Identifier 'data' has already been declared    
+                     at test-script                                 
+                     inside "Learner APIs / Quests - List"          
+[90m    [39m[90m                [39m[90m                                                [39m
+ 3.  AssertionError  Accepted or error as expected                  
+                     expected [ 200, 202, 400, 404 ] to include 500 
+                     at assertion:0 in test-script                  
+                     inside "Learner APIs / Submissions - Create"   
+[90m    [39m[90m                [39m[90m                                                [39m
+ 4.  AssertionError  Status 200 or 201                              
+                     expected [ 200, 201 ] to include 500           
+                     at assertion:0 in test-script                  
+                     inside "Admin APIs / Admin - Create Quest"     
+

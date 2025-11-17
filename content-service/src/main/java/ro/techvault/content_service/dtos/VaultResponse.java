@@ -9,6 +9,13 @@ public record VaultResponse(
         String title,
         String description,
         String theme,
+        String slug,
+        String category,
+        String difficulty,
+        String heroHighlight,
+        String mascotName,
+        boolean featured,
         ContentStatus status,
-        int displayOrder
+        int displayOrder,
+        int questCount
 ) {}

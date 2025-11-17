@@ -28,6 +28,10 @@ public class QuestResponse {
 
     private String description;
     private String language;
+    private String difficulty;
+    private String worldTheme;
+    private String estimatedTime;
+    private String hints;
     private GradingStrategyType gradingStrategy;
 
 }

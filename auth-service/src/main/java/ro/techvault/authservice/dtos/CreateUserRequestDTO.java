@@ -2,14 +2,17 @@ package ro.techvault.authservice.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import ro.techvault.authservice.enums.UserRole;
 
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class CreateUserRequestDTO {
-    String email;
-    String passwordHash;
-    UserRole role;
-    String username;
-    int age;
+    private String email;
+    private String passwordHash;
+    private UserRole role;
+    private String displayName;
+    private String username;
+    private Integer age;
 }

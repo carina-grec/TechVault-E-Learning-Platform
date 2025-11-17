@@ -1,9 +1,5 @@
 package ro.techvault.authservice.dtos;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import ro.techvault.authservice.enums.AccountStatus;
 import ro.techvault.authservice.enums.UserRole;
 
@@ -14,6 +10,7 @@ public record InternalUserResponse(
         String email,
         String passwordHash,
         UserRole role,
+        String displayName,
         AccountStatus status
 ) {
 }

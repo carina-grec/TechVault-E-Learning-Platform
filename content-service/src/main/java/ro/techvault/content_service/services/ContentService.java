@@ -3,6 +3,7 @@ package ro.techvault.content_service.services;
 import ro.techvault.content_service.dtos.QuestCreateRequest;
 import ro.techvault.content_service.dtos.QuestResponse;
 import ro.techvault.content_service.dtos.VaultCreateRequest;
+import ro.techvault.content_service.dtos.VaultDetailResponse;
 import ro.techvault.content_service.dtos.VaultResponse;
 
 import java.util.List;
@@ -10,8 +11,14 @@ import java.util.UUID;
 
 public interface ContentService {
     VaultResponse createVault(VaultCreateRequest request);
-    QuestResponse createQuest(QuestCreateRequest request);
+    VaultResponse updateVault(UUID vaultId, VaultCreateRequest request);
+    void deleteVault(UUID vaultId);
+    List<VaultResponse> findVaults(String difficulty, String theme, Boolean featured, String search);
+    VaultDetailResponse getVaultDetail(UUID vaultId);
 
-    List<VaultResponse> getAllVaults();
-    VaultResponse getVaultById(UUID vaultId);
+    QuestResponse createQuest(QuestCreateRequest request);
+    QuestResponse updateQuest(UUID questId, QuestCreateRequest request);
+    void deleteQuest(UUID questId);
+    List<QuestResponse> getQuests(UUID vaultId, String type, String difficulty);
+    QuestResponse getQuestById(UUID questId);
 }

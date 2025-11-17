@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.domain.Persistable;
 import ro.techvault.content_service.enums.ContentStatus;
 
 import java.util.List;
@@ -15,11 +16,12 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Vault {
+public class Vault implements Persistable<UUID> {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+    @Transient
+    private boolean isNew = true;
 
     @Column(nullable = false)
     private String title;
@@ -28,6 +30,22 @@ public class Vault {
     private String description;
 
     private String theme;
+
+    @Column(unique = true)
+    private String slug;
+
+    private String category;
+
+    private String difficulty;
+
+    @Column(name = "hero_highlight")
+    private String heroHighlight;
+
+    @Column(name = "mascot_name")
+    private String mascotName;
+
+    @Column(name = "is_featured")
+    private boolean featured;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -44,4 +62,21 @@ public class Vault {
     @OrderBy("order ASC")
     private List<Quest> quests;
 
+    @Override
+    public boolean isNew() {
+        return isNew || id == null;
+    }
+
+    @PostLoad
+    @PostPersist
+    private void markNotNew() {
+        this.isNew = false;
+    }
+
+    @PrePersist
+    private void ensureId() {
+        if (id == null) {
+            id = UUID.randomUUID();
+        }
+    }
 }

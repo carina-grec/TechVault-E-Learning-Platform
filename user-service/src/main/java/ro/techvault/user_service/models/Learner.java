@@ -2,6 +2,7 @@ package ro.techvault.user_service.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "learners")
@@ -26,8 +28,10 @@ public class Learner extends User {
     private int age;
     private int xp;
     private int level;
-    private String avatarUrl;
     private int currentStreak;
     private Date lastActivityDate;
+
+    @ManyToMany(mappedBy = "monitoredLearners")
+    private Set<Guardian> guardians;
 
 }
