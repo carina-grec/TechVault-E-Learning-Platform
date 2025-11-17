@@ -1,8 +1,12 @@
+FROM maven:3.9-eclipse-temurin-17 AS build
+WORKDIR /build
+COPY pom.xml .
+COPY src ./src
+RUN mvn -B -DskipTests clean package
+
 FROM eclipse-temurin:17-jre-alpine
-
 WORKDIR /app
-
-COPY target/progress-service-0.0.1-SNAPSHOT.jar app.jar
+ARG JAR_FILE=target/*-SNAPSHOT.jar
+COPY --from=build ${JAR_FILE} app.jar
 EXPOSE 8086
-
 ENTRYPOINT ["java", "-jar", "app.jar"]

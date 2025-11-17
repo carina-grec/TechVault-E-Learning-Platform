@@ -66,8 +66,11 @@ jobs:
 
       - name: Smoke deploy stack
         run: |
-          docker compose up -d
-          echo "Waiting for services to settle..."
+          docker compose up -d eureka-server rabbitmq postgres-db piston-service
+          echo "Waiting for core infrastructure services to settle..."
+          sleep 20
+          docker compose up -d auth-service user-service content-service progress-service grading-service cdn-service api-gateway
+          echo "Waiting for application services to settle..."
           sleep 60
           docker compose ps
           EXITED=$(docker compose ps --status=exited --services)
