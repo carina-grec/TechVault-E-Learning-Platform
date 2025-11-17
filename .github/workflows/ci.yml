@@ -30,6 +30,19 @@ jobs:
           cache: 'npm'
           cache-dependency-path: frontend/package-lock.json
 
+      - name: Start infrastructure services for tests
+        run: |
+          docker compose up -d postgres-db rabbitmq
+          echo "Waiting for Postgres to accept connections..."
+          for i in {1..20}; do
+            if docker exec postgres-db pg_isready -U postgres > /dev/null 2>&1; then
+              echo "Postgres is ready"
+              break
+            fi
+            sleep 3
+          done
+          docker exec postgres-db pg_isready -U postgres
+
       - name: Build & test Spring Boot services
         run: |
           set -e
