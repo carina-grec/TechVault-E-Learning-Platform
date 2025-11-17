@@ -1,0 +1,193 @@
+@startuml
+title "TechVault – Domain Class Diagram"
+
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+
+package "Auth Service" {
+    class AuthController {
+        + register(req: RegistrationRequest): AuthResponse
+        + login(req: LoginRequest): AuthResponse
+    }
+    class AuthFacade {
+        + registerNewUser(req: RegistrationRequest): AuthResponse
+        + login(req: LoginRequest): AuthResponse
+    }
+    AuthController --> AuthFacade
+}
+
+package "User Service" {
+    enum UserRole {
+        LEARNER
+        GUARDIAN
+        ADMIN
+    }
+    enum AccountStatus {
+        PENDING_CONSENT
+        ACTIVE
+        SUSPENDED
+    }
+    abstract class User {
+        + id: UUID
+        + email: String
+        + passwordHash: String
+        + role: UserRole
+        + status: AccountStatus
+        + createdAt: Timestamp
+        + updatedAt: Timestamp
+    }
+    class Learner extends User {
+        + username: String
+        + age: int
+        + xp: int
+        + level: int
+        + avatarUrl: String
+        + currentStreak: int
+        + lastActivityDate: Date
+    }
+    class Guardian extends User {
+        + firstName: String
+        + lastName: String
+    }
+    class Admin extends User
+}
+
+package "Content Service" {
+    enum ContentStatus {
+        DRAFT
+        PUBLISHED
+    }
+    enum QuestType {
+        CODE_CHALLENGE
+        QUIZ
+        VIDEO
+    }
+    class Vault {
+        + id: UUID
+        + title: String
+        + description: String
+        + theme: String
+        + status: ContentStatus
+        + category: String
+        + displayOrder: int
+        + featured: boolean
+    }
+    abstract class Quest {
+        + id: UUID
+        + vaultId: UUID
+        + title: String
+        + order: int
+        + xpValue: int
+        + status: ContentStatus
+        + questType: QuestType
+    }
+    class CodeChallenge extends Quest {
+        + description: String
+        + language: String
+        + starterCode: String
+        + hints: String
+    }
+    class Quiz extends Quest
+    class VideoLesson extends Quest {
+        + videoUrl: String
+    }
+    class TestCase {
+        + id: UUID
+        + input: String
+        + expectedOutput: String
+        + hidden: boolean
+    }
+    class QuizQuestion {
+        + id: UUID
+        + text: String
+    }
+    class QuizAnswer {
+        + id: UUID
+        + text: String
+        + correct: boolean
+    }
+    interface GradingStrategy {
+        + grade(submission: Submission)
+    }
+    class UnitTestStrategy implements GradingStrategy
+    CodeChallenge "1" *-- "many" TestCase
+    QuizQuestion "1" *-- "many" QuizAnswer
+}
+
+package "Progress Service" {
+    enum SubmissionStatus {
+        PENDING
+        GRADING
+        COMPLETED
+        ERROR
+    }
+    class Submission {
+        + id: UUID
+        + learnerId: UUID
+        + questId: UUID
+        + submittedCode: String
+        + status: SubmissionStatus
+        + success: boolean
+        + score: Double
+        + stdout: String
+        + stderr: String
+        + resultsJson: String
+        + timestamp: Timestamp
+    }
+    class SubmissionRequest {
+        + questId: UUID
+        + source: String
+        + language: String
+    }
+    class Badge {
+        + id: UUID
+        + name: String
+        + description: String
+        + iconUrl: String
+        + criteriaType: BadgeCriteriaType
+        + criteriaValue: String
+    }
+    enum BadgeCriteriaType {
+        COMPLETE_QUESTS
+        COMPLETE_VAULT
+        STREAK_DAYS
+    }
+    class QuestCompletion {
+        + id: UUID
+        + learnerId: UUID
+        + questId: UUID
+        + status: String
+        + completionDate: Timestamp
+    }
+    Learner "1" -- "many" Submission : submits >
+    Learner "1" -- "many" QuestCompletion
+    Learner "many" -- "many" Badge : earns
+}
+
+package "Grading Service" {
+    class SubmissionGradingJob {
+        + submissionId: UUID
+        + questId: UUID
+        + submittedCode: String
+        + language: String
+    }
+    class GradingJobConsumer {
+        + onMessage(job: SubmissionGradingJob)
+    }
+    GradingJobConsumer --> Submission
+}
+
+package "CDN Service" {
+    class UploadRequest {
+        + file: MultipartFile
+        + metadata: Map
+    }
+}
+
+' Associations across packages
+Guardian "many" -- "many" Learner : supervises
+Vault "1" *-- "many" Quest
+Quest "many" -- "many" Quest : prerequisites
+CodeChallenge "1" -- "many" Submission : "evaluates >"
+
+@enduml
