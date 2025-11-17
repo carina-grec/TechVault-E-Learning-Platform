@@ -1,35 +1,41 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import './App.css';
+import HeaderBar from './components/HeaderBar';
+import AuthPanel from './components/AuthPanel';
+import ContentExplorer from './components/ContentExplorer';
+import SubmissionsPanel from './components/SubmissionsPanel';
+import GuardianPanel from './components/GuardianPanel';
+import AdminPanel from './components/AdminPanel';
+import CDNUploader from './components/CDNUploader';
+import UserProfilePanel from './components/UserProfilePanel';
+import { useAuth } from './context/AuthContext';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { auth } = useAuth();
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="app-shell">
+      <HeaderBar />
+      <main>
+        <section className="section-grid">
+          <AuthPanel />
+          <UserProfilePanel />
+          <ContentExplorer />
+          <SubmissionsPanel />
+          <GuardianPanel />
+          <AdminPanel />
+          <CDNUploader />
+        </section>
+      </main>
+      {!auth?.token && (
+        <footer className="hint">
+          <p>
+            Tip: start by creating or logging into a learner, guardian, or admin account.
+            Once you log in, the panels above will automatically include the required headers for each request.
+          </p>
+        </footer>
+      )}
+    </div>
+  );
 }
 
-export default App
+export default App;
