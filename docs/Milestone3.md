@@ -13,22 +13,7 @@ All features (auth, users, content, progress, grading, CDN) live inside one Spri
 ![techvaultmonolith.png](techvaultmonolith.png)
 
 ### 1.3 Deployment Diagram
-```plantuml
-@startuml
-node "Client" as Client
-node "Load Balancer" as LB
-node "Monolith VM / Container" as Mono {
-    component "TechVault.jar"
-}
-database "PostgreSQL" as PG
-node "MinIO" as MINIO
-
-Client --> LB
-LB --> Mono
-Mono --> PG
-Mono --> MINIO
-@enduml
-```
+![monolithdeploymentdgrm.png](monolithdeploymentdgrm.png)
 
 ### 1.4 Pros
 - Simplest deployment (one artifact, one pipeline).
@@ -49,66 +34,12 @@ Mono --> MINIO
 Independent Spring Boot services per bounded context: Auth, User, Content, Progress, Grading, CDN, plus infrastructure services (RabbitMQ, MinIO, Piston). Each service owns its REST API, repositories, and Docker image. The API Gateway centralizes routing/security. RabbitMQ decouples submissions from grading workloads.
 
 ### 2.2 Component Diagram
-```plantuml
-@startuml
-left to right direction
-package Gateway {
-  [API Gateway]
-}
-package Services {
-  [Auth Service]
-  [User Service]
-  [Content Service]
-  [Progress Service]
-  [CDN Service]
-  [Grading Service]
-}
-package Infra {
-  queue "RabbitMQ" as MQ
-  database "PostgreSQL" as PG
-  node "MinIO" as MINIO
-  node "Piston" as Piston
-}
-[API Gateway] --> [Auth Service]
-[API Gateway] --> [User Service]
-[API Gateway] --> [Content Service]
-[API Gateway] --> [Progress Service]
-[API Gateway] --> [CDN Service]
-[Progress Service] --> MQ : publish SubmissionGradingJob
-MQ --> [Grading Service]
-[Grading Service] --> Piston
-[Auth Service] --> PG
-[User Service] --> PG
-[Content Service] --> PG
-[Progress Service] --> PG
-[Grading Service] --> PG
-[CDN Service] --> MINIO
-@enduml
-```
+![microservicescompdiagrm.png](microservicescompdiagrm.png)
+
 
 ### 2.3 Deployment Diagram
-```plantuml
-@startuml
-node "Client" as Client
-node "Docker Host / K8s" {
-  node "API Gateway"
-  node "Auth Service"
-  node "User Service"
-  node "Content Service"
-  node "Progress Service"
-  node "Grading Service"
-  node "CDN Service"
-  node "Piston Service"
-  node "RabbitMQ"
-  node "PostgreSQL"
-  node "MinIO"
-}
-Client --> "API Gateway"
-"Progress Service" --> "RabbitMQ"
-"RabbitMQ" --> "Grading Service"
-"Grading Service" --> "Piston Service"
-@enduml
-```
+![microservicesdeploymentdgrm.png](microservicesdeploymentdgrm.png)
+
 
 ### 2.4 Pros
 - Services scale independently (e.g., run multiple grading containers).
@@ -130,49 +61,10 @@ Client --> "API Gateway"
 Instead of long-running services, core features become managed functions (AWS Lambda-style). API Gateway still fronts the system, but each endpoint triggers a function. State lives in managed databases/storage. Code submissions drop into an event bus (e.g., AWS EventBridge), and managed workers run grading jobs. CDN uploads go directly to S3 via signed URLs.
 
 ### 3.2 Component Diagram
-```plantuml
-@startuml
-left to right direction
-[API Gateway] --> (AuthFunction)
-[API Gateway] --> (UserFunction)
-[API Gateway] --> (ContentFunction)
-[API Gateway] --> (SubmissionFunction)
-(SubmissionFunction) --> (EventBridge) : emit SubmissionCreated
-(EventBridge) --> (GradingLambda)
-(GradingLambda) --> (StepFunction Runner) : invoke code sandbox
-(CDN Upload Function) --> (S3 Bucket)
-(AuthFunction) --> (Serverless Postgres/Aurora)
-(UserFunction) --> (Serverless Postgres/Aurora)
-(ContentFunction) --> (Serverless Postgres/Aurora)
-(SubmissionFunction) --> (Serverless Postgres/Aurora)
-(GradingLambda) --> (Serverless Postgres/Aurora)
-@enduml
-```
+![eventdrivercomponentdgrm.png](eventdrivercomponentdgrm.png)
 
 ### 3.3 Deployment Diagram
-```plantuml
-@startuml
-node "Client" as Client
-
-node "Cloud Provider" {
-  node "API Gateway (managed)" as APIGW
-  node "Lambda Functions" as Lambda
-  node "Aurora Serverless" as Aurora
-  node "EventBridge Bus" as EventBridge
-  node "S3 Bucket" as S3
-  node "Fargate Task (Piston)" as Fargate
-}
-
-Lambda --> Aurora
-Lambda --> EventBridge
-EventBridge --> Fargate : start grading task
-Lambda --> S3
-
-Client --> APIGW
-APIGW --> Lambda
-@enduml
-
-```
+![eventdrivendeploymentdgrm.png](eventdrivendeploymentdgrm.png)
 
 ### 3.4 Pros
 - Virtually zero ops: auto-scaling, pay-per-use, built-in monitoring.
@@ -196,3 +88,6 @@ APIGW --> Lambda
 | Event-driven Serverless | Great elasticity and decoupling. | High vendor lock-in and local dev complexity; grading runtimes need special handling. |
 
 **Decision:** We continue with the **microservices architecture**. It balances autonomy, technology choice, and operational complexity. Monolith would constrain scaling and testing; serverless would explode cost/lock-in and complicate our custom Piston runner. Microservices keep each context clean, let us reuse commodity infrastructure (Docker, RabbitMQ, MinIO), and are realistic for both production and teaching environments. With clear contracts and the docs above, we can onboard new contributors quickly while still evolving features independently.
+
+![final uml.png](final%20uml.png)
+![classdiagramtv.png](classdiagramtv.png)
