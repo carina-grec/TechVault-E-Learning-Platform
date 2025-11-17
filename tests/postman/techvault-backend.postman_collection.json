@@ -798,6 +798,96 @@
                                                     }
                                                 ]
                                   },
+                                  {
+                                      "name":  "Submissions - Java Sum Challenge",
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Authorization",
+                                                                         "value":  "Bearer {{learnerToken}}"
+                                                                     }
+                                                                 ],
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\n  \"questId\": \"{{questId}}\",\n  \"language\": \"java\",\n  \"source\": \"import java.util.*;\\npublic class Main {\\n    static int sum(int a, int b) {\\n        if (a < 0 && b < 0) {\\n            return a + b - 1;\\n        }\\n        return a + b;\\n    }\\n\\n    public static void main(String[] args) {\\n        Scanner scanner = new Scanner(System.in);\\n        int a = scanner.nextInt();\\n        int b = scanner.nextInt();\\n        System.out.println(sum(a, b));\\n    }\\n}\",\n  \"testCases\": [\n    {\n      \"description\": \"Positive numbers\",\n      \"input\": \"2 3\",\n      \"expectedOutput\": \"5\"\n    },\n    {\n      \"description\": \"Mixed signs\",\n      \"input\": \"10 -5\",\n      \"expectedOutput\": \"5\"\n    },\n    {\n      \"description\": \"Both negative numbers\",\n      \"input\": \"-3 -4\",\n      \"expectedOutput\": \"-7\"\n    }\n  ]\n}"
+                                                               },
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/api/submissions",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "submissions"
+                                                                           ]
+                                                              }
+                                                  },
+                                      "event":  [
+                                                    {
+                                                        "listen":  "test",
+                                                        "script":  {
+                                                                       "type":  "text/javascript",
+                                                                       "exec":  [
+                                                                                    "pm.test('Submission accepted', function () { pm.expect([200,202]).to.include(pm.response.code); });",
+                                                                                    "const submissionBody = pm.response.json();",
+                                                                                    "if (submissionBody && submissionBody.submissionId) {",
+                                                                                    "    pm.environment.set('javaSubmissionId', submissionBody.submissionId);",
+                                                                                    "    pm.environment.set('submissionId', submissionBody.submissionId);",
+                                                                                    "}"
+                                                                                ]
+                                                                   }
+                                                    }
+                                                ]
+                                  },
+                                  {
+                                      "name":  "Submissions - Java Sum Result",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Authorization",
+                                                                         "value":  "Bearer {{learnerToken}}"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/api/submissions/{{javaSubmissionId}}",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "submissions",
+                                                                               "{{javaSubmissionId}}"
+                                                                           ]
+                                                              }
+                                                  },
+                                      "event":  [
+                                                    {
+                                                        "listen":  "test",
+                                                        "script":  {
+                                                                       "type":  "text/javascript",
+                                                                       "exec":  [
+                                                                                    "pm.test('Status 200', function () { pm.response.to.have.status(200); });",
+                                                                                    "const body = pm.response.json();",
+                                                                                    "if (body && (body.status === 'PENDING' || body.status === 'GRADING')) {",
+                                                                                    "    pm.test('Submission graded', function () { pm.expect.fail('Submission still processing: ' + body.status); });",
+                                                                                    "} else {",
+                                                                                    "    pm.test('Score available', function () { pm.expect(body.score).to.exist; });",
+                                                                                    "    if (body.score !== null && body.score !== undefined) {",
+                                                                                    "        pm.test('Partial grade calculated', function () { pm.expect(body.score).to.be.below(100); });",
+                                                                                    "        pm.environment.set('javaSubmissionScore', body.score);",
+                                                                                    "    }",
+                                                                                    "}"
+                                                                                ]
+                                                                   }
+                                                    }
+                                                ]
+                                  },
                                   {
                                       "name":  "Submissions - Recent",
                                       "request":  {

@@ -10,6 +10,7 @@ public record SubmissionResponse(
         UUID questId,
         SubmissionStatus status,
         boolean success,
+        Double score,
         String stdout,
         String stderr,
         String resultsJson,

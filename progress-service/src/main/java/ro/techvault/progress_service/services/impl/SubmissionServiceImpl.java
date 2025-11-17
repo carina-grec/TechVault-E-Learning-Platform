@@ -9,6 +9,7 @@ import ro.techvault.progress_service.config.MessagingConfig;
 import ro.techvault.progress_service.dtos.SubmissionGradingJob;
 import ro.techvault.progress_service.dtos.SubmissionRequest;
 import ro.techvault.progress_service.dtos.SubmissionResponse;
+import ro.techvault.progress_service.dtos.TestCasePayload;
 import ro.techvault.progress_service.enums.SubmissionStatus;
 import ro.techvault.progress_service.models.Submission;
 import ro.techvault.progress_service.repositories.SubmissionRepository;
@@ -36,12 +37,15 @@ public class SubmissionServiceImpl implements SubmissionService {
         submission.setStatus(SubmissionStatus.PENDING);
 
         Submission savedSubmission = submissionRepository.save(submission);
+        List<TestCasePayload> testCases =
+                request.testCases() == null ? List.of() : request.testCases();
 
         SubmissionGradingJob job = new SubmissionGradingJob(
                 savedSubmission.getId(),
                 savedSubmission.getQuestId(),
                 savedSubmission.getSubmittedCode(),
-                request.language()
+                request.language(),
+                testCases
         );
         rabbitTemplate.convertAndSend(MessagingConfig.GRADING_QUEUE_NAME, job);
         return mapSubmission(savedSubmission);
@@ -84,6 +88,7 @@ public class SubmissionServiceImpl implements SubmissionService {
                 submission.getQuestId(),
                 submission.getStatus(),
                 submission.isSuccess(),
+                submission.getScore(),
                 submission.getStdout(),
                 submission.getStderr(),
                 submission.getResultsJson(),

@@ -5,6 +5,7 @@ networks:
 volumes:
   minio-data:
   pgdata:
+  piston-data:
 
 services:
   eureka-server:
@@ -186,6 +187,8 @@ services:
         condition: service_started
       progress-service:
         condition: service_started
+      piston-runtime-installer:
+        condition: service_completed_successfully
     networks:
       - techvault-network
     environment:
@@ -197,6 +200,10 @@ services:
       - SERVER_PORT=8085
       - EUREKA_INSTANCE_HOSTNAME=grading-service
       - SPRING_JPA_HIBERNATE_DDLAUTO=update
+      - PISTON_BASE_URL=http://piston-service:2000/api/v2/execute
+      - PISTON_LANGUAGE_MAP_PYTHON=3.10.0
+      - PISTON_LANGUAGE_MAP_JAVASCRIPT=18.15.0
+      - PISTON_LANGUAGE_MAP_JAVA=15.0.2
 
   cdn-service:
     build:
@@ -240,6 +247,47 @@ services:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
       - SERVER_PORT=8081
       - EUREKA_INSTANCE_HOSTNAME=api-gateway
+
+  piston-service:
+    build:
+      context: ./piston/api
+      dockerfile: Dockerfile
+    container_name: piston-service
+    privileged: true
+    ports:
+      - "2000:2000"
+    volumes:
+      - piston-data:/piston/packages
+    environment:
+      - PISTON_USE_CGROUPS=false
+    networks:
+      - techvault-network
+
+  piston-runtime-installer:
+    image: curlimages/curl:8.11.1
+    container_name: piston-runtime-installer
+    depends_on:
+      piston-service:
+        condition: service_started
+    networks:
+      - techvault-network
+    entrypoint: ["/bin/sh","-c"]
+    command: |
+      set -euo pipefail
+      echo "Waiting for piston-service..."
+      until curl -sf http://piston-service:2000/api/v2/runtimes >/dev/null; do
+        sleep 2
+      done
+      for spec in python=3.10.0 java=15.0.2; do
+        lang="$${spec%%=*}"
+        ver="$${spec#*=}"
+        echo "Ensuring runtime $${lang}-$${ver} is installed"
+        curl -sf -X POST -H "Content-Type: application/json" \
+          -d "{\"language\":\"$${lang}\",\"version\":\"$${ver}\"}" \
+          http://piston-service:2000/api/v2/packages || true
+      done
+      echo "Runtime bootstrap completed."
+    restart: "no"
 
   frontend-react:
     build:

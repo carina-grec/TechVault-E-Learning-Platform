@@ -38,6 +38,7 @@ public class Submission {
     private SubmissionStatus status = SubmissionStatus.PENDING;
 
     private boolean isSuccess;
+    private Double score;
 
     @Lob
     private String stdout;

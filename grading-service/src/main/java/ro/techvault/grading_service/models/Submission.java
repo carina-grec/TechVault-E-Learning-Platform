@@ -24,6 +24,7 @@ public class Submission {
 
     private String status;
     private boolean isSuccess;
+    private Double score;
     @Lob
     private String stdout;
     @Lob
