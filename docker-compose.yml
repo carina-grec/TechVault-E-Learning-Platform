@@ -250,8 +250,8 @@ services:
 
   piston-service:
     build:
-      context: ./piston/api
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: docker/piston.Dockerfile
     container_name: piston-service
     privileged: true
     ports:
