@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.domain.Persistable;
 import ro.techvault.progress_service.enums.BadgeCriteriaType;
 
 import java.util.UUID;
@@ -15,11 +16,12 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Badge {
+public class Badge implements Persistable<UUID> {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+    @Transient
+    private boolean isNew = true;
 
     @Column(nullable = false, unique = true)
     private String name;
@@ -36,4 +38,22 @@ public class Badge {
 
     @Column(nullable = false)
     private String criteriaValue;
+
+    @Override
+    public boolean isNew() {
+        return isNew || id == null;
+    }
+
+    @PostLoad
+    @PostPersist
+    private void markNotNew() {
+        this.isNew = false;
+    }
+
+    @PrePersist
+    private void ensureId() {
+        if (id == null) {
+            id = UUID.randomUUID();
+        }
+    }
 }
