@@ -6,7 +6,6 @@ RUN mvn -B -DskipTests clean package
 
 FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
-ARG JAR_FILE=target/*-SNAPSHOT.jar
-COPY --from=build ${JAR_FILE} app.jar
+COPY --from=build /build/target/*-SNAPSHOT.jar app.jar
 EXPOSE 8082
 ENTRYPOINT ["java", "-jar", "app.jar"]
