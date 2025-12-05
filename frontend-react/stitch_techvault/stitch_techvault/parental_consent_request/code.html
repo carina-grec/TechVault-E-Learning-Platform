@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Parental Consent Request</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#7639ef",
+              "background-light": "#f6f6f8",
+              "background-dark": "#161022",
+            },
+            fontFamily: {
+              "display": ["Space Grotesk"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .hard-shadow {
+            box-shadow: 4px 4px 0px #000;
+        }
+        .hard-shadow-hover:hover {
+            box-shadow: 6px 6px 0px #000;
+            transform: translate(-2px, -2px);
+        }
+    </style>
+</head>
+<body class="font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-background-light dark:bg-background-dark group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<div class="flex flex-1 justify-center py-5 sm:px-6 md:px-10 lg:px-20 xl:px-40">
+<div class="layout-content-container flex flex-col w-full max-w-[960px] flex-1">
+<header class="flex items-center justify-between whitespace-nowrap px-6 sm:px-10 py-3">
+<div class="flex items-center gap-4 text-black dark:text-white">
+<div class="size-6 text-violet-600">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M24 4H6V17.3333V30.6667H24V44H42V30.6667V17.3333H24V4Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-black dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">Stitch</h2>
+</div>
+</header>
+<main class="flex-1 px-4 py-8 sm:px-6 md:px-10">
+<div class="bg-white dark:bg-gray-900 border-2 border-black dark:border-gray-600 p-6 sm:p-8 md:p-10 rounded-lg hard-shadow transition-shadow">
+<div class="flex flex-col items-center text-center mb-8">
+<div class="flex h-16 w-16 items-center justify-center rounded-full bg-violet-100 dark:bg-violet-900/50 mb-4 border-2 border-black dark:border-gray-600">
+<span class="material-symbols-outlined text-violet-600 dark:text-violet-400 text-4xl">
+                                        shield_person
+                                    </span>
+</div>
+<div class="flex min-w-72 flex-col gap-3">
+<p class="text-black dark:text-white text-3xl sm:text-4xl font-bold leading-tight tracking-tight">Parental Consent Required</p>
+<p class="text-gray-600 dark:text-gray-400 text-base font-normal leading-normal max-w-xl mx-auto">
+                                        Because your child is under 13, federal law (COPPA) requires we get your permission before they can create an account on Stitch.
+                                    </p>
+</div>
+</div>
+<div class="my-8 border-t border-dashed border-gray-400 dark:border-gray-600"></div>
+<div class="space-y-8">
+<div>
+<h2 class="text-black dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em] mb-4">Why We Need Your Consent</h2>
+<p class="text-gray-700 dark:text-gray-300 text-base font-normal leading-normal mb-6">
+                                        Granting consent will allow your child to create a Stitch account and unlock a world of coding education. This includes the ability to:
+                                    </p>
+<div class="space-y-4">
+<div class="flex items-start gap-4">
+<div class="text-lime-500 flex items-center justify-center shrink-0 size-10">
+<span class="material-symbols-outlined text-3xl">code_blocks</span>
+</div>
+<p class="text-black dark:text-white text-base font-normal leading-normal flex-1 pt-1.5">Learn to code through interactive lessons and creative projects.</p>
+</div>
+<div class="flex items-start gap-4">
+<div class="text-lime-500 flex items-center justify-center shrink-0 size-10">
+<span class="material-symbols-outlined text-3xl">backup</span>
+</div>
+<p class="text-black dark:text-white text-base font-normal leading-normal flex-1 pt-1.5">Save and share their creations within our moderated community.</p>
+</div>
+<div class="flex items-start gap-4">
+<div class="text-lime-500 flex items-center justify-center shrink-0 size-10">
+<span class="material-symbols-outlined text-3xl">groups</span>
+</div>
+<p class="text-black dark:text-white text-base font-normal leading-normal flex-1 pt-1.5">Participate in safe, moderated coding challenges and events.</p>
+</div>
+</div>
+</div>
+<div>
+<h2 class="text-black dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em] mb-4">How We Protect Your Child</h2>
+<p class="text-gray-700 dark:text-gray-300 text-base font-normal leading-normal">
+                                        We take your child's safety and privacy seriously. We adhere to strict data privacy policies and provide a moderated, positive environment for learning. You can learn more by reading our full <a class="font-bold underline text-violet-600 dark:text-violet-400 hover:text-violet-800 dark:hover:text-violet-300" href="#">Privacy Policy</a>.
+                                    </p>
+</div>
+</div>
+<div class="my-8 border-t border-dashed border-gray-400 dark:border-gray-600"></div>
+<div class="flex flex-col sm:flex-row-reverse gap-4">
+<button class="w-full sm:w-auto flex-grow justify-center whitespace-nowrap rounded-lg bg-violet-600 px-8 py-3 text-base font-bold text-white transition-all hard-shadow hard-shadow-hover border-2 border-black dark:border-gray-600 focus:outline-none focus:ring-4 focus:ring-violet-300 dark:focus:ring-violet-800">
+                                    Grant Consent
+                                </button>
+<button class="w-full sm:w-auto justify-center whitespace-nowrap rounded-lg bg-lime-400 px-8 py-3 text-base font-bold text-black transition-all hard-shadow hard-shadow-hover border-2 border-black dark:border-gray-600 focus:outline-none focus:ring-4 focus:ring-lime-200 dark:focus:ring-lime-600">
+                                    Decline Consent
+                                </button>
+</div>
+</div>
+</main>
+</div>
+</div>
+</div>
+</div>
+</body></html>

@@ -1,0 +1,48 @@
+TechVault – quick context for new Codex sessions
+------------------------------------------------
+
+Project shape
+- Monorepo with microservices (Spring Boot) + React frontend (`frontend-react`).
+- Services: api-gateway (8081), auth-service (8082), content-service (8083), grading-service (8085), progress-service (8086), user-service (8087), eureka-server (8761), postgres, rabbitmq. One `docker-compose.yml` spins everything up.
+- Gateway injects `X-User-Id` and `X-User-Role` from JWT into downstream calls; open paths `/api/auth/**,/actuator/**`.
+
+Key API surfaces (public via gateway)
+- Auth: `POST /api/auth/register`, `POST /api/auth/login`, `GET /api/auth/me`.
+- Content: `GET /api/vaults`, `GET /api/vaults/{id}`, `GET /api/quests`, `GET /api/quests/{id}`.
+- Progress (learner): `GET /api/learner/progress/summary`, `/vaults`, `/vaults/{vaultId}`; `GET /api/learner/badges`; `GET /api/badges/catalog`.
+- Submissions: `POST /api/submissions` (returns 202 + submission), `GET /api/submissions`, `/recent`, `/{submissionId}`. Progress-service now fetches canonical test cases from content-service `/api/internal/quests/{id}/test-cases`.
+- Guardian: `GET/POST /api/guardians/me/learners`; `GET /api/guardian/learners/{learnerId}/progress`; `GET /api/guardian/learners/{learnerId}/submissions`.
+- Admin (content): CRUD vaults `/api/admin/vaults`, quests `/api/admin/quests`; metrics `/api/admin/metrics/overview`.
+- Admin (users): list/update `/api/admin/users`.
+- User profile: `GET/PATCH /api/users/me`, `PATCH /api/users/me/password`.
+- Internal (content): `/api/internal/quests/{id}/test-cases` (used by progress-service).
+
+Request/response hints
+- Auth token returned as `token`; user has `id,email,displayName,role`.
+- Submission payload: `{ questId, source, language, testCases? }` (language defaults to python if empty). Progress-service prefers canonical test cases from content-service; falls back to request.
+- SubmissionResponse: `submissionId, questId, status(PENDING|GRADING|COMPLETED|ERROR), success, score, stdout, stderr, resultsJson, timestamp`.
+- Learner progress summary: `level,xp,streak,completedQuests,totalQuests,vaults[]`.
+- QuestResponse: `id,vaultId,title,questType,order,xpValue,status,description,language,starterCode,hints,gradingStrategy,difficulty,worldTheme,estimatedTime,testCases[]`.
+
+Data notes
+- QuestResponse now includes starterCode, hints, gradingStrategy, and testCases (id/description/input/expectedOutput/hidden).
+- Content seeder creates a default vault/quest with two test cases.
+- Submissions grading is async via RabbitMQ; grading-service uses Piston client.
+
+Frontend (`frontend-react`)
+- Uses Vite + Tailwind-ish styles; custom components in `src/components`. App wrapped with `AuthProvider` (`src/context/AuthContext.jsx`) handling token storage, `/auth/me`, and profile fetch.
+- Protected routing in `src/router`; role-aware navbar.
+- Learner flows: dashboards pull real progress/badges, vault list/detail, quest list/detail with code editor + submission + polling for results.
+- Guardian flows: dashboards show linked learners, progress, recent submissions; assignment controls browse vaults.
+- Admin flows: Content CMS to create/edit/delete vaults and quests (with test cases), metrics view, user list.
+- Settings: update profile and password via user-service.
+
+How to run
+- Local dev frontend: `cd frontend-react && npm install && npm run dev` (VITE_API_BASE_URL can point to gateway; default auto-detects :8081).
+- Full stack: `docker compose up --build` from repo root (uses container hostnames for service discovery).
+- Backend local dev: each service is Spring Boot; standard `mvn spring-boot:run` per service. Content/progress changes add TestCase.description column; ensure DB migrations/DDL align if using existing DB.
+- Environment knobs: `app.jwt.secret` (gateway/auth), `CONTENT_SERVICE_URL` for progress-service when not in Docker. Gateway CORS allowed origins default to `http://localhost:5173,http://127.0.0.1:5173`.
+
+Visual/inspiration
+- Style is “boho/emo minimal” with soft golds, sand, charcoal; use existing components: Button, Card, Badge, ProgressBar, StatCard, Navbar, Section, etc.
+- Keep typography/spacing consistent; avoid sampleData (removed) and rely on live APIs.

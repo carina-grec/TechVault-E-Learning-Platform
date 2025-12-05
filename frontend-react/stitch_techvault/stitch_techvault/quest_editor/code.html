@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Quest Editor</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>.hard-shadow {
+    box-shadow: 4px 4px 0 0 #000
+    }
+.hard-shadow-sm {
+    box-shadow: 2px 2px 0 0 #000
+    }
+.form-checkbox:checked {
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuCgdyPEymTMwUB43k0OEmqAwqRqgc3Avt89EJ0BRdoElHn_CLhBgeM5_ujbJ8Jwp7RsfKI2y2HDCTGRXQGmKn_yZtEpb-kum8kAi_jRcVuw_lEh9CLkNHfPO0HIU27i6K6dK5yEzIKBeWx20PtAR2u2bLJd9MqdhoPtigSbo2xoTQ4u4F7ircLwm5cZREToJ3fijtY3uSzQAXZMfkw5FyNd0a9TJcYpTQ0g9oUgsNALmWhBX08UUNndWTUyffrAGQZBhCNOnftqgg0)
+    }</style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#92e736",
+              "background-light": "#f7f8f6",
+              "background-dark": "#192111",
+            },
+            fontFamily: {
+              "display": ["Space Grotesk", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="flex min-h-screen">
+<!-- SideNavBar -->
+<aside class="w-64 bg-white dark:bg-black p-4 border-r-2 border-black dark:border-primary">
+<div class="flex flex-col h-full">
+<div class="flex items-center gap-3 mb-8">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-black" data-alt="Stitch Admin Panel Logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB2j1emHSso8gtBHliBlC_ZeGUfz8-yKPRlhZHSRn0F_ScQQ6pnjx_uPN_uo2wjqx88sflQv522z0XRL-zhT8IxgpUbOu8ddyELUGjM2GDp494I-xLGSiiQbtMw4aobglEyidPocDFTdklzIdZN7coRO0gFnv-Ewl0Y7OC3GcDVEEJR0su0TiE0zr1-N-MahFN9Glhad75v5-Wmn4Z0a1W4V_ViPyfzZAUbk-vRCgDnOg60uYm1Xm7uFf1sVIC1QpI6QzJt6EaO29s");'></div>
+<div class="flex flex-col">
+<h1 class="text-black dark:text-white text-base font-bold leading-normal">Admin</h1>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-normal leading-normal">Stitch Admin Panel</p>
+</div>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-3 py-2 text-black dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<p class="text-sm font-medium leading-normal">Dashboard</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded bg-primary text-black" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">swords</span>
+<p class="text-sm font-bold leading-normal">Quests</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-black dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded" href="#">
+<span class="material-symbols-outlined">group</span>
+<p class="text-sm font-medium leading-normal">Users</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-black dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded" href="#">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-sm font-medium leading-normal">Settings</p>
+</a>
+</nav>
+<div class="mt-auto">
+<button class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded h-10 px-4 bg-slate-200 dark:bg-slate-800 text-black dark:text-white text-sm font-bold leading-normal tracking-[0.015em] border-2 border-black dark:border-primary hard-shadow-sm hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-transform">
+<span class="truncate">Logout</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 p-8">
+<div class="max-w-4xl mx-auto">
+<!-- PageHeading -->
+<div class="mb-8">
+<p class="text-black dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]">QUEST EDITOR</p>
+<p class="text-slate-500 dark:text-slate-400 text-base font-normal leading-normal">Create and configure a new coding challenge for students.</p>
+</div>
+<!-- Quest Details Form Section -->
+<div class="bg-white dark:bg-slate-900/50 p-6 rounded border-2 border-black dark:border-primary hard-shadow mb-8">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Quest Title -->
+<label class="flex flex-col col-span-2">
+<p class="text-black dark:text-white text-base font-bold leading-normal pb-2 uppercase">Quest Title</p>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded text-black dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary border-2 border-black dark:border-slate-600 bg-white dark:bg-slate-900 h-12 placeholder:text-slate-500 dark:placeholder:text-slate-400 px-4 text-base font-normal leading-normal" placeholder="Enter the title for the quest" value="Array Summation Challenge"/>
+</label>
+<!-- Description -->
+<label class="flex flex-col col-span-2">
+<p class="text-black dark:text-white text-base font-bold leading-normal pb-2 uppercase">Description</p>
+<textarea class="form-input flex w-full min-w-0 flex-1 resize-y overflow-hidden rounded text-black dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary border-2 border-black dark:border-slate-600 bg-white dark:bg-slate-900 min-h-36 placeholder:text-slate-500 dark:placeholder:text-slate-400 p-4 text-base font-normal leading-normal" placeholder="Provide a detailed description of the quest, including the problem to be solved.">Write a function that takes an array of numbers and returns their sum.</textarea>
+</label>
+<!-- Difficulty Level -->
+<label class="flex flex-col min-w-40 flex-1">
+<p class="text-black dark:text-white text-base font-bold leading-normal pb-2 uppercase">Difficulty Level</p>
+<select class="form-select flex w-full min-w-0 flex-1 rounded text-black dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary border-2 border-black dark:border-slate-600 bg-white dark:bg-slate-900 h-12 px-4 text-base font-normal leading-normal">
+<option>Easy</option>
+<option>Medium</option>
+<option>Hard</option>
+</select>
+</label>
+</div>
+</div>
+<!-- Test Cases Section -->
+<div class="bg-white dark:bg-slate-900/50 p-6 rounded border-2 border-black dark:border-primary hard-shadow">
+<h2 class="text-2xl font-black text-black dark:text-white mb-4 uppercase">Test Cases</h2>
+<div class="space-y-6">
+<!-- Test Case 1 -->
+<div class="border-2 border-dashed border-slate-300 dark:border-slate-700 rounded p-4 relative">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<label class="flex flex-col">
+<p class="text-black dark:text-white text-base font-bold leading-normal pb-2 uppercase">Input</p>
+<textarea class="form-input font-mono flex w-full min-w-0 flex-1 resize-y overflow-hidden rounded text-white focus:outline-0 focus:ring-2 focus:ring-primary border-2 border-black bg-slate-900 min-h-32 p-4 text-sm">[1, 2, 3]</textarea>
+</label>
+<label class="flex flex-col">
+<p class="text-black dark:text-white text-base font-bold leading-normal pb-2 uppercase">Expected Output</p>
+<textarea class="form-input font-mono flex w-full min-w-0 flex-1 resize-y overflow-hidden rounded text-white focus:outline-0 focus:ring-2 focus:ring-primary border-2 border-black bg-slate-900 min-h-32 p-4 text-sm">6</textarea>
+</label>
+</div>
+<div class="flex items-center justify-between mt-4">
+<label class="flex items-center gap-2 cursor-pointer">
+<input class="form-checkbox h-5 w-5 rounded-sm border-2 border-black dark:border-primary bg-white dark:bg-slate-800 text-black checked:bg-primary focus:ring-0 focus:ring-offset-0" type="checkbox"/>
+<span class="text-black dark:text-white font-medium">Hidden</span>
+</label>
+<button class="p-2 text-slate-500 hover:text-red-500 dark:text-slate-400 dark:hover:text-red-400">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+</div>
+<!-- Test Case 2 -->
+<div class="border-2 border-dashed border-slate-300 dark:border-slate-700 rounded p-4 relative">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<label class="flex flex-col">
+<p class="text-black dark:text-white text-base font-bold leading-normal pb-2 uppercase">Input</p>
+<textarea class="form-input font-mono flex w-full min-w-0 flex-1 resize-y overflow-hidden rounded text-white focus:outline-0 focus:ring-2 focus:ring-primary border-2 border-black bg-slate-900 min-h-32 p-4 text-sm">[-1, 0, 1]</textarea>
+</label>
+<label class="flex flex-col">
+<p class="text-black dark:text-white text-base font-bold leading-normal pb-2 uppercase">Expected Output</p>
+<textarea class="form-input font-mono flex w-full min-w-0 flex-1 resize-y overflow-hidden rounded text-white focus:outline-0 focus:ring-2 focus:ring-primary border-2 border-black bg-slate-900 min-h-32 p-4 text-sm">0</textarea>
+</label>
+</div>
+<div class="flex items-center justify-between mt-4">
+<label class="flex items-center gap-2 cursor-pointer">
+<input checked="" class="form-checkbox h-5 w-5 rounded-sm border-2 border-black dark:border-primary bg-white dark:bg-slate-800 text-black checked:bg-primary focus:ring-0 focus:ring-offset-0" type="checkbox"/>
+<span class="text-black dark:text-white font-medium">Hidden</span>
+</label>
+<button class="p-2 text-slate-500 hover:text-red-500 dark:text-slate-400 dark:hover:text-red-400">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Add Test Case Button -->
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center gap-2 overflow-hidden rounded h-10 px-4 bg-violet-600 text-white text-sm font-bold leading-normal tracking-wide mt-6 w-full border-2 border-black hard-shadow-sm hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-transform">
+<span class="material-symbols-outlined">add</span>
+<span class="truncate uppercase">Add Test Case</span>
+</button>
+</div>
+<!-- Footer Actions -->
+<div class="flex items-center justify-end gap-4 mt-8">
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded h-12 px-6 bg-slate-200 dark:bg-slate-700 text-black dark:text-white text-sm font-bold leading-normal tracking-wide border-2 border-black dark:border-slate-500 hard-shadow-sm hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-transform">
+<span class="truncate uppercase">Cancel</span>
+</button>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded h-12 px-6 bg-primary text-black text-sm font-bold leading-normal tracking-wide border-2 border-black hard-shadow-sm hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-transform">
+<span class="truncate uppercase">Save Quest</span>
+</button>
+</div>
+</div>
+</main>
+</div>
+</body></html>

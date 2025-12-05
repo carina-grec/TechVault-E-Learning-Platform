@@ -53,8 +53,12 @@ export const api = {
   login: (credentials) => request('/api/auth/login', { method: 'POST', body: credentials }),
   register: (payload) => request('/api/auth/register', { method: 'POST', body: payload }),
   getCurrentUser: (token) => request('/api/auth/me', { token }),
+  getProfile: (token) => request('/api/users/me', { token }),
 
-  getVaults: (token) => request('/api/vaults', { token }),
+  getVaults: (params = {}, token) => {
+    const query = new URLSearchParams(params).toString()
+    return request(`/api/vaults${query ? `?${query}` : ''}`, { token })
+  },
   getQuests: (params = {}, token) => {
     const query = new URLSearchParams(params).toString()
     return request(`/api/quests${query ? `?${query}` : ''}`, { token })
@@ -72,6 +76,7 @@ export const api = {
     const query = new URLSearchParams(params).toString()
     return request(`/api/submissions${query ? `?${query}` : ''}`, { token })
   },
+  getSubmission: (token, submissionId) => request(`/api/submissions/${submissionId}`, { token }),
   getRecentSubmissions: (token, limit = 5) =>
     request(`/api/submissions/recent?limit=${limit}`, { token }),
 

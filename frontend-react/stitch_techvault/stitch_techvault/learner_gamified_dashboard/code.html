@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Learner Gamified Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings:
+        'FILL' 1,
+        'wght' 600,
+        'GRAD' 0,
+        'opsz' 24
+      }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#7937eb",
+              "background-light": "#f7f6f8",
+              "background-dark": "#171121",
+            },
+            fontFamily: {
+              "display": ["Space Grotesk", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+</head>
+<body class="font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-[#F1F5F9] group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<div class="px-4 md:px-10 lg:px-20 xl:px-40 flex flex-1 justify-center py-5">
+<div class="layout-content-container flex flex-col w-full max-w-5xl flex-1">
+<!-- TopNavBar -->
+<header class="flex items-center justify-between whitespace-nowrap bg-white border-2 border-slate-900 px-6 py-4 rounded-lg shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+<div class="flex items-center gap-4 text-slate-900">
+<div class="size-6 text-slate-900">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M24 4H6V17.3333V30.6667H24V44H42V30.6667V17.3333H24V4Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-slate-900 text-xl font-bold leading-tight tracking-[-0.015em]">Stitch</h2>
+</div>
+<div class="hidden md:flex flex-1 justify-center gap-8">
+<div class="flex items-center gap-9">
+<a class="text-slate-900 text-base font-medium leading-normal" href="#">Dashboard</a>
+<a class="text-slate-900 text-base font-medium leading-normal" href="#">Courses</a>
+<a class="text-slate-900 text-base font-medium leading-normal" href="#">Profile</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<p class="hidden sm:block text-slate-900 font-medium">Alex</p>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-slate-900" data-alt="User profile avatar placeholder" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBiEVrH98fiRdz24ninerwgdVMe3pCm8F3RnK3eiTGKinowvwnY1ikrz6Rp-dGanOUBy1STffROWXyEUZfEp0rGsklSjMWNw67gXO_XIXmVL5U9pTTqCsX2exx8u3NWzWZyPsw_ivkMFDQDkmmbIHzLImYPLwXGrke2N6Onexy63ilALj0lnZqaDw9Box7EJ-yihPaU3iE4PkoB4ZaGVg7LiF0nq4AjyBUiJFtm9Xj84ZnkAUqYcFRdOGaUSYhkLUwSmzFDWiIkRoM");'></div>
+</div>
+</header>
+<main class="flex flex-col gap-8 mt-8">
+<!-- PageHeading -->
+<div class="flex flex-wrap justify-between gap-4 items-end">
+<h1 class="text-slate-900 text-4xl md:text-5xl font-bold leading-tight tracking-tighter min-w-72">Keep up the great work, Alex!</h1>
+<button class="bg-pink-500 text-slate-900 font-bold py-3 px-6 rounded-lg border-2 border-slate-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] active:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-shadow duration-150">Jump Back In</button>
+</div>
+<!-- Stats -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-lg p-6 bg-white border-2 border-slate-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+<p class="text-slate-900 text-lg font-medium leading-normal">Current Level</p>
+<p class="text-slate-900 tracking-light text-5xl font-bold leading-tight">8</p>
+</div>
+<div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-lg p-6 bg-white border-2 border-slate-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+<p class="text-slate-900 text-lg font-medium leading-normal">Daily Streak</p>
+<p class="text-slate-900 tracking-light text-5xl font-bold leading-tight">14 <span class="text-3xl">🔥</span></p>
+</div>
+<div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-lg p-6 bg-white border-2 border-slate-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+<p class="text-slate-900 text-lg font-medium leading-normal">Total XP</p>
+<p class="text-slate-900 tracking-light text-5xl font-bold leading-tight">1,250</p>
+</div>
+</div>
+<!-- ProgressBar -->
+<div class="flex flex-col gap-3 p-6 rounded-lg bg-white border-2 border-slate-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+<div class="flex gap-6 justify-between">
+<p class="text-slate-900 text-lg font-medium leading-normal">Progress to Level 9</p>
+<p class="text-slate-900 text-lg font-bold">75%</p>
+</div>
+<div class="rounded-full bg-slate-200 border-2 border-slate-900 p-1">
+<div class="h-4 rounded-full bg-pink-500" style="width: 75%;"></div>
+</div>
+</div>
+<!-- Badges Section -->
+<div class="flex flex-col gap-4">
+<!-- SectionHeader -->
+<h2 class="text-slate-900 text-3xl font-bold leading-tight tracking-tight pt-5">Your Latest Badges</h2>
+<!-- Badges List -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+<div class="flex items-center gap-4 p-4 rounded-lg bg-white border-2 border-slate-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+<div class="flex items-center justify-center size-16 rounded-full bg-pink-500 border-2 border-slate-900 flex-shrink-0">
+<span class="material-symbols-outlined text-slate-900" style="font-size: 36px;">code</span>
+</div>
+<div class="flex flex-col">
+<p class="text-slate-900 text-lg font-bold leading-tight">Python Novice</p>
+<p class="text-slate-600 text-sm font-medium">Completed your first script.</p>
+</div>
+</div>
+<div class="flex items-center gap-4 p-4 rounded-lg bg-white border-2 border-slate-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+<div class="flex items-center justify-center size-16 rounded-full bg-pink-500 border-2 border-slate-900 flex-shrink-0">
+<span class="material-symbols-outlined text-slate-900" style="font-size: 36px;">local_fire_department</span>
+</div>
+<div class="flex flex-col">
+<p class="text-slate-900 text-lg font-bold leading-tight">10-Day Streak</p>
+<p class="text-slate-600 text-sm font-medium">Coded for 10 days in a row.</p>
+</div>
+</div>
+<div class="flex items-center gap-4 p-4 rounded-lg bg-white border-2 border-slate-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+<div class="flex items-center justify-center size-16 rounded-full bg-pink-500 border-2 border-slate-900 flex-shrink-0">
+<span class="material-symbols-outlined text-slate-900" style="font-size: 36px;">function</span>
+</div>
+<div class="flex flex-col">
+<p class="text-slate-900 text-lg font-bold leading-tight">First Function</p>
+<p class="text-slate-600 text-sm font-medium">Wrote and called a function.</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+</div>
+</div>
+</body></html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Code Reviewer</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#a1e732",
+                        "background-light": "#f0f0f0",
+                        "background-dark": "#1b2111",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "mono": ["JetBrains Mono", "Fira Code", "monospace"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    boxShadow: {
+                        'hard': '4px 4px 0px 0px rgba(0,0,0,1)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings:
+                'FILL' 0,
+                'wght' 400,
+                'GRAD' 0,
+                'opsz' 24
+        }
+    </style>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark">
+<div class="relative flex min-h-screen w-full flex-col">
+<!-- TopNavBar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-black bg-[#1b2211] px-6 py-3 text-white lg:px-10">
+<div class="flex items-center gap-4">
+<div class="size-6 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M24 4H6V17.3333V30.6667H24V44H42V30.6667V17.3333H24V4Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-[-0.015em] text-white">Stitch</h2>
+</div>
+<div class="hidden items-center gap-9 lg:flex">
+<a class="text-sm font-medium leading-normal text-white" href="#">Dashboard</a>
+<a class="text-sm font-medium leading-normal text-white" href="#">Code Dojo</a>
+<a class="font-bold text-sm leading-normal text-primary" href="#">Submissions</a>
+<a class="text-sm font-medium leading-normal text-white" href="#">Leaderboard</a>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex h-10 min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded border-2 border-black bg-primary px-4 text-sm font-bold leading-normal tracking-[0.015em] text-black shadow-hard">
+<span class="truncate">Logout</span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-black" data-alt="User avatar image" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBbxS2GSuTsZwR_SporB9d2ZI2qLc8exYPfP6KjtLlGru2rV58tEjvilua5dgHud6RsLBB_XIzcMYmE0bGDj0xoU7gXEvf4C9bXkJHFISiZVnv5Sf3qq1rmzsmMvR37juRbpQLf19ITFY5Yt7cWGCpRr8oj6pVdiQ8AlTATDcQBp_-Hh7DoOSMS-Z8OfSb0GjLLODSuQbXZgHZLnmV7o8st0svG3iXusZxzA8fVkv__zhIU3j8VuzaZ0eetVhwqHDIENwjzAum0Xw0");'></div>
+</div>
+</header>
+<main class="flex flex-1 flex-col p-4 md:p-6 lg:p-8">
+<div class="mx-auto w-full max-w-7xl">
+<!-- Breadcrumbs -->
+<div class="flex flex-wrap gap-2 p-4">
+<a class="text-base font-medium leading-normal text-gray-500 dark:text-[#b3c893]" href="#">Stitch</a>
+<span class="text-base font-medium leading-normal text-gray-500 dark:text-[#b3c893]">/</span>
+<a class="text-base font-medium leading-normal text-gray-500 dark:text-[#b3c893]" href="#">Submissions</a>
+<span class="text-base font-medium leading-normal text-gray-500 dark:text-[#b3c893]">/</span>
+<a class="text-base font-medium leading-normal text-gray-500 dark:text-[#b3c893]" href="#">Alex's Submissions</a>
+<span class="text-base font-medium leading-normal text-gray-500 dark:text-[#b3c893]">/</span>
+<span class="text-base font-medium leading-normal text-gray-900 dark:text-white">Quest 1</span>
+</div>
+<!-- PageHeading -->
+<div class="flex flex-wrap items-start justify-between gap-4 p-4">
+<div class="flex flex-col gap-4">
+<div class="flex min-w-72 flex-col gap-2">
+<p class="text-4xl font-black leading-tight tracking-[-0.033em] text-gray-900 dark:text-white">Code Review</p>
+<p class="text-base font-normal leading-normal text-gray-600 dark:text-[#b3c893]">Reviewing submission for 'Python Basics: Quest 1'</p>
+</div>
+<div class="flex flex-wrap gap-3">
+<div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded border-2 border-black bg-lime-400 px-4">
+<p class="text-sm font-bold text-black">Passed</p>
+</div>
+<div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded border-2 border-black bg-cyan-400 px-4">
+<p class="text-sm font-bold text-black">Submitted: Oct 26, 2023</p>
+</div>
+</div>
+</div>
+<button class="flex h-10 min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded border-2 border-black bg-fuchsia-500 px-4 text-sm font-bold leading-normal tracking-[0.015em] text-white shadow-hard">
+<span class="truncate">Back to Submissions</span>
+</button>
+</div>
+<!-- Split Panel Layout -->
+<div class="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-2">
+<!-- Left Panel: Code View -->
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<p class="text-base font-normal leading-normal text-gray-900 dark:text-white px-1">Code Submission (Read-only)</p>
+<button class="flex items-center gap-2 rounded border-2 border-black bg-white px-3 py-1 text-sm font-bold text-black shadow-hard">
+<span class="material-symbols-outlined text-base">content_copy</span>
+                                 Copy
+                             </button>
+</div>
+<div class="h-[600px] overflow-auto rounded-lg border-2 border-black bg-slate-900 p-4 font-mono text-sm text-white">
+<pre><code><span class="text-gray-500">1  </span><span class="text-fuchsia-400">def</span> <span class="text-cyan-400">calculate_sum</span>(a, b):
+<span class="text-gray-500">2  </span>    <span class="text-gray-400">"""This function returns the sum of two numbers."""</span>
+<span class="text-gray-500">3  </span>    <span class="text-fuchsia-400">return</span> a + b
+<span class="text-gray-500">4  </span>
+<span class="text-gray-500">5  </span><span class="text-gray-400"># Test case 1</span>
+<span class="text-gray-500">6  </span>num1 = <span class="text-amber-400">5</span>
+<span class="text-gray-500">7  </span>num2 = <span class="text-amber-400">10</span>
+<span class="text-gray-500">8  </span>result = calculate_sum(num1, num2)
+<span class="text-gray-500">9  </span><span class="text-cyan-400">print</span>(<span class="text-lime-400">f"The sum of </span><span class="text-yellow-300">{</span>num1<span class="text-yellow-300">}</span><span class="text-lime-400"> and </span><span class="text-yellow-300">{</span>num2<span class="text-yellow-300">}</span><span class="text-lime-400"> is </span><span class="text-yellow-300">{</span>result<span class="text-yellow-300">}</span><span class="text-lime-400">."</span>)
+<span class="text-gray-500">10 </span>
+<span class="text-gray-500">11 </span><span class="text-gray-400"># Test case 2: Negative numbers</span>
+<span class="text-gray-500">12 </span>num3 = -<span class="text-amber-400">3</span>
+<span class="text-gray-500">13 </span>num4 = <span class="text-amber-400">8</span>
+<span class="text-gray-500">14 </span>result2 = calculate_sum(num3, num4)
+<span class="text-gray-500">15 </span><span class="text-cyan-400">print</span>(<span class="text-lime-400">f"The sum of </span><span class="text-yellow-300">{</span>num3<span class="text-yellow-300">}</span><span class="text-lime-400"> and </span><span class="text-yellow-300">{</span>num4<span class="text-yellow-300">}</span><span class="text-lime-400"> is </span><span class="text-yellow-300">{</span>result2<span class="text-yellow-300">}</span><span class="text-lime-400">."</span>)
+<span class="text-gray-500">16 </span>
+<span class="text-gray-500">17 </span><span class="text-gray-400"># Test case 3: Zero</span>
+<span class="text-gray-500">18 </span>num5 = <span class="text-amber-400">0</span>
+<span class="text-gray-500">19 </span>num6 = <span class="text-amber-400">0</span>
+<span class="text-gray-500">20 </span>result3 = calculate_sum(num5, num6)
+<span class="text-gray-500">21 </span><span class="text-cyan-400">print</span>(<span class="text-lime-400">f"The sum of </span><span class="text-yellow-300">{</span>num5<span class="text-yellow-300">}</span><span class="text-lime-400"> and </span><span class="text-yellow-300">{</span>num6<span class="text-yellow-300">}</span><span class="text-lime-400"> is </span><span class="text-yellow-300">{</span>result3<span class="text-yellow-300">}</span><span class="text-lime-400">."</span>)
+</code></pre>
+</div>
+</div>
+<!-- Right Panel: Feedback View -->
+<div class="flex flex-col gap-4">
+<p class="text-base font-normal leading-normal text-gray-900 dark:text-white px-1">Automated Feedback</p>
+<div class="flex h-[600px] flex-col gap-6 overflow-y-auto pr-2">
+<!-- Feedback Card 1 -->
+<div class="rounded border-2 border-black bg-white p-4 shadow-hard">
+<div class="flex items-center gap-3 border-b-2 border-black pb-3">
+<span class="material-symbols-outlined text-lime-500">check_circle</span>
+<h3 class="text-lg font-bold text-black">Summary: 4/4 Tests Passed</h3>
+</div>
+<p class="pt-3 text-base text-gray-700">Great job! All automated checks and tests passed successfully.</p>
+</div>
+<!-- Feedback Card 2 -->
+<div class="rounded border-2 border-black bg-white p-4 shadow-hard">
+<div class="flex items-center gap-3 border-b-2 border-black pb-3">
+<span class="material-symbols-outlined text-lime-500">verified</span>
+<h3 class="text-lg font-bold text-black">Syntax Analysis</h3>
+</div>
+<p class="pt-3 text-base text-gray-700">No syntax errors found. Your code is well-formed and valid Python.</p>
+</div>
+<!-- Feedback Card 3 -->
+<div class="rounded border-2 border-black bg-white p-4 shadow-hard">
+<div class="flex items-center gap-3 border-b-2 border-black pb-3">
+<span class="material-symbols-outlined text-lime-500">rule</span>
+<h3 class="text-lg font-bold text-black">Logic Test #1: Positive Integers</h3>
+</div>
+<p class="pt-3 text-base text-gray-700">Passed. Input (5, 10), Expected Output: 15, Actual Output: 15.</p>
+</div>
+<!-- Feedback Card 4 -->
+<div class="rounded border-2 border-black bg-white p-4 shadow-hard">
+<div class="flex items-center gap-3 border-b-2 border-black pb-3">
+<span class="material-symbols-outlined text-yellow-500">science</span>
+<h3 class="text-lg font-bold text-black">Code Style Analysis</h3>
+</div>
+<p class="pt-3 text-base text-gray-700">Suggestion: Variable names like `num1`, `num2` are clear, but consider more descriptive names in more complex functions.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

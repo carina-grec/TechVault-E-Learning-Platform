@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@400,0..1&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-ivory text-onyx font-body antialiased;
+  }
+
+  .dark body {
+    @apply bg-charcoal text-mutedSilver;
+  }
+
+  a {
+    @apply transition-colors;
+  }
+
+  input,
+  textarea,
+  select {
+    @apply bg-transparent;
+  }
+}
+
+@layer components {
+  .material-symbols-outlined {
+    font-family: 'Material Symbols Outlined';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 1.25rem;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .neo-card {
+    @apply rounded-lg border border-onyx/10 bg-white shadow-soft dark:border-mutedSilver/20 dark:bg-charcoal;
+  }
+
+  .neo-brut {
+    @apply rounded-lg border border-onyx bg-ivory shadow-depth dark:border-mutedSilver dark:bg-onyx;
+  }
+
+  .soft-container {
+    @apply max-w-screen-xl w-full mx-auto px-4 sm:px-6 lg:px-10;
+  }
+}

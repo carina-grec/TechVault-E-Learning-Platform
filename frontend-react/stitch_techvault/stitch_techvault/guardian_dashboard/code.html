@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Guardian Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&amp;family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+      .hard-shadow {
+        box-shadow: 4px 4px 0px 0px #000;
+      }
+      .card-hover:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 6px 6px 0px 0px #000;
+        transition: all 0.2s ease-in-out;
+      }
+      .btn-hover:hover {
+        transform: translate(-1px, -1px);
+        box-shadow: 3px 3px 0px 0px #000;
+        transition: all 0.2s ease-in-out;
+      }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#7937eb",
+              "background-light": "#f7f6f8",
+              "background-dark": "#171121",
+            },
+            fontFamily: {
+              "display": ["Space Grotesk", "sans-serif"],
+              "body": ["Inter", "sans-serif"],
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-white">
+<div class="relative flex min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<div class="flex flex-1 justify-center p-4 sm:p-6 md:p-8">
+<div class="layout-content-container flex w-full max-w-6xl flex-col flex-1">
+<header class="flex items-center justify-between whitespace-nowrap border-b-2 border-slate-900 dark:border-slate-200 pb-4 mb-8">
+<div class="flex items-center gap-4">
+<div class="size-8">
+<svg class="text-slate-900 dark:text-slate-200" fill="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5V18h2v-1.5c0-.83.67-1.5 1.5-1.5h1.5v-2h-1.5c-.83 0-1.5-.67-1.5-1.5V10h-2v1.5c0 .83-.67 1.5-1.5 1.5H8v2h1.5c.83 0 1.5.67 1.5 1.5z"></path></svg>
+</div>
+<h2 class="text-slate-900 dark:text-slate-200 text-2xl font-bold tracking-[-0.015em]">Stitch</h2>
+</div>
+<div class="flex items-center gap-4">
+<button class="hidden md:flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-lime-400 text-slate-900 text-sm font-bold border-2 border-slate-900 hard-shadow btn-hover">
+<span class="truncate">Add Child</span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-slate-900 dark:border-slate-200" data-alt="Guardian's profile picture" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDlLG6pN-XppEURiH_Yp5wLZEDtdCBLxOOqEVw409sxfGI7MXb0moq-76JYEkFtoCBB3jz86MF7bfoZZ-JKAvh-IByqykK2BAw5ggLqDYBqKCWT34IZ3riMNvm1P2_fIFmZSnZxR7g32j0LiCKdQyNqtd-qMRD5qo7HOgc00sX5MMHSNOlTHQEp8ftvI2AgKMMEUaDMSrJpFpIIDdXqSxN-7U-P65gF8jBca3VbwhIYsYlIxIYbtuCjTc1G-Pe-4nR8XfUfwvxAoj8");'></div>
+<button class="flex md:hidden max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 bg-white dark:bg-slate-800 text-slate-900 dark:text-white gap-2 text-sm font-bold border-2 border-slate-900 dark:border-slate-200 min-w-0 px-2.5 hard-shadow btn-hover">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</header>
+<main class="flex flex-col gap-8">
+<div class="flex flex-wrap justify-between items-start gap-4">
+<div class="flex flex-col gap-1">
+<h1 class="text-slate-900 dark:text-slate-200 text-4xl md:text-5xl font-bold tracking-tighter">Guardian Dashboard</h1>
+<p class="font-body text-slate-600 dark:text-slate-400 text-base font-normal leading-normal">Welcome, Jessica!</p>
+</div>
+<button class="flex md:hidden w-full sm:w-auto min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-lime-400 text-slate-900 text-sm font-bold border-2 border-slate-900 hard-shadow btn-hover">
+<span class="truncate">Add Child</span>
+</button>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+<div class="flex flex-col gap-4 text-left p-6 bg-white dark:bg-slate-800 border-2 border-slate-900 dark:border-slate-200 rounded-lg hard-shadow card-hover cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-16 h-16 bg-center bg-no-repeat aspect-square bg-cover rounded-full border-2 border-slate-900 dark:border-slate-200" data-alt="Child's avatar, a cartoon rocket" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBUN45FNdl13zi4cQzTRqhPujflXnoi05ZHs3ncECc0u_8BJZPwosRErnNhizgaHbXO3JG1vJfXdZoa857KvbWsY-vYhffto-8nCpsys9arJ21wvRR4XfLHMElRmsUbnKpfM14C7Tzl3eqqeo2ZUFhJKL6UYWbGEKB4G64Yitrwpz1fv2ZV47NvdLRAv26tPaelBv6rizGGnjxNhNNfdIX5Ml_rlqDMRPCCoIfCA4W-STBiB23fNNv9vHC52WIhgIPZkGVbuGCQ7WI");'></div>
+<h3 class="text-slate-900 dark:text-white text-2xl font-bold">Alex</h3>
+</div>
+<div class="font-body text-sm space-y-3">
+<div class="flex flex-col">
+<p class="text-slate-500 dark:text-slate-400">Current Course:</p>
+<p class="text-slate-900 dark:text-white font-medium">Python Basics</p>
+</div>
+<div class="flex flex-col">
+<p class="text-slate-500 dark:text-slate-400">Last Active:</p>
+<p class="text-slate-900 dark:text-white font-medium">2 hours ago</p>
+</div>
+<div class="flex flex-col gap-1.5">
+<p class="text-slate-500 dark:text-slate-400">Progress:</p>
+<div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2.5 border border-slate-900 dark:border-slate-200">
+<div class="bg-blue-500 h-full rounded-full" style="width: 75%"></div>
+</div>
+</div>
+</div>
+<button class="mt-2 w-full flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-slate-900 text-white dark:bg-slate-200 dark:text-slate-900 text-sm font-bold leading-normal tracking-[0.015em] border-2 border-slate-900 dark:border-slate-200">
+<span class="truncate">View Progress</span>
+</button>
+</div>
+<div class="flex flex-col gap-4 text-left p-6 bg-white dark:bg-slate-800 border-2 border-slate-900 dark:border-slate-200 rounded-lg hard-shadow card-hover cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-16 h-16 bg-center bg-no-repeat aspect-square bg-cover rounded-full border-2 border-slate-900 dark:border-slate-200" data-alt="Child's avatar, a cartoon robot" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDzcj_8U0cls_9pffuTPJgu-KzVsEBWe4t_T2WO-T8PqngLUX-3ohhdU1IvzE8YTvI0waj4ryHZpMfnCrlNxSBlZupgbpKmHzjLfDCBvMzyJoNwCDqNmhAnItwGdGWQufr_SSI2JVutPldUZ0Vj5nkDWFYZLoe6EzE1g9_PiQX6Den2_Yu3vottbR8aQrxSio9QP2yCI01UuvtLqk-t3Zhy6ZQo0VgB2EjmiPdXE1W3rFJqUc7KId--PDYHfl2P83jlYB8ETwNGIrU");'></div>
+<h3 class="text-slate-900 dark:text-white text-2xl font-bold">Jamie</h3>
+</div>
+<div class="font-body text-sm space-y-3">
+<div class="flex flex-col">
+<p class="text-slate-500 dark:text-slate-400">Current Course:</p>
+<p class="text-slate-900 dark:text-white font-medium">Intro to JavaScript</p>
+</div>
+<div class="flex flex-col">
+<p class="text-slate-500 dark:text-slate-400">Last Active:</p>
+<p class="text-slate-900 dark:text-white font-medium">1 day ago</p>
+</div>
+<div class="flex flex-col gap-1.5">
+<p class="text-slate-500 dark:text-slate-400">Progress:</p>
+<div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2.5 border border-slate-900 dark:border-slate-200">
+<div class="bg-pink-500 h-full rounded-full" style="width: 40%"></div>
+</div>
+</div>
+</div>
+<button class="mt-2 w-full flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-slate-900 text-white dark:bg-slate-200 dark:text-slate-900 text-sm font-bold leading-normal tracking-[0.015em] border-2 border-slate-900 dark:border-slate-200">
+<span class="truncate">View Progress</span>
+</button>
+</div>
+<div class="flex flex-col gap-4 text-left p-6 bg-white dark:bg-slate-800 border-2 border-slate-900 dark:border-slate-200 rounded-lg hard-shadow card-hover cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-16 h-16 bg-center bg-no-repeat aspect-square bg-cover rounded-full border-2 border-slate-900 dark:border-slate-200" data-alt="Child's avatar, a cartoon game controller" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAtjl_RCfRGznXSAZ2BtzP0PATzrQvo-T6F64XkuRLiJlw0w74LOXGK4Fx9PX1VpZnqUBkgTls_VVCGgMEF1bu2CbBBJBen6fhUub4wFy0AUlf7Fntpp-tVBgP4qLaVCc4MBNIjhgUTbbBLNVlDDso04FS25xOvXmYvMJ-JnTSwUtMiqTKI6PWsGUndTeuM7ajR5Jo8VNs6Z6XmmBTwGcqd2VdNmVYHYq4t5VhjU5ODVr94ZsKkLEQ_DmylR0UniZRidEZh0Lkw-Ug");'></div>
+<h3 class="text-slate-900 dark:text-white text-2xl font-bold">Sam</h3>
+</div>
+<div class="font-body text-sm space-y-3">
+<div class="flex flex-col">
+<p class="text-slate-500 dark:text-slate-400">Current Course:</p>
+<p class="text-slate-900 dark:text-white font-medium">HTML &amp; CSS Fun</p>
+</div>
+<div class="flex flex-col">
+<p class="text-slate-500 dark:text-slate-400">Last Active:</p>
+<p class="text-slate-900 dark:text-white font-medium">5 hours ago</p>
+</div>
+<div class="flex flex-col gap-1.5">
+<p class="text-slate-500 dark:text-slate-400">Progress:</p>
+<div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2.5 border border-slate-900 dark:border-slate-200">
+<div class="bg-yellow-400 h-full rounded-full" style="width: 90%"></div>
+</div>
+</div>
+</div>
+<button class="mt-2 w-full flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-slate-900 text-white dark:bg-slate-200 dark:text-slate-900 text-sm font-bold leading-normal tracking-[0.015em] border-2 border-slate-900 dark:border-slate-200">
+<span class="truncate">View Progress</span>
+</button>
+</div>
+</div>
+<!-- This is an example of the empty state, you can uncomment it to see it -->
+<!--
+                    <div class="flex flex-col p-4 mt-8">
+                        <div class="flex flex-col items-center gap-6 rounded-lg border-2 border-dashed border-slate-400 px-6 py-14">
+                            <div class="flex max-w-[480px] flex-col items-center gap-2">
+                                <p class="text-slate-900 dark:text-white text-lg font-bold tracking-[-0.015em] max-w-[480px] text-center">No profiles linked yet.</p>
+                                <p class="text-slate-600 dark:text-slate-400 font-body text-sm font-normal leading-normal max-w-[480px] text-center">
+                                    Get started by adding your first child's profile to track their progress.
+                                </p>
+                            </div>
+                            <button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-lime-400 text-slate-900 text-sm font-bold border-2 border-slate-900 hard-shadow btn-hover">
+                                <span class="truncate">Add Your First Child</span>
+                            </button>
+                        </div>
+                    </div>
+                    -->
+</main>
+</div>
+</div>
+</div>
+</div>
+</body></html>

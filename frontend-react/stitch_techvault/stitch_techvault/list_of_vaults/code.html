@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Stitch - List of Vaults</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#7937eb",
+                        "background-light": "#f7f6f8",
+                        "background-dark": "#171121",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-background-light dark:bg-background-dark group/design-root overflow-x-hidden">
+<div class="flex h-full min-h-screen">
+<!-- SideNavBar -->
+<aside class="flex w-64 flex-col gap-8 border-r-2 border-slate-900 bg-background-light dark:bg-background-dark p-6">
+<div class="flex items-center gap-3">
+<div class="flex size-10 items-center justify-center rounded-lg border-2 border-slate-900 bg-[#f5d13d] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+<span class="material-symbols-outlined text-slate-900">bolt</span>
+</div>
+<h1 class="text-2xl font-bold text-slate-900 dark:text-white">Stitch</h1>
+</div>
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-3">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-12 border-2 border-slate-900" data-alt="Abstract gradient avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCHn9qwyOQ0xNzV6uudX3NJzq6ZEOPsVWv-OfEGgXPbr8c1staH3mAwU379pIFCsrrPLCGqIegWaCENgtJ5HUmZ9A_nnAojUH-XH459W0CPH6nfkciSi6Ddo73R3VCt-lLmTsoceeT1Jv1syHTBnDj0VuNB0JCED-43ldoBaVoSQs-XzWgREkWkwe4b-oB66D_6lDrINDTY3KF-jdla1jseXCl6gevChcgaiimOJ9CRQWibm87UuzuW-xjQjTtWpdTn3ripxE1qeNI');"></div>
+<div class="flex flex-col">
+<h2 class="text-slate-900 dark:text-white text-base font-bold leading-normal">Alex Doe</h2>
+<p class="text-slate-600 dark:text-slate-400 text-sm font-normal leading-normal">Level 5 Coder</p>
+</div>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-900 dark:text-white" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<p class="text-sm font-medium leading-normal">Dashboard</p>
+</a>
+<a class="flex items-center gap-3 rounded-lg border-2 border-slate-900 bg-primary/20 px-3 py-2 text-slate-900 dark:text-white" href="#">
+<span class="material-symbols-outlined">lock</span>
+<p class="text-sm font-bold leading-normal">Vaults</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-900 dark:text-white" href="#">
+<span class="material-symbols-outlined">group</span>
+<p class="text-sm font-medium leading-normal">Community</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-900 dark:text-white" href="#">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-sm font-medium leading-normal">Settings</p>
+</a>
+</nav>
+</div>
+<div class="mt-auto">
+<button class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg border-2 border-slate-900 bg-primary text-white h-10 px-4 text-sm font-bold leading-normal tracking-[0.015em] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none">
+<span class="truncate">New Project</span>
+</button>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex flex-1 flex-col p-8 lg:p-12">
+<div class="flex w-full flex-col">
+<!-- PageHeading -->
+<div class="flex flex-wrap items-center justify-between gap-4 pb-8">
+<div class="flex flex-col gap-2">
+<p class="text-slate-900 dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]">Vaults</p>
+<p class="text-slate-600 dark:text-slate-400 text-base font-normal leading-normal">Select a vault to start or continue your learning journey.</p>
+</div>
+</div>
+<!-- SearchBar -->
+<div class="pb-8">
+<label class="flex h-12 w-full max-w-lg flex-col">
+<div class="flex w-full flex-1 items-stretch rounded-lg border-2 border-slate-900 bg-white dark:bg-slate-800 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+<div class="text-slate-600 dark:text-slate-400 flex items-center justify-center pl-4">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-0 border-none bg-transparent placeholder:text-slate-500 dark:placeholder:text-slate-400 h-full px-2 text-base font-normal leading-normal" placeholder="Search vaults by name or topic..." value=""/>
+</div>
+</label>
+</div>
+<!-- ImageGrid adapted to Neo-Brutalism -->
+<div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+<div class="flex flex-col gap-4 rounded-lg border-2 border-slate-900 bg-white dark:bg-slate-800 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+<div class="relative">
+<div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-lg border-2 border-slate-900" data-alt="Geometric pattern in yellow and purple" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC0ZK59K9qt37b9lweTA6mSNftGA5SDUoDKUShwzUKxBD14vQvH8fORL7rGjH0-N_m9E3TfHRQGt05fN9rNSqIXecNW7T8v8-8XdaU1ubPGwquid_yBiz0-Y4N-BVv2avYE1JI6l8PPPaSpZVziNYNezE81kTsVjnZJj8EvmVyAp6jDTBpzY1G0sPkMK7FEpbyMc8xJ85mJyn8zPAuQVqL15LBvZFoQaiDUVOb6eoR6RVo-lz0rlorg8Lx0U4jf5I2aIyP8vaC4Rs4');"></div>
+<div class="absolute top-2 right-2 rounded border-2 border-slate-900 bg-[#3df5a7] px-2 py-0.5 text-xs font-bold text-slate-900">New!</div>
+</div>
+<div class="flex flex-grow flex-col gap-4">
+<div class="flex flex-col">
+<p class="text-slate-900 dark:text-white text-lg font-bold leading-normal">JavaScript Fundamentals</p>
+<p class="text-slate-600 dark:text-slate-400 text-sm font-normal leading-normal">Master the core concepts of JavaScript.</p>
+</div>
+<button class="mt-auto flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg border-2 border-slate-900 bg-primary text-white h-10 px-4 text-sm font-bold leading-normal tracking-[0.015em] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none">Start</button>
+</div>
+</div>
+<div class="flex flex-col gap-4 rounded-lg border-2 border-slate-900 bg-white dark:bg-slate-800 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+<div class="relative">
+<div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-lg border-2 border-slate-900" data-alt="Abstract grid pattern" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCuD6EFigLzS9ws8r8ANVayzrFbFDG16kf4tdKnVKWxNdlDQCO-s0-PC3AbrYfAj8hYUCgzSvCD04wrM6buYSVGpQ3ae5ljp8BJx3oBxmtfCMd5KZmZlfNzkmVqiimcdEwo6vDE5affXCHOOvxoBqOZTbpQrqKWBtRav8vg0LDh0Y_o24heTcPoUnO9UrdeCQcuJ2X2mu8pt9Pie88XvZi79VDE3PJlB0lU9SHVaRlAlUNm2GmDdHFgV6DomX21zRxQx5fl6hDIYzk');"></div>
+<div class="absolute top-2 right-2 rounded border-2 border-slate-900 bg-[#f5d13d] px-2 py-0.5 text-xs font-bold text-slate-900">In Progress</div>
+</div>
+<div class="flex flex-grow flex-col gap-4">
+<div class="flex flex-col">
+<p class="text-slate-900 dark:text-white text-lg font-bold leading-normal">Advanced CSS Grid</p>
+<p class="text-slate-600 dark:text-slate-400 text-sm font-normal leading-normal">Build complex, responsive layouts with ease.</p>
+</div>
+<button class="mt-auto flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg border-2 border-slate-900 bg-primary text-white h-10 px-4 text-sm font-bold leading-normal tracking-[0.015em] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none">Continue</button>
+</div>
+</div>
+<div class="flex flex-col gap-4 rounded-lg border-2 border-slate-900 bg-white dark:bg-slate-800 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+<div class="relative">
+<div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-lg border-2 border-slate-900" data-alt="React logo abstract background" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBJy9uk1Br8T-8xWL1We_midGTwBdQebig_B3AMNS4aJQuh8s7nLikn7Uej6nFCrACrPSZBAqEreXF5zwl2NLyvd7aH3KDgZyhcsv3ps2f9l4tWcVGtrkW7QHtJOR5RS0UgvLe8pZLyrLMCIjSWpPV94wzn7FvLGEBFiFQQsLcetXjep0_qQvAmXAaPmaGLTKcYN9w_1gzO1FTz8kf417Xj-OlIoVvacOvWVuAe0kmcNCL20FHmWfZDogzfBhaYTma9FZxDyjW0OJQ');"></div>
+<div class="absolute top-2 right-2 rounded border-2 border-slate-900 bg-white px-2 py-0.5 text-xs font-bold text-slate-900">Unlocked</div>
+</div>
+<div class="flex flex-grow flex-col gap-4">
+<div class="flex flex-col">
+<p class="text-slate-900 dark:text-white text-lg font-bold leading-normal">React State Management</p>
+<p class="text-slate-600 dark:text-slate-400 text-sm font-normal leading-normal">Learn Hooks, Context, and Redux.</p>
+</div>
+<button class="mt-auto flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg border-2 border-slate-900 bg-primary text-white h-10 px-4 text-sm font-bold leading-normal tracking-[0.015em] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none">Open Vault</button>
+</div>
+</div>
+<div class="flex flex-col gap-4 rounded-lg border-2 border-slate-900 bg-white dark:bg-slate-800 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+<div class="relative">
+<div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-lg border-2 border-slate-900" data-alt="Python logo abstract background" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAVSYWUzeGdUKVI1_40AI3TZDLyzTPGHEEAEGLiCbYMoTkBON0PoiNZVzEnNFz2klRQsNDMAhOE9umTfrTh3YN_GFkqyn3PCSZ8tcwiyRK9Xofw7SrBEzKQ6Q332Y8CxEkCWkDhpjScVFGleBiiGwtnFd_ylYCg1SoV3h3Qo9EBP5cCny_OWulgRkjOoaIku7LQD33GL0Fv7uM1ccnKScNBNcRzW-X_ifJcYT9H-LIK_Vfr8rs--ju7x58C5qYM-o11kP2PYJEDyoQ');"></div>
+<div class="absolute top-2 right-2 rounded border-2 border-slate-900 bg-white px-2 py-0.5 text-xs font-bold text-slate-900">Unlocked</div>
+</div>
+<div class="flex flex-grow flex-col gap-4">
+<div class="flex flex-col">
+<p class="text-slate-900 dark:text-white text-lg font-bold leading-normal">Python for Data Science</p>
+<p class="text-slate-600 dark:text-slate-400 text-sm font-normal leading-normal">Unlock the power of data with Python.</p>
+</div>
+<button class="mt-auto flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg border-2 border-slate-900 bg-primary text-white h-10 px-4 text-sm font-bold leading-normal tracking-[0.015em] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none">Open Vault</button>
+</div>
+</div>
+<div class="flex flex-col gap-4 rounded-lg border-2 border-slate-900 bg-white dark:bg-slate-800 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+<div class="relative">
+<div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-lg border-2 border-slate-900" data-alt="Accessibility icon on colorful background" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDgvm6K9Cx9cpOtpusIX_8M-jYnMvbbWJPv4rTgj-GwM9WxsQlBDW3Qt7L8mlWRIxj712H5X3q2Y8NcbksiZRhEr1EdqdAuScEP22u10LnoBWVw9TSSvTxkYoidfYk-u0taKUYvMoxLr8p9Jd6Lh8xcEThDZpDHzhPluG4FvHdwDo9bAVF9-V9wY3LKuEVnZEDhaR021vVg2NQXeGimJd9EBVoTB-4HRaoekOVc2FTleF-CM4rLj3kqDLBr_Uhb73EVLwx4HNlCLac');"></div>
+<div class="absolute top-2 right-2 rounded border-2 border-slate-900 bg-[#3df5a7] px-2 py-0.5 text-xs font-bold text-slate-900">New!</div>
+</div>
+<div class="flex flex-grow flex-col gap-4">
+<div class="flex flex-col">
+<p class="text-slate-900 dark:text-white text-lg font-bold leading-normal">Web Accessibility Basics</p>
+<p class="text-slate-600 dark:text-slate-400 text-sm font-normal leading-normal">Create inclusive web experiences for everyone.</p>
+</div>
+<button class="mt-auto flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg border-2 border-slate-900 bg-primary text-white h-10 px-4 text-sm font-bold leading-normal tracking-[0.015em] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none">Start</button>
+</div>
+</div>
+<div class="flex flex-col gap-4 rounded-lg border-2 border-slate-900 bg-white dark:bg-slate-800 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+<div class="relative">
+<div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-lg border-2 border-slate-900" data-alt="Node.js logo on dark background" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBwf663AOG71KVJh_rH0HhfITdRNPbldWfTqYOwlAD6HIws4VW-XgkWi2SRNcTCdxNX8174e_Hyi4VWseoLCAugitHD8ZxZvtBY4z8wLCZgMiXSj_u4LL2bsSh5ALc8JDTVfviNYV1fjKmMvsQJkZacBs3ltALUoPBsZlvNCvwybjxwz_HpOZuX-qEd1T4JXUMo7-XolluuJsdvqmupSRtAqXtk3GmaFBG9va1x6x7SD8gv0YVwCX7IAeQ8DwHDcaa8UXyyk1VKSBY');"></div>
+<div class="absolute top-2 right-2 rounded border-2 border-slate-900 bg-slate-400 px-2 py-0.5 text-xs font-bold text-slate-900">Locked</div>
+</div>
+<div class="flex flex-grow flex-col gap-4">
+<div class="flex flex-col">
+<p class="text-slate-900 dark:text-white text-lg font-bold leading-normal">API Design in Node.js</p>
+<p class="text-slate-600 dark:text-slate-400 text-sm font-normal leading-normal">Design and build robust APIs.</p>
+</div>
+<button class="mt-auto flex w-full cursor-not-allowed items-center justify-center overflow-hidden rounded-lg border-2 border-slate-900 bg-slate-300 dark:bg-slate-700 text-slate-500 dark:text-slate-400 h-10 px-4 text-sm font-bold leading-normal tracking-[0.015em]">Unlock</button>
+</div>
+</div>
+</div>
+<!-- Pagination -->
+<div class="flex items-center justify-center pt-12">
+<a class="flex size-10 items-center justify-center rounded-lg border-2 border-slate-900 bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]" href="#">
+<span class="material-symbols-outlined text-lg">chevron_left</span>
+</a>
+<a class="text-sm font-bold leading-normal tracking-[0.015em] flex size-10 items-center justify-center text-white dark:text-slate-900 rounded-lg bg-slate-900 dark:bg-white mx-2" href="#">1</a>
+<a class="text-sm font-normal leading-normal flex size-10 items-center justify-center text-slate-900 dark:text-white rounded-lg" href="#">2</a>
+<a class="text-sm font-normal leading-normal flex size-10 items-center justify-center text-slate-900 dark:text-white rounded-lg" href="#">3</a>
+<span class="text-sm font-normal leading-normal flex size-10 items-center justify-center text-slate-900 dark:text-white rounded-lg">...</span>
+<a class="text-sm font-normal leading-normal flex size-10 items-center justify-center text-slate-900 dark:text-white rounded-lg" href="#">8</a>
+<a class="flex size-10 items-center justify-center rounded-lg border-2 border-slate-900 bg-white dark:bg-slate-800 text-slate-900 dark:text-white ml-2 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]" href="#">
+<span class="material-symbols-outlined text-lg">chevron_right</span>
+</a>
+</div>
+</div>
+</main>
+</div>
+</div>
+</body></html>

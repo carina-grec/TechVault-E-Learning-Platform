@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ro.techvault.progress_service.config.MessagingConfig;
+import ro.techvault.progress_service.clients.ContentClient;
 import ro.techvault.progress_service.dtos.SubmissionGradingJob;
 import ro.techvault.progress_service.dtos.SubmissionRequest;
 import ro.techvault.progress_service.dtos.SubmissionResponse;
@@ -28,6 +29,9 @@ public class SubmissionServiceImpl implements SubmissionService {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
+    @Autowired
+    private ContentClient contentClient;
+
     @Override
     public SubmissionResponse createSubmission(SubmissionRequest request, UUID learnerId) {
         Submission submission = new Submission();
@@ -37,8 +41,10 @@ public class SubmissionServiceImpl implements SubmissionService {
         submission.setStatus(SubmissionStatus.PENDING);
 
         Submission savedSubmission = submissionRepository.save(submission);
-        List<TestCasePayload> testCases =
-                request.testCases() == null ? List.of() : request.testCases();
+        List<TestCasePayload> testCases = contentClient.fetchTestCases(request.questId());
+        if ((testCases == null || testCases.isEmpty()) && request.testCases() != null) {
+            testCases = request.testCases();
+        }
 
         SubmissionGradingJob job = new SubmissionGradingJob(
                 savedSubmission.getId(),

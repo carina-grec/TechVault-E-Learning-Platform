@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin Content CMS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .hard-shadow {
+            box-shadow: 4px 4px 0px #000;
+        }
+        .hard-shadow-hover:hover {
+            box-shadow: 6px 6px 0px #000;
+        }
+        .hard-shadow-sm {
+            box-shadow: 2px 2px 0px #000;
+        }
+    </style>
+<script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              display: ['Space Grotesk', 'sans-serif'],
+            },
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-[#F8F8F8] font-display text-slate-900">
+<div class="flex min-h-screen">
+<!-- SideNavBar -->
+<aside class="w-64 flex-shrink-0 bg-white border-r-2 border-black p-4">
+<div class="flex flex-col h-full">
+<div class="flex items-center gap-3 mb-8">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-md size-10 border-2 border-black" data-alt="Stitch Platform Logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAmnmWcODYBIK7D5cop3SjSkPFsPw6Ccjwk_Zz9PKsYUbqmTyo3ndAnnMP5keZGMDMsqS0UpwXs6kaaa7LpN2Q74H9_VURAPjJ1A6Z87pN17yAMhuM256xseByLaeRtudXboxTq3Vq_5AHBnKc061izEWgB_PfNY0PKp906zrim7eXzy00rxuozXpa8nYG8GaBG924M7fIdiW-BIClFhDuFJNHMitMGRLXPvF8-sOF_LyY4gZx3I2jXHBDHl80J-piETCt6nG5q8ks");'></div>
+<div class="flex flex-col">
+<h1 class="text-slate-900 text-base font-bold leading-normal">Admin</h1>
+<p class="text-slate-600 text-sm font-medium leading-normal">Stitch Platform</p>
+</div>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-slate-100" href="#">
+<span class="material-symbols-outlined text-slate-900" style="font-size: 24px;">dashboard</span>
+<p class="text-slate-900 text-sm font-bold leading-normal">Dashboard</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-md bg-magenta-300 border-2 border-black hard-shadow-sm" href="#">
+<span class="material-symbols-outlined text-slate-900" style="font-size: 24px;">database</span>
+<p class="text-slate-900 text-sm font-bold leading-normal">Content</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-slate-100" href="#">
+<span class="material-symbols-outlined text-slate-900" style="font-size: 24px;">group</span>
+<p class="text-slate-900 text-sm font-bold leading-normal">Users</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-slate-100" href="#">
+<span class="material-symbols-outlined text-slate-900" style="font-size: 24px;">toggle_on</span>
+<p class="text-slate-900 text-sm font-bold leading-normal">Settings</p>
+</a>
+</nav>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 p-8">
+<div class="max-w-7xl mx-auto">
+<!-- PageHeading -->
+<header class="flex flex-wrap justify-between items-center gap-4 mb-6">
+<h1 class="text-slate-900 text-4xl font-bold leading-tight tracking-tighter">Content Management</h1>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-md h-12 px-6 bg-[#FF37A6] text-white text-sm font-bold leading-normal tracking-wide border-2 border-black hard-shadow-hover transition-transform transform-gpu hover:-translate-y-0.5 hover:-translate-x-0.5">
+<span class="truncate">Create New</span>
+</button>
+</header>
+<div class="bg-white border-2 border-black rounded-md hard-shadow">
+<!-- Tabs -->
+<div class="border-b-2 border-black">
+<div class="flex px-4 gap-4">
+<a class="flex flex-col items-center justify-center border-b-[4px] border-b-black text-slate-900 pb-3 pt-4" href="#">
+<p class="text-slate-900 text-sm font-bold leading-normal">All Vaults (12)</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[4px] border-b-transparent text-slate-500 pb-3 pt-4 hover:text-slate-900 hover:border-b-slate-400" href="#">
+<p class="font-bold leading-normal text-sm">Quests (45)</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[4px] border-b-transparent text-slate-500 pb-3 pt-4 hover:text-slate-900 hover:border-b-slate-400" href="#">
+<p class="font-bold leading-normal text-sm">Lessons (123)</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[4px] border-b-transparent text-slate-500 pb-3 pt-4 hover:text-slate-900 hover:border-b-slate-400" href="#">
+<p class="font-bold leading-normal text-sm">Quizzes (88)</p>
+</a>
+</div>
+</div>
+<!-- SearchBar -->
+<div class="p-4 border-b-2 border-black">
+<div class="flex items-center border-2 border-black rounded-md bg-white hard-shadow-sm">
+<div class="text-slate-500 flex items-center justify-center pl-3">
+<span class="material-symbols-outlined" style="font-size: 24px;">search</span>
+</div>
+<input class="form-input w-full flex-1 resize-none overflow-hidden rounded-md text-slate-900 focus:outline-none focus:ring-0 border-none bg-transparent h-10 placeholder:text-slate-500 px-2 text-base font-medium" placeholder="Search content..." value=""/>
+</div>
+</div>
+<!-- Table -->
+<div class="p-4 @container">
+<div class="overflow-x-auto">
+<table class="w-full border-collapse">
+<thead class="border-b-2 border-black">
+<tr>
+<th class="px-4 py-3 text-left text-slate-900 w-[25%] text-sm font-bold uppercase tracking-wider">Vault Title</th>
+<th class="px-4 py-3 text-left text-slate-900 w-[25%] text-sm font-bold uppercase tracking-wider">Associated Quest</th>
+<th class="px-4 py-3 text-left text-slate-900 w-[15%] text-sm font-bold uppercase tracking-wider">Status</th>
+<th class="px-4 py-3 text-left text-slate-900 w-[20%] text-sm font-bold uppercase tracking-wider">Last Modified</th>
+<th class="px-4 py-3 text-left text-slate-900 w-[15%] text-sm font-bold uppercase tracking-wider">Actions</th>
+</tr>
+</thead>
+<tbody>
+<tr class="bg-white border-b-2 border-black last:border-b-0 hover:bg-slate-50 transition-colors">
+<td class="h-[72px] px-4 py-2 text-slate-900 text-sm font-medium">Introduction to Python</td>
+<td class="h-[72px] px-4 py-2 text-slate-600 text-sm font-medium">Python Basics</td>
+<td class="h-[72px] px-4 py-2">
+<span class="inline-flex items-center justify-center rounded-md px-3 py-1 bg-green-200 text-green-900 text-xs font-bold border-2 border-black">Published</span>
+</td>
+<td class="h-[72px] px-4 py-2 text-slate-600 text-sm font-medium">2023-10-26</td>
+<td class="h-[72px] px-4 py-2">
+<button class="text-slate-900 text-sm font-bold hover:text-[#00B8A9] transition-colors">Edit</button>
+</td>
+</tr>
+<tr class="bg-white border-b-2 border-black last:border-b-0 hover:bg-slate-50 transition-colors">
+<td class="h-[72px] px-4 py-2 text-slate-900 text-sm font-medium">Advanced Data Structures</td>
+<td class="h-[72px] px-4 py-2 text-slate-600 text-sm font-medium">Algorithm Deep Dive</td>
+<td class="h-[72px] px-4 py-2">
+<span class="inline-flex items-center justify-center rounded-md px-3 py-1 bg-green-200 text-green-900 text-xs font-bold border-2 border-black">Published</span>
+</td>
+<td class="h-[72px] px-4 py-2 text-slate-600 text-sm font-medium">2023-10-25</td>
+<td class="h-[72px] px-4 py-2">
+<button class="text-slate-900 text-sm font-bold hover:text-[#00B8A9] transition-colors">Edit</button>
+</td>
+</tr>
+<tr class="bg-white border-b-2 border-black last:border-b-0 hover:bg-slate-50 transition-colors">
+<td class="h-[72px] px-4 py-2 text-slate-900 text-sm font-medium">JavaScript Fundamentals</td>
+<td class="h-[72px] px-4 py-2 text-slate-600 text-sm font-medium">Web Development 101</td>
+<td class="h-[72px] px-4 py-2">
+<span class="inline-flex items-center justify-center rounded-md px-3 py-1 bg-yellow-200 text-yellow-900 text-xs font-bold border-2 border-black">Draft</span>
+</td>
+<td class="h-[72px] px-4 py-2 text-slate-600 text-sm font-medium">2023-10-24</td>
+<td class="h-[72px] px-4 py-2">
+<button class="text-slate-900 text-sm font-bold hover:text-[#00B8A9] transition-colors">Edit</button>
+</td>
+</tr>
+<tr class="bg-white hover:bg-slate-50 transition-colors">
+<td class="h-[72px] px-4 py-2 text-slate-900 text-sm font-medium">Cybersecurity Essentials</td>
+<td class="h-[72px] px-4 py-2 text-slate-600 text-sm font-medium">Security Principles</td>
+<td class="h-[72px] px-4 py-2">
+<span class="inline-flex items-center justify-center rounded-md px-3 py-1 bg-slate-200 text-slate-700 text-xs font-bold border-2 border-black">Archived</span>
+</td>
+<td class="h-[72px] px-4 py-2 text-slate-600 text-sm font-medium">2023-09-15</td>
+<td class="h-[72px] px-4 py-2">
+<button class="text-slate-900 text-sm font-bold hover:text-[#00B8A9] transition-colors">Edit</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

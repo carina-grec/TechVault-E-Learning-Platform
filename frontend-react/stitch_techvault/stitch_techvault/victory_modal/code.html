@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Victory Modal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#92e736",
+                        "background-light": "#f7f8f6",
+                        "background-dark": "#192111",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .hard-shadow {
+            box-shadow: 4px 4px 0px 0px #000;
+        }
+        .hard-shadow-sm {
+            box-shadow: 2px 2px 0px 0px #000;
+        }
+        .hard-shadow-hover:hover {
+            box-shadow: 2px 2px 0px 0px #000;
+            transform: translate(2px, 2px);
+        }
+    </style>
+</head>
+<body class="font-display">
+<div 0="" 2000="" 32="" 32\"="" class="relative flex min-h-screen w-full flex-col items-center justify-center bg-background-light dark:bg-background-dark p-4 sm:p-6" fill='\"none\"' height='\"32\"' http:="" style="background-image: url('data:image/svg+xml;charset=utf-8,&lt;svg xmlns=\" svg\"="" viewbox='\"0' width='\"32\"' www.w3.org=""><path 0v16\"="" 16h16m16="" d='\"M0' stroke='\"%23e5e7eb\"/'>');"&gt;
+
+        <div class="relative w-full max-w-lg border-2 border-black bg-background-light dark:bg-background-dark p-2 hard-shadow rounded-lg">
+<div class="absolute top-2 right-2">
+<button class="flex h-8 w-8 cursor-pointer items-center justify-center overflow-hidden border-2 border-black bg-background-light dark:bg-background-dark text-black dark:text-white rounded hard-shadow-sm transition-transform hover:-translate-y-px hover:translate-x-px">
+<span class="material-symbols-outlined text-xl font-bold">close</span>
+</button>
+</div>
+<div class="flex h-full w-full flex-col items-center border-2 border-black bg-[#F8F8F8] dark:bg-gray-900 rounded-md p-6 sm:p-8">
+<div class="mb-4 flex h-20 w-20 items-center justify-center rounded-full border-2 border-black bg-lime-400 hard-shadow-sm">
+<span class="material-symbols-outlined text-6xl text-black">done</span>
+</div>
+<h1 class="text-black dark:text-white text-[32px] font-bold uppercase tracking-wide">VAULT COMPLETE!</h1>
+<p class="mt-1 text-center text-base font-normal text-black dark:text-gray-300">You mastered Python conditionals. Way to go!</p>
+<div class="mt-8 flex w-full flex-col gap-4 sm:flex-row">
+<div class="flex flex-1 flex-col gap-2 rounded border-2 border-black bg-pink-500 p-4 hard-shadow-sm">
+<p class="text-sm font-bold uppercase text-black">XP Gained</p>
+<p class="text-3xl font-bold tracking-tight text-black">+250</p>
+</div>
+<div class="flex flex-1 flex-col gap-2 rounded border-2 border-black bg-pink-500 p-4 hard-shadow-sm">
+<p class="text-sm font-bold uppercase text-black">New Badge</p>
+<p class="truncate text-3xl font-bold tracking-tight text-black">Logic Lord</p>
+</div>
+</div>
+<div class="mt-8 flex w-full max-w-sm flex-col items-stretch gap-3">
+<button class="flex h-12 w-full cursor-pointer items-center justify-center overflow-hidden rounded border-2 border-black bg-lime-400 px-5 text-base font-bold uppercase text-black tracking-widest transition-all hard-shadow hard-shadow-hover">
+<span class="truncate">Next Vault</span>
+</button>
+<button class="flex h-12 w-full cursor-pointer items-center justify-center overflow-hidden rounded border-2 border-black bg-background-light dark:bg-gray-700 px-5 text-base font-bold uppercase text-black dark:text-white tracking-widest transition-all hard-shadow hard-shadow-hover">
+<span class="truncate">View Badges</span>
+</button>
+</div>
+</div>
+</div>
+</path></div>
+</body></html>

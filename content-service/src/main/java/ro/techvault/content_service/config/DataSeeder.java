@@ -9,10 +9,12 @@ import ro.techvault.content_service.enums.ContentStatus;
 import ro.techvault.content_service.enums.GradingStrategyType;
 import ro.techvault.content_service.enums.QuestType;
 import ro.techvault.content_service.models.CodeChallenge;
+import ro.techvault.content_service.models.TestCase;
 import ro.techvault.content_service.models.Vault;
 import ro.techvault.content_service.repositories.QuestRepository;
 import ro.techvault.content_service.repositories.VaultRepository;
 
+import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -70,6 +72,22 @@ public class DataSeeder implements CommandLineRunner {
         challenge.setStarterCode("function sortOrbs(orbs) {\n  return [...orbs].sort();\n}");
         challenge.setHints("Remember to avoid mutating the original array.");
         challenge.setGradingStrategy(GradingStrategyType.UNIT_TEST);
+
+        TestCase visible = new TestCase();
+        visible.setDescription("Sorts three numbers");
+        visible.setInput("[3,1,2]");
+        visible.setExpectedOutput("[1,2,3]");
+        visible.setHidden(false);
+        visible.setCodeChallenge(challenge);
+
+        TestCase hidden = new TestCase();
+        hidden.setDescription("Handles duplicates");
+        hidden.setInput("[5,5,2,1]");
+        hidden.setExpectedOutput("[1,2,5,5]");
+        hidden.setHidden(true);
+        hidden.setCodeChallenge(challenge);
+
+        challenge.setTestCases(List.of(visible, hidden));
         questRepository.save(challenge);
 
         log.info("Seeded {} vault(s) and {} quest(s).", vaultRepository.count(), questRepository.count());

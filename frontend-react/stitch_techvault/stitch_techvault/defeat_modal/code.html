@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Defeat Modal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#7639ef",
+              "background-light": "#f6f6f8",
+              "background-dark": "#161022",
+              "slate": {
+                500: "#64748B",
+                900: "#0F172A"
+              },
+              "violet": {
+                600: "#7C3AED"
+              },
+              "pink": {
+                500: "#EC4899"
+              }
+            },
+            fontFamily: {
+              "display": ["Lexend", "sans-serif"]
+            },
+            borderRadius: {
+              "DEFAULT": "0.125rem",
+              "lg": "0.25rem",
+              "xl": "0.5rem",
+              "full": "0.75rem"
+            },
+            boxShadow: {
+              'hard': '8px 8px 0 #0F172A',
+              'hard-sm': '4px 4px 0 #0F172A',
+            },
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+    </style>
+</head>
+<body class="font-display">
+<div class="relative flex h-screen w-full flex-col items-center justify-center bg-background-light dark:bg-background-dark p-6" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA2RDSS-EvIFfWp_wvBhLAzMWF0qTbcQRZlvuALvmI7CGceqrSZknbG5zVDPRt6Mgfrx0EP68Q1X_HUp-zWhK5tYmLDxPTCnObRKBUtkqFYOxy131c7LVMWM2n4Xs3cCiUeRJq0k4o3pjpZ8WYzGnYkGJMmQ9bXmcxImsVx277Sa9dT6WpLOMFYNO94emVZtME7W9GSetXhJa7AWzocH1Uy0VlTxsOmQeLWvdKLQJTJz7ziaXAeF5irHNny57UZ27aBtDzdfDaUjA4');">
+<!-- Defeat Modal -->
+<div class="relative w-full max-w-md">
+<div class="absolute inset-0 translate-x-2 translate-y-2 rounded-xl bg-slate-900"></div>
+<div class="relative flex flex-col items-center bg-white border-4 border-slate-900 rounded-xl p-6 text-center text-slate-900">
+<div class="absolute -top-4 -right-4">
+<div class="absolute inset-0 translate-x-1 translate-y-1 rounded bg-slate-900"></div>
+<button aria-label="Close modal" class="relative flex h-10 w-10 cursor-pointer items-center justify-center overflow-hidden rounded bg-white border-2 border-slate-900">
+<span class="material-symbols-outlined text-slate-900 text-2xl">close</span>
+</button>
+</div>
+<div class="mb-4">
+<span class="material-symbols-outlined text-7xl text-pink-500" style="font-variation-settings: 'FILL' 1, 'wght' 300;">sentiment_dissatisfied</span>
+</div>
+<h1 class="text-slate-900 tracking-tight text-3xl font-bold leading-tight pb-2">
+                    Almost There!
+                </h1>
+<p class="text-slate-900 text-base font-normal leading-normal pb-6">
+                    Your attempt wasn't successful this time. Take a moment to review the lesson and give it another shot.
+                </p>
+<div class="w-full flex flex-col items-center space-y-4">
+<div class="relative w-full">
+<div class="absolute inset-0 translate-x-2 translate-y-2 rounded-lg bg-slate-900"></div>
+<button class="relative flex w-full min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-violet-600 text-white text-base font-bold leading-normal tracking-[0.015em] border-2 border-slate-900">
+<span class="truncate">Try Again</span>
+</button>
+</div>
+<div class="relative w-full">
+<button class="relative flex w-full min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-transparent text-slate-500 text-sm font-bold leading-normal tracking-[0.015em] hover:text-slate-900">
+<span class="truncate">Review Lesson</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body></html>

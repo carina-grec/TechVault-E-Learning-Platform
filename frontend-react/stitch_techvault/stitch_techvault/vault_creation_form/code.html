@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vault Creation Form</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .hard-shadow {
+            box-shadow: 4px 4px 0px 0px #000000;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#7c3bed",
+              "background-light": "#f7f6f8",
+              "background-dark": "#171121",
+            },
+            fontFamily: {
+              "display": ["Space Grotesk"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+</head>
+<body>
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-background-light dark:bg-background-dark font-display" style="--select-button-svg: url('data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2724px%27 height=%2724px%27 fill=%27rgb(105,77,153)%27 viewBox=%270 0 256 256%27%3e%3cpath d=%27M181.66,170.34a8,8,0,0,1,0,11.32l-48,48a8,8,0,0,1-11.32,0l-48-48a8,8,0,0,1,11.32-11.32L128,212.69l42.34-42.35A8,8,0,0,1,181.66,170.34Zm-96-84.68L128,43.31l42.34,42.35a8,8,0,0,0,11.32-11.32l-48-48a8,8,0,0,0-11.32,0l-48,48A8,8,0,0,0,85.66,85.66Z%27%3e%3c/path%3e%3c/svg%3e');">
+<div class="layout-container flex h-full grow flex-col">
+<header class="flex items-center justify-between whitespace-nowrap border-b-2 border-solid border-black px-10 py-3 bg-background-light dark:bg-background-dark">
+<div class="flex items-center gap-4 text-slate-800 dark:text-white">
+<div class="size-6">
+<svg fill="currentColor" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M24 4H6V17.3333V30.6667H24V44H42V30.6667V17.3333H24V4Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-slate-900 dark:text-white text-xl font-bold leading-tight tracking-[-0.015em]">Stitch</h2>
+</div>
+<div class="flex items-center justify-end gap-4">
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded border-2 border-slate-900 bg-white px-4 h-10 text-slate-800 text-sm font-bold leading-normal tracking-[0.015em] hover:bg-slate-100 hard-shadow">
+<span class="truncate">Logout</span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-slate-900" data-alt="User profile picture with a gradient background" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDiFJEzEVZ6yZ6oVPlPvfiI4YYXmIagZ-yrf9ldSa5abvbZx3lNGzlN7mILFnvML3FPWftk8BwHn3m_6w80pdEXf_EiuqZgN0HTEdgMsqUHg81H6V8nsgYHVSxjNwi7rSJPfXPqzbLOHdH9vvdCu4BoIGSXO4ClsndpIgi4FKlSKiz8jyrAFIN-m00FYf9xdVOzNSeNDsttsUtEO60P_a4Rdulr4ut4jdxz6lBRuuvq_asjV2A-ODedWi9aZOlrhRMtFMiQpzxcl7I");'></div>
+</div>
+</header>
+<main class="flex flex-1 justify-center py-10 px-4 sm:px-10">
+<div class="layout-content-container flex flex-col w-full max-w-[960px] flex-1">
+<div class="flex flex-wrap justify-between gap-3 p-4">
+<h1 class="text-slate-900 dark:text-white text-4xl font-black leading-tight tracking-[-0.033em] min-w-72">Create New Vault</h1>
+</div>
+<div class="mt-8">
+<div class="bg-white dark:bg-slate-900 p-8 border-2 border-black rounded hard-shadow">
+<form class="space-y-8">
+<div class="space-y-6">
+<div>
+<label class="flex flex-col" for="vault-title">
+<p class="text-slate-800 dark:text-slate-200 text-base font-bold leading-normal pb-2">Vault Title</p>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded border-2 border-slate-300 bg-white h-12 placeholder:text-slate-400 p-3 text-base font-normal leading-normal text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-600 focus:border-violet-600" id="vault-title" placeholder="e.g., Introduction to Python" value=""/>
+</label>
+</div>
+<div>
+<label class="flex flex-col" for="vault-description">
+<p class="text-slate-800 dark:text-slate-200 text-base font-bold leading-normal pb-2">Description</p>
+<textarea class="form-input flex w-full min-w-0 flex-1 resize-y overflow-hidden rounded border-2 border-slate-300 bg-white min-h-36 placeholder:text-slate-400 p-3 text-base font-normal leading-normal text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-600 focus:border-violet-600" id="vault-description" placeholder="A brief summary of what this vault contains."></textarea>
+</label>
+</div>
+</div>
+<div class="border-t border-slate-200 dark:border-slate-700 pt-8 space-y-6">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div>
+<label class="flex flex-col" for="vault-category">
+<p class="text-slate-800 dark:text-slate-200 text-base font-bold leading-normal pb-2">Category</p>
+<select class="form-input flex w-full min-w-0 flex-1 appearance-none overflow-hidden rounded border-2 border-slate-300 bg-white h-12 bg-[image:--select-button-svg] bg-right-2 bg-no-repeat p-3 text-base font-normal leading-normal text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-600 focus:border-violet-600" id="vault-category">
+<option disabled="" selected="" value="">Select a category</option>
+<option value="web-dev">Web Development</option>
+<option value="data-science">Data Science</option>
+<option value="machine-learning">Machine Learning</option>
+</select>
+</label>
+</div>
+<div>
+<label class="flex flex-col" for="vault-difficulty">
+<p class="text-slate-800 dark:text-slate-200 text-base font-bold leading-normal pb-2">Difficulty Level</p>
+<select class="form-input flex w-full min-w-0 flex-1 appearance-none overflow-hidden rounded border-2 border-slate-300 bg-white h-12 bg-[image:--select-button-svg] bg-right-2 bg-no-repeat p-3 text-base font-normal leading-normal text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-600 focus:border-violet-600" id="vault-difficulty">
+<option disabled="" selected="" value="">Select a level</option>
+<option value="beginner">Beginner</option>
+<option value="intermediate">Intermediate</option>
+<option value="advanced">Advanced</option>
+</select>
+</label>
+</div>
+</div>
+<div>
+<label class="flex flex-col" for="vault-tags">
+<p class="text-slate-800 dark:text-slate-200 text-base font-bold leading-normal pb-2">Tags</p>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded border-2 border-slate-300 bg-white h-12 placeholder:text-slate-400 p-3 text-base font-normal leading-normal text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-600 focus:border-violet-600" id="vault-tags" placeholder="e.g., python, beginner, algorithms" value=""/>
+</label>
+</div>
+</div>
+<div class="flex items-center justify-end gap-4 pt-4">
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded border-2 border-slate-900 bg-white px-6 h-12 text-slate-800 text-base font-bold leading-normal tracking-[0.015em] hard-shadow hover:bg-slate-100" type="button">
+<span class="truncate">Cancel</span>
+</button>
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded border-2 border-black bg-violet-600 px-6 h-12 text-white text-base font-bold leading-normal tracking-[0.015em] hard-shadow hover:bg-violet-700 active:bg-violet-800" type="submit">
+<span class="truncate">Create Vault</span>
+</button>
+</div>
+</form>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+</body></html>

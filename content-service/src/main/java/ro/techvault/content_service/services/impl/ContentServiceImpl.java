@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import ro.techvault.content_service.dtos.QuestCreateRequest;
 import ro.techvault.content_service.dtos.QuestResponse;
+import ro.techvault.content_service.dtos.TestCaseDto;
 import ro.techvault.content_service.dtos.VaultCreateRequest;
 import ro.techvault.content_service.dtos.VaultDetailResponse;
 import ro.techvault.content_service.dtos.VaultResponse;
@@ -12,11 +13,13 @@ import ro.techvault.content_service.enums.ContentStatus;
 import ro.techvault.content_service.factory.QuestFactory;
 import ro.techvault.content_service.models.CodeChallenge;
 import ro.techvault.content_service.models.Quest;
+import ro.techvault.content_service.models.TestCase;
 import ro.techvault.content_service.models.Vault;
 import ro.techvault.content_service.repositories.QuestRepository;
 import ro.techvault.content_service.repositories.VaultRepository;
 import ro.techvault.content_service.services.ContentService;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
@@ -86,6 +89,9 @@ public class ContentServiceImpl implements ContentService {
                 .orElseThrow(() -> new RuntimeException("Vault not found with id: " + request.vaultId()));
         Quest quest = questFactory.createQuest(request);
         quest.setVault(vault);
+        if (quest instanceof CodeChallenge challenge) {
+            applyTestCases(challenge, request.testCases());
+        }
         Quest savedQuest = questRepository.save(quest);
         return mapQuest(savedQuest);
     }
@@ -107,6 +113,9 @@ public class ContentServiceImpl implements ContentService {
             challenge.setHints(request.hints());
             if (request.gradingStrategy() != null) {
                 challenge.setGradingStrategy(request.gradingStrategy());
+            }
+            if (request.testCases() != null) {
+                applyTestCases(challenge, request.testCases());
             }
         }
         Quest saved = questRepository.save(quest);
@@ -137,6 +146,16 @@ public class ContentServiceImpl implements ContentService {
         Quest quest = questRepository.findById(questId)
                 .orElseThrow(() -> new RuntimeException("Quest not found"));
         return mapQuest(quest);
+    }
+
+    @Override
+    public List<TestCaseDto> getTestCases(UUID questId) {
+        Quest quest = questRepository.findById(questId)
+                .orElseThrow(() -> new RuntimeException("Quest not found"));
+        if (quest instanceof CodeChallenge challenge) {
+            return mapTestCases(challenge);
+        }
+        return List.of();
     }
 
     private Vault applyVaultFields(Vault vault, VaultCreateRequest request) {
@@ -213,13 +232,57 @@ public class ContentServiceImpl implements ContentService {
         if (quest instanceof CodeChallenge challenge) {
             builder.description(challenge.getDescription())
                     .language(challenge.getLanguage())
+                    .starterCode(challenge.getStarterCode())
                     .hints(challenge.getHints())
-                    .gradingStrategy(challenge.getGradingStrategy());
+                    .gradingStrategy(challenge.getGradingStrategy())
+                    .testCases(mapTestCases(challenge));
         }
         return builder.build();
     }
 
     private String defaultString(String value) {
         return value == null ? "" : value;
+    }
+
+    private void applyTestCases(CodeChallenge challenge, List<TestCaseDto> testCases) {
+        List<TestCase> entities = new ArrayList<>();
+        List<TestCaseDto> safeCases = testCases == null ? List.of() : testCases;
+        for (int i = 0; i < safeCases.size(); i++) {
+            TestCaseDto dto = safeCases.get(i);
+            TestCase entity = new TestCase();
+            entity.setId(dto.id());
+            entity.setDescription(dto.description() != null ? dto.description() : "Case " + (i + 1));
+            entity.setInput(dto.input());
+            entity.setExpectedOutput(dto.expectedOutput());
+            entity.setHidden(dto.hidden());
+            entity.setCodeChallenge(challenge);
+            entities.add(entity);
+        }
+
+        if (challenge.getTestCases() == null) {
+            challenge.setTestCases(new ArrayList<>(entities));
+        } else {
+            challenge.getTestCases().clear();
+            challenge.getTestCases().addAll(entities);
+        }
+    }
+
+    private List<TestCaseDto> mapTestCases(CodeChallenge challenge) {
+        if (challenge.getTestCases() == null || challenge.getTestCases().isEmpty()) {
+            return List.of();
+        }
+        List<TestCaseDto> mapped = new ArrayList<>();
+        int index = 1;
+        for (TestCase testCase : challenge.getTestCases()) {
+            mapped.add(new TestCaseDto(
+                    testCase.getId(),
+                    testCase.getDescription() != null ? testCase.getDescription() : "Case " + index,
+                    testCase.getInput(),
+                    testCase.getExpectedOutput(),
+                    testCase.isHidden()
+            ));
+            index++;
+        }
+        return mapped;
     }
 }

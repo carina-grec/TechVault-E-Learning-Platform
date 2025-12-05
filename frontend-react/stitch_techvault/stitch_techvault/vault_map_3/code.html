@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Stitch - Vault Map Redesign</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .map-node:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: -50px;
+            width: 4px;
+            height: 50px;
+            background-image: repeating-linear-gradient(0deg, #1E293B, #1E293B 10px, transparent 10px, transparent 20px);
+            z-index: 0;
+            transform: translateX(-50%);
+        }
+        .map-node.completed::after {
+             background-image: repeating-linear-gradient(0deg, #7937eb, #7937eb 10px, transparent 10px, transparent 20px);
+        }
+    </style>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#7937eb",
+                        "background-light": "#7F00FF",
+                        "background-dark": "#171121",
+                        "surface": "#FFFFFF",
+                        "border-color": "#1E293B",
+                        "accent-pink": "#FF00A8",
+                        "accent-green": "#52FF00",
+                        "accent-gray": "#6B7280"
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    boxShadow: {
+                        'hard': '4px 4px 0px 0px rgba(0,0,0,1)',
+                        'hard-lg': '8px 8px 0px 0px rgba(0,0,0,1)',
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="font-display bg-indigo-50">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<div class="px-4 md:px-10 lg:px-20 xl:px-40 flex flex-1 justify-center py-5">
+<div class="layout-content-container flex flex-col w-full max-w-[960px] flex-1">
+<header class="flex items-center justify-between whitespace-nowrap border-2 border-border-color bg-surface px-6 py-3 shadow-hard rounded-lg text-border-color dark:bg-slate-800 dark:text-white dark:border-white">
+<div class="flex items-center gap-4">
+<div class="size-6 text-primary">
+<svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M24 4H6V17.3333V30.6667H24V44H42V30.6667V17.3333H24V4Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h1 class="text-xl font-bold leading-tight tracking-[-0.015em]">Stitch</h1>
+</div>
+<div class="flex flex-1 justify-end">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-border-color" data-alt="User avatar image with an abstract colorful gradient" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDUcTpuBJLnrEdsIcTpn8Pl1ubKh3WtOfTq3arGlfZ8-vC-7aEm4vMeN3e5fZUjo987ycw2y0Es8uXVNGE6Kk_DHDTRUAm5_wTlMvn39AGzG_JnLTloQ0mI2QZCYaWx9YMup-mP8xfLJll0eR5wZpFZEETvu2VouUTo2gkwan0aRyuIwV8XAw697Qy912td6FXHwpTBO5IH2GSPAVIpRhnOmejQ51gGSsQotpUxehWFiOoHL__IcxT0M1Twp7Bts9Z-dhJvQJwrQbc");'></div>
+</div>
+</header>
+<main class="flex-1 mt-8">
+<div class="border-2 border-border-color bg-white rounded-lg shadow-hard-lg p-6 md:p-10">
+<div class="text-center mb-12">
+<h1 class="text-border-color text-4xl md:text-5xl font-black leading-tight tracking-[-0.033em]">Vault Map</h1>
+<p class="text-accent-gray mt-2 text-lg">Your coding journey starts here. Complete vaults to unlock new zones!</p>
+</div>
+<div class="relative">
+<div class="absolute inset-y-0 left-1/2 -ml-0.5 w-1 bg-repeat-y" style="background-image: repeating-linear-gradient(0deg, transparent, transparent 10px, #e0e0e0 10px, #e0e0e0 20px);"></div>
+<div class="space-y-20 relative">
+<div class="flex flex-col items-center text-center">
+<div class="flex items-center justify-center bg-white border-2 border-border-color w-full max-w-sm rounded-lg shadow-hard p-4 relative z-10">
+<h2 class="text-border-color text-2xl font-bold leading-tight tracking-[-0.015em] uppercase">ZONE 01: HTML BASICS</h2>
+</div>
+</div>
+<div class="flex flex-col items-center text-center relative map-node completed">
+<div class="bg-primary border-2 border-border-color w-full max-w-sm rounded-lg shadow-hard p-6 relative z-10 hover:-translate-y-1 hover:-translate-x-1 transition-transform cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="bg-white rounded-full p-2 border-2 border-border-color">
+<span class="material-symbols-outlined text-accent-green" style="font-size: 32px; font-variation-settings: 'FILL' 1, 'wght' 700;">task_alt</span>
+</div>
+<div class="text-left">
+<h3 class="text-white text-xl font-bold leading-tight">Variable Village</h3>
+<p class="text-indigo-200 text-sm font-normal leading-normal">5/5 Lessons</p>
+</div>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-center text-center relative map-node completed">
+<div class="bg-white border-2 border-border-color w-full max-w-sm rounded-lg shadow-hard p-6 relative z-10 hover:-translate-y-1 hover:-translate-x-1 transition-transform cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="bg-white rounded-full p-2 border-2 border-border-color">
+<span class="material-symbols-outlined text-primary" style="font-size: 32px; font-variation-settings: 'FILL' 0, 'wght' 700;">play_circle</span>
+</div>
+<div class="text-left">
+<h3 class="text-border-color text-xl font-bold leading-tight">Function Fortress</h3>
+<p class="text-accent-gray text-sm font-normal leading-normal">3/8 Lessons</p>
+</div>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-center text-center relative map-node">
+<div class="bg-slate-100 border-2 border-slate-300 w-full max-w-sm rounded-lg shadow-hard p-6 relative z-10 opacity-70">
+<div class="flex items-center gap-4">
+<div class="bg-white rounded-full p-2 border-2 border-slate-300">
+<span class="material-symbols-outlined text-slate-400" style="font-size: 32px; font-variation-settings: 'FILL' 1, 'wght' 700;">lock</span>
+</div>
+<div class="text-left">
+<h3 class="text-slate-500 text-xl font-bold leading-tight">Loop Lagoon</h3>
+<p class="text-slate-400 text-sm font-normal leading-normal">Locked</p>
+</div>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-center text-center">
+<div class="flex items-center justify-center bg-slate-100 border-2 border-slate-300 w-full max-w-sm rounded-lg shadow-hard p-4 relative z-10 opacity-70">
+<h2 class="text-slate-500 text-2xl font-bold leading-tight tracking-[-0.015em] uppercase">ZONE 02: CSS STYLING</h2>
+</div>
+</div>
+<div class="flex flex-col items-center text-center relative map-node">
+<div class="bg-slate-100 border-2 border-slate-300 w-full max-w-sm rounded-lg shadow-hard p-6 relative z-10 opacity-70">
+<div class="flex items-center gap-4">
+<div class="bg-white rounded-full p-2 border-2 border-slate-300">
+<span class="material-symbols-outlined text-slate-400" style="font-size: 32px; font-variation-settings: 'FILL' 1, 'wght' 700;">lock</span>
+</div>
+<div class="text-left">
+<h3 class="text-slate-500 text-xl font-bold leading-tight">Selector Sea</h3>
+<p class="text-slate-400 text-sm font-normal leading-normal">Locked</p>
+</div>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-center text-center relative map-node">
+<div class="bg-slate-100 border-2 border-slate-300 w-full max-w-sm rounded-lg shadow-hard p-6 relative z-10 opacity-70">
+<div class="flex items-center gap-4">
+<div class="bg-white rounded-full p-2 border-2 border-slate-300">
+<span class="material-symbols-outlined text-slate-400" style="font-size: 32px; font-variation-settings: 'FILL' 1, 'wght' 700;">lock</span>
+</div>
+<div class="text-left">
+<h3 class="text-slate-500 text-xl font-bold leading-tight">Flexbox Fjord</h3>
+<p class="text-slate-400 text-sm font-normal leading-normal">Locked</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+</div>
+</div>
+
+</body></html>

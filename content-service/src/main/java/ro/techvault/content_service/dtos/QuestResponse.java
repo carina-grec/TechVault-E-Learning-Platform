@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import ro.techvault.content_service.enums.ContentStatus;
 import ro.techvault.content_service.enums.GradingStrategyType;
 
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -28,10 +29,12 @@ public class QuestResponse {
 
     private String description;
     private String language;
+    private String starterCode;
     private String difficulty;
     private String worldTheme;
     private String estimatedTime;
     private String hints;
     private GradingStrategyType gradingStrategy;
+    private List<TestCaseDto> testCases;
 
 }

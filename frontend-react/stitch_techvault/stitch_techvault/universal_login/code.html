@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Universal Login - Stitch</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#7937eb",
+              "background-light": "#f7f6f8",
+              "background-dark": "#171121",
+            },
+            fontFamily: {
+              "display": ["Space Grotesk", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+            boxShadow: {
+              'hard': '4px 4px 0px #1e293b',
+              'hard-lg': '8px 8px 0px #1e293b',
+              'hard-sm-hover': '2px 2px 0px #1e293b',
+              'hard-hover': '6px 6px 0px #1e293b',
+            }
+          },
+        },
+      }
+    </script>
+<style>
+      .neo-shadow {
+        box-shadow: 4px 4px 0px #0f172a;
+        transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+      }
+      .neo-shadow:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 6px 6px 0px #0f172a;
+      }
+      .neo-shadow:active {
+        transform: translate(2px, 2px);
+        box-shadow: 2px 2px 0px #0f172a;
+      }
+      .neo-shadow-lg {
+        box-shadow: 8px 8px 0px #0f172a;
+      }
+       .neo-toggle-base {
+        box-shadow: inset 2px 2px 0px #e2e8f0;
+      }
+      .neo-toggle-label:has(:checked) {
+        box-shadow: 4px 4px 0px #0f172a;
+        transform: translate(-2px, -2px);
+        border: 2px solid #0f172a;
+      }
+    </style>
+</head>
+<body class="font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col items-center justify-center bg-indigo-50 p-4" style='font-family: "Space Grotesk", "Noto Sans", sans-serif;'>
+<div class="layout-container flex h-full grow flex-col items-center justify-center">
+<div class="layout-content-container w-full max-w-md flex-1">
+<div class="flex flex-col items-center justify-center py-12">
+<div class="w-full rounded-xl border-2 border-slate-900 bg-white p-6 sm:p-8 neo-shadow-lg">
+<div class="flex flex-col items-center gap-2 pb-6">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-4xl text-slate-900" data-icon="stitch">pinch</span>
+<span class="font-display text-4xl font-bold text-slate-900">Stitch</span>
+</div>
+<h1 class="text-slate-900 tracking-tight text-2xl font-bold leading-tight text-center">Log in to your account</h1>
+</div>
+<div class="flex flex-col gap-4">
+<div>
+<p class="text-slate-900 text-base font-medium leading-normal pb-2 px-1">I am a...</p>
+<div class="flex p-1">
+<div class="flex h-12 flex-1 items-center justify-center rounded-lg border-2 border-slate-900 bg-slate-100 p-1 neo-toggle-base">
+<label class="flex cursor-pointer h-full grow items-center justify-center rounded-md px-2 has-[:checked]:bg-lime-300 text-slate-900 text-sm font-bold leading-normal transition-all duration-150 ease-in-out neo-toggle-label">
+<span class="truncate">Learner</span>
+<input checked="" class="invisible w-0" name="role-selector" type="radio" value="Learner"/>
+</label>
+<label class="flex cursor-pointer h-full grow items-center justify-center rounded-md px-2 has-[:checked]:bg-lime-300 text-slate-900 text-sm font-bold leading-normal transition-all duration-150 ease-in-out neo-toggle-label">
+<span class="truncate">Guardian</span>
+<input class="invisible w-0" name="role-selector" type="radio" value="Guardian"/>
+</label>
+<label class="flex cursor-pointer h-full grow items-center justify-center rounded-md px-2 has-[:checked]:bg-lime-300 text-slate-900 text-sm font-bold leading-normal transition-all duration-150 ease-in-out neo-toggle-label">
+<span class="truncate">Admin</span>
+<input class="invisible w-0" name="role-selector" type="radio" value="Admin"/>
+</label>
+</div>
+</div>
+</div>
+<div class="flex w-full flex-col gap-4">
+<label class="flex flex-col w-full">
+<p class="text-slate-900 text-base font-medium leading-normal pb-2 px-1">Email or Username</p>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-400 border-2 border-slate-900 bg-white h-14 placeholder:text-slate-500 p-[15px] text-base font-normal leading-normal neo-shadow" placeholder="you@example.com" value=""/>
+</label>
+<label class="flex flex-col w-full">
+<p class="text-slate-900 text-base font-medium leading-normal pb-2 px-1">Password</p>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-400 border-2 border-slate-900 bg-white h-14 placeholder:text-slate-500 p-[15px] text-base font-normal leading-normal neo-shadow" placeholder="Enter your password" type="password" value=""/>
+</label>
+</div>
+<div class="pt-2">
+<button class="flex h-14 w-full items-center justify-center rounded-lg border-2 border-slate-900 bg-lime-300 px-6 text-center text-base font-bold text-slate-900 neo-shadow">
+<span>Log In</span>
+</button>
+</div>
+</div>
+<div class="flex flex-col items-center justify-center gap-3 pt-6 text-center">
+<a class="text-slate-900 text-sm font-medium underline hover:text-primary" href="#">Forgot your password?</a>
+<a class="text-slate-900 text-sm font-medium" href="#">Don't have an account? <span class="font-bold underline hover:text-primary">Sign up</span></a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body></html>

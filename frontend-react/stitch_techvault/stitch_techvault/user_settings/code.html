@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>User Settings - Stitch</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#a1e732",
+                        "background-light": "#f7f8f6",
+                        "background-dark": "#1b2111",
+                        "content-light": "#ffffff",
+                        "content-dark": "#0d100a",
+                        "border-light": "#1b2111",
+                        "border-dark": "#a1e732",
+                        "text-light": "#1b2111",
+                        "text-dark": "#f7f8f6",
+                        "text-secondary-light": "#677e4b",
+                        "text-secondary-dark": "#a1b18e",
+                        "action-primary": "#00FFFF",
+                        "action-secondary": "#FF00FF",
+                        "action-destructive": "#FF4500",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    boxShadow: {
+                        'hard': '4px 4px 0px 0px #1b2111',
+                        'hard-dark': '4px 4px 0px 0px #a1e732',
+                    },
+                    borderWidth: {
+                        '3': '3px',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+          font-variation-settings:
+          'FILL' 0,
+          'wght' 400,
+          'GRAD' 0,
+          'opsz' 24
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-text-light dark:text-text-dark">
+<div class="relative flex min-h-screen w-full flex-col">
+<!-- TopNavBar -->
+<header class="sticky top-0 z-10 border-b-3 border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark px-4 sm:px-6 lg:px-8">
+<div class="mx-auto flex h-16 max-w-7xl items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="size-6 text-text-light dark:text-text-dark">
+<svg fill="currentColor" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M24 4H6V17.3333V30.6667H24V44H42V30.6667V17.3333H24V4Z" fill-rule="evenodd"></path></svg>
+</div>
+<h2 class="text-xl font-bold leading-tight tracking-[-0.015em] text-text-light dark:text-text-dark">Stitch</h2>
+</div>
+<div class="hidden items-center gap-8 md:flex">
+<a class="text-sm font-medium leading-normal text-text-light dark:text-text-dark" href="#">Dashboard</a>
+<a class="text-sm font-medium leading-normal text-text-light dark:text-text-dark" href="#">Courses</a>
+<a class="text-sm font-medium leading-normal text-text-light dark:text-text-dark" href="#">Community</a>
+<a class="text-sm font-medium leading-normal text-text-light dark:text-text-dark" href="#">Help</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="flex h-10 w-10 cursor-pointer items-center justify-center overflow-hidden rounded-lg border-3 border-border-light dark:border-border-dark bg-content-light dark:bg-content-dark text-text-light dark:text-text-dark shadow-hard dark:shadow-hard-dark">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="size-10 rounded-full border-3 border-border-light dark:border-border-dark bg-cover bg-center bg-no-repeat shadow-hard dark:shadow-hard-dark" data-alt="User profile avatar with an abstract green and dark red pattern." style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDwrzCTvZ6S8rIo9tkKpFhOI9j64q_Xhp5iCpDhK6kHv1OdJKA_x-U4WJj8r8fcFIRSLHTe1plSYCM_B40Bk4X34zpiJcdUXMsh9v0xYt2F4PDOOMQQk5a31mQpI8pKN7LyD1JJEP4KRLeXjfNYRu4qXDBeHZuXK1uHnd8iiIs_nrYMgHNt6_A7EcULQfL-vfnLZD7Cnkr1NdwlS-sr32LLX8kigiCGIY09iIxaphXer9SifAb5tyZEY9oOB3MMuesL7tX6HtACCFc");'></div>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-1 px-4 py-8 sm:px-6 lg:px-8">
+<div class="mx-auto max-w-4xl space-y-12">
+<!-- PageHeading -->
+<h1 class="text-5xl font-bold tracking-tighter text-text-light dark:text-text-dark">Settings</h1>
+<!-- Profile Section -->
+<section class="space-y-6 rounded-xl border-3 border-border-light dark:border-border-dark bg-content-light dark:bg-content-dark p-6 shadow-hard dark:shadow-hard-dark">
+<h2 class="text-2xl font-bold leading-tight tracking-[-0.015em] text-text-light dark:text-text-dark">Profile Information</h2>
+<div class="flex flex-col items-start gap-6 sm:flex-row sm:items-center">
+<div class="relative">
+<div class="size-32 rounded-full border-3 border-border-light dark:border-border-dark bg-cover bg-center bg-no-repeat" data-alt="User profile avatar with an abstract green and dark red pattern." style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBAHuixV1FCX8pPW1BhTIb1-nciVT02RY3WRo0P3tvmOtiu1er8Cviv3sK0wNxDKRmvvt2FX1rDoIw0qX86q_Ax0fcdbAe47YLLgRCoyVptfaq5g4ftQQyW96Cb0uurf7xmhxlR4aa3tJALILPdLKyEA1HG96ZOXnC5T8JsUU8yP9RL22w3dAjI3POUckjdLCik7Duv3kJyi6R31Pl5E6RoQlUc33mV7ltk8EOaS2oKFjsCILLokvEmGyiTsOep2VYjEF0-kfMbk4A");'></div>
+</div>
+<div class="flex flex-1 flex-col justify-center">
+<p class="text-2xl font-bold leading-tight tracking-[-0.015em] text-text-light dark:text-text-dark">Alex Doe</p>
+<p class="text-base font-normal leading-normal text-text-secondary-light dark:text-text-secondary-dark">alex.doe@example.com</p>
+</div>
+<button class="h-12 w-full cursor-pointer items-center justify-center rounded-lg border-3 border-border-light dark:border-border-dark bg-content-light dark:bg-content-dark px-6 text-sm font-bold tracking-wide text-text-light dark:text-text-dark shadow-hard dark:shadow-hard-dark hover:bg-gray-100 dark:hover:bg-gray-800 sm:w-auto">
+                            Upload new picture
+                        </button>
+</div>
+<div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+<label class="flex flex-col gap-2">
+<p class="text-base font-medium leading-normal text-text-light dark:text-text-dark">Full Name</p>
+<input class="form-input h-14 w-full rounded-lg border-3 border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark p-4 text-base font-normal text-text-light dark:text-text-dark placeholder:text-text-secondary-light dark:placeholder:text-text-secondary-dark focus:border-action-primary focus:ring-0" value="Alex Doe"/>
+</label>
+<label class="flex flex-col gap-2">
+<p class="text-base font-medium leading-normal text-text-light dark:text-text-dark">Username</p>
+<input class="form-input h-14 w-full rounded-lg border-3 border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark p-4 text-base font-normal text-text-light dark:text-text-dark placeholder:text-text-secondary-light dark:placeholder:text-text-secondary-dark focus:border-action-primary focus:ring-0" value="alex_doe"/>
+</label>
+</div>
+<div>
+<a class="font-bold text-action-secondary" href="#">Change Password</a>
+</div>
+</section>
+<!-- Preferences Section -->
+<section class="space-y-6 rounded-xl border-3 border-border-light dark:border-border-dark bg-content-light dark:bg-content-dark p-6 shadow-hard dark:shadow-hard-dark">
+<h2 class="text-2xl font-bold leading-tight tracking-[-0.015em] text-text-light dark:text-text-dark">Preferences</h2>
+<div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+<label class="flex flex-col gap-2">
+<p class="text-base font-medium leading-normal text-text-light dark:text-text-dark">Language</p>
+<select class="form-select h-14 w-full rounded-lg border-3 border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark p-4 text-base font-normal text-text-light dark:text-text-dark focus:border-action-primary focus:ring-0">
+<option>English</option>
+<option>Spanish</option>
+<option>French</option>
+</select>
+</label>
+<label class="flex flex-col gap-2">
+<p class="text-base font-medium leading-normal text-text-light dark:text-text-dark">Theme</p>
+<select class="form-select h-14 w-full rounded-lg border-3 border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark p-4 text-base font-normal text-text-light dark:text-text-dark focus:border-action-primary focus:ring-0">
+<option>Light</option>
+<option>Dark</option>
+<option>System</option>
+</select>
+</label>
+</div>
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<div>
+<p class="font-medium text-text-light dark:text-text-dark">High Contrast Mode</p>
+<p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">Increases text and element contrast.</p>
+</div>
+<button aria-checked="false" class="relative inline-flex h-8 w-14 flex-shrink-0 cursor-pointer rounded-full border-3 border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-action-primary focus:ring-offset-2" role="switch">
+<span class="inline-block h-6 w-6 translate-x-1 transform self-center rounded-full bg-border-light dark:bg-border-dark shadow ring-0 transition duration-200 ease-in-out"></span>
+</button>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<p class="font-medium text-text-light dark:text-text-dark">Reduced Motion</p>
+<p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">Disables decorative animations and effects.</p>
+</div>
+<button aria-checked="true" class="relative inline-flex h-8 w-14 flex-shrink-0 cursor-pointer rounded-full border-3 border-border-light dark:border-border-dark bg-action-primary transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-action-primary focus:ring-offset-2" role="switch">
+<span class="inline-block h-6 w-6 translate-x-7 transform self-center rounded-full bg-border-light shadow ring-0 transition duration-200 ease-in-out"></span>
+</button>
+</div>
+</div>
+</section>
+<!-- Notifications Section -->
+<section class="space-y-4 rounded-xl border-3 border-border-light dark:border-border-dark bg-content-light dark:bg-content-dark p-6 shadow-hard dark:shadow-hard-dark">
+<h2 class="text-2xl font-bold leading-tight tracking-[-0.015em] text-text-light dark:text-text-dark">Notifications</h2>
+<div class="flex items-center justify-between">
+<p class="font-medium text-text-light dark:text-text-dark">Course Updates</p>
+<button aria-checked="true" class="relative inline-flex h-8 w-14 flex-shrink-0 cursor-pointer rounded-full border-3 border-border-light dark:border-border-dark bg-action-primary transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-action-primary focus:ring-offset-2" role="switch">
+<span class="inline-block h-6 w-6 translate-x-7 transform self-center rounded-full bg-border-light shadow ring-0 transition duration-200 ease-in-out"></span>
+</button>
+</div>
+<div class="flex items-center justify-between">
+<p class="font-medium text-text-light dark:text-text-dark">Weekly Progress Reports</p>
+<button aria-checked="true" class="relative inline-flex h-8 w-14 flex-shrink-0 cursor-pointer rounded-full border-3 border-border-light dark:border-border-dark bg-action-primary transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-action-primary focus:ring-offset-2" role="switch">
+<span class="inline-block h-6 w-6 translate-x-7 transform self-center rounded-full bg-border-light shadow ring-0 transition duration-200 ease-in-out"></span>
+</button>
+</div>
+<div class="flex items-center justify-between">
+<p class="font-medium text-text-light dark:text-text-dark">Community Mentions</p>
+<button aria-checked="false" class="relative inline-flex h-8 w-14 flex-shrink-0 cursor-pointer rounded-full border-3 border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-action-primary focus:ring-offset-2" role="switch">
+<span class="inline-block h-6 w-6 translate-x-1 transform self-center rounded-full bg-border-light dark:bg-border-dark shadow ring-0 transition duration-200 ease-in-out"></span>
+</button>
+</div>
+</section>
+<!-- Account Actions Section -->
+<section class="space-y-6 rounded-xl border-3 border-border-light dark:border-border-dark bg-content-light dark:bg-content-dark p-6 shadow-hard dark:shadow-hard-dark">
+<h2 class="text-2xl font-bold leading-tight tracking-[-0.015em] text-text-light dark:text-text-dark">Account Actions</h2>
+<div class="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
+<div>
+<p class="font-bold text-text-light dark:text-text-dark">Logout</p>
+<p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">You will be returned to the login screen.</p>
+</div>
+<button class="h-12 w-full cursor-pointer items-center justify-center rounded-lg border-3 border-border-light dark:border-border-dark bg-content-light dark:bg-content-dark px-6 text-sm font-bold tracking-wide text-text-light dark:text-text-dark shadow-hard dark:shadow-hard-dark hover:bg-gray-100 dark:hover:bg-gray-800 sm:w-auto">
+                            Logout
+                        </button>
+</div>
+<div class="flex flex-col items-start gap-4 rounded-lg border-3 border-action-destructive p-4 sm:flex-row sm:items-center sm:justify-between">
+<div>
+<p class="font-bold text-action-destructive">Delete Account</p>
+<p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">Permanently delete your account and all data.</p>
+</div>
+<button class="h-12 w-full cursor-pointer items-center justify-center rounded-lg border-3 border-action-destructive bg-action-destructive/20 px-6 text-sm font-bold tracking-wide text-action-destructive shadow-hard shadow-action-destructive/30 hover:bg-action-destructive/30 sm:w-auto">
+                            Delete Account
+                        </button>
+</div>
+</section>
+<!-- Save Footer -->
+<div class="sticky bottom-0 mt-12 py-4 bg-background-light dark:bg-background-dark">
+<div class="mx-auto flex max-w-4xl justify-end">
+<button class="flex h-14 w-full cursor-pointer items-center justify-center rounded-lg border-3 border-border-light dark:border-border-dark bg-action-primary px-8 text-lg font-bold tracking-wide text-border-light shadow-hard dark:shadow-hard-dark hover:brightness-110 sm:w-auto">
+                            Save Changes
+                        </button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

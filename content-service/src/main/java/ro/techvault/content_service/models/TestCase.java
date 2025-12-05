@@ -19,6 +19,9 @@ public class TestCase {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
+    @Column
+    private String description;
+
     @Lob
     private String input;
 

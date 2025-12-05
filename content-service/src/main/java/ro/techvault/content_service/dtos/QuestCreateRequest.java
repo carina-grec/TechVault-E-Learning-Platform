@@ -2,6 +2,7 @@ package ro.techvault.content_service.dtos;
 
 import ro.techvault.content_service.enums.GradingStrategyType;
 
+import java.util.List;
 import java.util.UUID;
 
 public record QuestCreateRequest(
@@ -17,5 +18,6 @@ public record QuestCreateRequest(
         String language,
         String starterCode,
         String hints,
-        GradingStrategyType gradingStrategy
+        GradingStrategyType gradingStrategy,
+        List<TestCaseDto> testCases
 ) {}

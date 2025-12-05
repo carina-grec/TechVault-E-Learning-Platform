@@ -5,6 +5,7 @@ import ro.techvault.content_service.dtos.QuestResponse;
 import ro.techvault.content_service.dtos.VaultCreateRequest;
 import ro.techvault.content_service.dtos.VaultDetailResponse;
 import ro.techvault.content_service.dtos.VaultResponse;
+import ro.techvault.content_service.dtos.TestCaseDto;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,4 +22,5 @@ public interface ContentService {
     void deleteQuest(UUID questId);
     List<QuestResponse> getQuests(UUID vaultId, String type, String difficulty);
     QuestResponse getQuestById(UUID questId);
+    List<TestCaseDto> getTestCases(UUID questId);
 }

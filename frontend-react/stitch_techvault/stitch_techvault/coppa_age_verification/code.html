@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>COPPA Age Verification</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#7c3aee",
+              "background-light": "#f7f6f8",
+              "background-dark": "#171022",
+            },
+            fontFamily: {
+              "display": ["Space Grotesk", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+      .hard-shadow {
+        box-shadow: 8px 8px 0px 0px #000000;
+      }
+      .hard-shadow-sm {
+        box-shadow: 4px 4px 0px 0px #000000;
+      }
+      .hard-shadow-sm-hover:hover {
+        box-shadow: 6px 6px 0px 0px #000000;
+      }
+    </style>
+</head>
+<body class="antialiased">
+<div class="relative flex min-h-screen w-full flex-col items-center justify-center bg-background-light dark:bg-background-dark font-display p-4 sm:p-6" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCFlNcIdTdxLvhMnhDcZK1qcpqoLwNJY01uTip-rxaWTNF7DMEHOS9KrO184vf1l00nn_pF58Zqfmb3OtoZHV7BQGSesLGSYTN_JhdtNdqEVrYALfq8Ipz6YAt2T4GcHW_aHMkTNGkgTo0P8JrFaSnlt3pjvA8bxQe7Vgz1u-mu_XNiW-tMvXuzc4vVoj6Dph2mSuPox4uzEZKwim5hVYBytxMh8mJRbnVy_0J6Zre0hML-4OA6l4gEUv-tb2Gnd7WDpnbSQ1i6hpw');">
+<!-- Modal 1: Initial Age Verification -->
+<div class="w-full max-w-md bg-white border-4 border-black rounded-none hard-shadow p-6 sm:p-8 space-y-6">
+<h1 class="text-black font-bold text-3xl font-display">First, let's verify your age.</h1>
+<p class="text-black text-base font-normal leading-normal font-display">For your safety and to comply with legal requirements, we need to verify your age before you can continue.</p>
+<div class="flex flex-col gap-4">
+<label class="flex flex-col">
+<p class="text-black text-base font-medium leading-normal pb-2 font-display">Enter your birthdate</p>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-none text-black focus:outline-none focus:ring-4 focus:ring-lime-400 focus:ring-offset-0 border-4 border-black bg-white h-14 placeholder:text-gray-500 p-3 text-base font-normal leading-normal font-display" placeholder="MM / DD / YYYY" value=""/>
+</label>
+</div>
+<div class="flex">
+<button class="flex w-full min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-none border-4 border-black bg-lime-400 text-black h-14 px-5 text-lg font-bold leading-normal tracking-wide hard-shadow-sm hard-shadow-sm-hover transition-shadow duration-200">
+<span class="truncate">Continue</span>
+</button>
+</div>
+</div>
+<!-- Spacer for visual separation in the example -->
+<div class="h-16"></div>
+<!-- Modal 2: Under 13 State -->
+<div class="w-full max-w-md bg-white border-4 border-black rounded-none hard-shadow p-6 sm:p-8 space-y-6">
+<h1 class="text-black font-bold text-3xl font-display">Looks like you need a hand!</h1>
+<p class="text-black text-base font-normal leading-normal font-display">To make sure your coding journey is safe and fun, users under 13 need a parent's permission to join Stitch. No problem, just ask them for a little help!</p>
+<div class="flex">
+<button class="flex w-full min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-none border-4 border-black bg-violet-600 text-white h-14 px-5 text-lg font-bold leading-normal tracking-wide hard-shadow-sm hard-shadow-sm-hover transition-shadow duration-200">
+<span class="truncate">Ask a Parent for Help</span>
+</button>
+</div>
+</div>
+</div>
+</body></html>

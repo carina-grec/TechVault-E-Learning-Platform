@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Assignment Controls</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#7c3bed",
+                        "background-light": "#f7f6f8",
+                        "background-dark": "#171121",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    boxShadow: {
+                        'hard': '4px 4px 0px 0px #000',
+                    }
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        @layer base {
+            input[type="radio"] {
+                appearance: none;
+                border-radius: 9999px;
+                background-color: transparent;
+                border: 2px solid black;
+            }
+            input[type="radio"]:checked {
+                background-color: #a3e635; /* lime-400 */
+                border-color: black;
+            }
+            input[type="checkbox"] {
+                appearance: none;
+                background-color: transparent;
+                border: 2px solid black;
+                border-radius: 0.125rem;
+            }
+            input[type="checkbox"]:checked {
+                background-color: #a3e635; /* lime-400 */
+                background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='black' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
+                background-repeat: no-repeat;
+                background-position: center;
+                border-color: black;
+            }
+        }
+    </style>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark">
+<div class="relative flex min-h-screen w-full flex-col">
+<header class="sticky top-0 z-10 w-full border-b-2 border-black bg-background-light px-6 py-3 dark:bg-background-dark md:px-10">
+<div class="mx-auto flex max-w-7xl items-center justify-between">
+<div class="flex items-center gap-4 text-black dark:text-white">
+<div class="size-6 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M24 4H6V17.3333V30.6667H24V44H42V30.6667V17.3333H24V4Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-xl font-bold">Stitch</h2>
+</div>
+<nav class="hidden items-center gap-8 md:flex">
+<a class="text-sm font-medium text-zinc-900 dark:text-zinc-100" href="#">Dashboard</a>
+<a class="text-sm font-medium text-zinc-900 dark:text-zinc-100" href="#">Vaults</a>
+<a class="text-sm font-medium text-zinc-900 dark:text-zinc-100" href="#">Quests</a>
+<a class="text-sm font-medium text-zinc-900 dark:text-zinc-100" href="#">Arcade</a>
+</nav>
+<div class="flex flex-1 items-center justify-end gap-4">
+<button class="hidden min-w-[84px] cursor-pointer items-center justify-center overflow-hidden whitespace-nowrap rounded border-2 border-black bg-primary px-4 py-2 text-sm font-bold text-white shadow-hard transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none sm:flex">
+<span>Assignments</span>
+</button>
+<div class="size-10 rounded-full border-2 border-black bg-zinc-200 bg-cover bg-center bg-no-repeat dark:bg-zinc-700" data-alt="User profile avatar placeholder" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuArmt8tJGb0mN6cG3sr6sEj7ZP2wbysbMSMJZdd2dFFvGfaVggUjEC06Mu7tAEXVMHd89fvFbomGAR71DKj6IL9cM7xJXWF9yOAyiZlTYGObWRtIX_yaQzrb-4Sgu046iT2knLewzL96-6waVaig43-VXEppWBIRPW52NZpznQNsme5-4EpiCXXWafuyDkIsNVxQt5jsoI9uR2YSWLMdpq7pqYqEmYrmjyaZKfjRgpJ5fS67QA7nOPbEwb44xe_JIhwTFwoUvhxkMk");'></div>
+</div>
+</div>
+</header>
+<main class="flex-1 p-4 md:p-8 lg:p-10">
+<div class="mx-auto max-w-7xl">
+<div class="mb-4 flex flex-wrap gap-2 text-sm">
+<a class="font-medium text-zinc-500 dark:text-zinc-400" href="#">Dashboard</a>
+<span class="text-zinc-500 dark:text-zinc-400">/</span>
+<span class="font-medium text-black dark:text-white">Assignment Controls</span>
+</div>
+<div class="mb-6 flex flex-wrap items-end justify-between gap-4">
+<h1 class="text-4xl font-black text-black dark:text-white md:text-5xl">Assignment Controls</h1>
+</div>
+<div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
+<aside class="lg:col-span-1">
+<div class="sticky top-28 flex flex-col gap-4">
+<h3 class="text-lg font-bold text-black dark:text-white">Select a Child</h3>
+<div class="flex flex-col gap-3 rounded border-2 border-black bg-white p-4 shadow-hard dark:bg-zinc-900">
+<label class="flex cursor-pointer items-center gap-4 rounded border-2 border-black p-3 has-[:checked]:border-lime-400 has-[:checked]:bg-lime-400/10 dark:has-[:checked]:bg-lime-400/20">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-black" data-alt="Avatar for Alex" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA7T9AjbNez-BtzUWzfnHA83FtBMAhy0VgxXLac26Uea7mi7_BA3fUaf1HeQ_oeZwXH4krNau69_a4nWtvP3Apc--O-yBJSI9af995OWmrx84mugoZtpuEVKx6I8qB80qqyCdNfJguBbL_PtUuFnmM011POCVnUAcJXfxILq3oQtbMvusJ6-_9y79WbJaA79eHYi4CTOVTqfeDLjJU3uSziXXSawPb54_C6welBsVDi7RkjfSosyIrZeFy8wKtlJnQrK-bZ0I9QXco");'></div>
+<div class="flex grow flex-col">
+<p class="font-bold text-black dark:text-white">Alex</p>
+<p class="text-sm text-zinc-600 dark:text-zinc-400">Manage assignments for Alex</p>
+</div>
+<input checked="" class="size-5" name="child-selector" type="radio"/>
+</label>
+<label class="flex cursor-pointer items-center gap-4 rounded border-2 border-black p-3 has-[:checked]:border-lime-400 has-[:checked]:bg-lime-400/10 dark:has-[:checked]:bg-lime-400/20">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-black" data-alt="Avatar for Jamie" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuATKBiKxwnxZKURzLnWIptBY_9rKqYduYgrQrUfjIA5K7tjUKVZHSdO2dr_eZxzAiiHaPpHURVQEybGKAJtHw7LnW-tuDgAwTUsuX0m7NF89-Nn_AJxoKROSqg8Mi7_tDbYrzwH1SvAWKXC2M9jd5J0XEJVSW0q3PpdKDPybTqTuVCOKxwAxguNzwy3sx8v8ZXQPgoVDgYrvbC3hyh2ry4RnDa7W7ggBDHswZThMq2-NW8iM7U2YK7d3lfT_HtmHYnl6LICgY1ejJY");'></div>
+<div class="flex grow flex-col">
+<p class="font-bold text-black dark:text-white">Jamie</p>
+<p class="text-sm text-zinc-600 dark:text-zinc-400">Manage assignments for Jamie</p>
+</div>
+<input class="size-5" name="child-selector" type="radio"/>
+</label>
+</div>
+</div>
+</aside>
+<section class="lg:col-span-2">
+<div class="flex flex-col gap-6">
+<div class="rounded border-2 border-black bg-white shadow-hard dark:bg-zinc-900">
+<div class="border-b-2 border-black p-4">
+<div class="relative">
+<input class="w-full rounded border-2 border-black bg-background-light py-2 pl-10 pr-4 text-sm focus:border-primary focus:ring-0 dark:bg-background-dark dark:text-white" placeholder="Search for content..." type="text"/>
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 dark:text-zinc-400">search</span>
+</div>
+</div>
+<div class="border-b-2 border-black">
+<nav class="flex gap-2 p-2">
+<button class="rounded px-4 py-1.5 text-sm font-bold bg-zinc-900 text-white dark:bg-zinc-200 dark:text-black">Vaults</button>
+<button class="rounded px-4 py-1.5 text-sm font-bold text-black hover:bg-zinc-100 dark:text-white dark:hover:bg-zinc-800">Lessons &amp; Quests</button>
+</nav>
+</div>
+<div class="flex flex-col">
+<!-- Content Card 1 -->
+<div class="flex flex-col gap-4 border-b-2 border-black p-4 sm:flex-row sm:items-center">
+<div class="flex flex-1 items-center gap-4">
+<div class="flex size-12 items-center justify-center rounded border-2 border-black bg-violet-200 text-2xl dark:bg-violet-900">
+<span class="material-symbols-outlined">data_object</span>
+</div>
+<div>
+<h4 class="font-bold text-black dark:text-white">Python Basics Vault</h4>
+<p class="text-sm text-zinc-600 dark:text-zinc-400">An introduction to fundamental Python concepts.</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="group flex items-center gap-1.5 rounded p-2 text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800">
+<span class="material-symbols-outlined text-xl">push_pin</span>
+<span class="text-sm font-bold">Pin</span>
+</button>
+<label class="flex cursor-pointer items-center gap-2">
+<input checked="" class="size-6" type="checkbox"/>
+<span class="text-sm font-bold text-black dark:text-white">Assign</span>
+</label>
+</div>
+</div>
+<!-- Content Card 2 -->
+<div class="flex flex-col gap-4 border-b-2 border-black p-4 sm:flex-row sm:items-center">
+<div class="flex flex-1 items-center gap-4">
+<div class="flex size-12 items-center justify-center rounded border-2 border-black bg-lime-200 text-2xl dark:bg-lime-900">
+<span class="material-symbols-outlined">function</span>
+</div>
+<div>
+<h4 class="font-bold text-black dark:text-white">JavaScript Functions</h4>
+<p class="text-sm text-zinc-600 dark:text-zinc-400">Learn to write and use functions in JavaScript.</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="group flex items-center gap-1.5 rounded p-2 text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800">
+<span class="material-symbols-outlined text-xl text-primary">push_pin</span>
+<span class="text-sm font-bold text-primary">Pinned</span>
+</button>
+<label class="flex cursor-pointer items-center gap-2">
+<input checked="" class="size-6" type="checkbox"/>
+<span class="text-sm font-bold text-black dark:text-white">Assign</span>
+</label>
+</div>
+</div>
+<!-- Content Card 3 -->
+<div class="flex flex-col gap-4 p-4 sm:flex-row sm:items-center">
+<div class="flex flex-1 items-center gap-4">
+<div class="flex size-12 items-center justify-center rounded border-2 border-black bg-orange-200 text-2xl dark:bg-orange-900">
+<span class="material-symbols-outlined">css</span>
+</div>
+<div>
+<h4 class="font-bold text-black dark:text-white">CSS Grid Layouts</h4>
+<p class="text-sm text-zinc-600 dark:text-zinc-400">Master modern web layouts with CSS Grid.</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="group flex items-center gap-1.5 rounded p-2 text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800">
+<span class="material-symbols-outlined text-xl">push_pin</span>
+<span class="text-sm font-bold">Pin</span>
+</button>
+<label class="flex cursor-pointer items-center gap-2">
+<input class="size-6" type="checkbox"/>
+<span class="text-sm font-bold text-black dark:text-white">Assign</span>
+</label>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-end gap-3 rounded border-2 border-black bg-white p-4 shadow-hard dark:bg-zinc-900">
+<button class="cursor-pointer items-center justify-center rounded border-2 border-black bg-zinc-200 px-6 py-2 text-sm font-bold text-black shadow-hard transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none dark:bg-zinc-700 dark:text-white">
+                                    Cancel
+                                </button>
+<button class="cursor-pointer items-center justify-center rounded border-2 border-black bg-lime-400 px-6 py-2 text-sm font-bold text-black shadow-hard transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none">
+                                    Save Assignments
+                                </button>
+</div>
+</div>
+</section>
+</div>
+</div>
+</main>
+</div>
+</body></html>

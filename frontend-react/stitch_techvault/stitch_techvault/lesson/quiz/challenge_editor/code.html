@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Stitch Content Editor</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .hard-shadow { box-shadow: 4px 4px 0px #000; }
+        .hard-shadow-sm { box-shadow: 2px 2px 0px #000; }
+        .hard-shadow-hover:hover { box-shadow: 6px 6px 0px #000; }
+        .hard-shadow-focus:focus-within { box-shadow: 6px 6px 0px #000; }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#137fec",
+              "background-light": "#f5f5f5",
+              "background-dark": "#101922",
+              "action-primary": "#39FF14",
+              "action-secondary": "#00FFFF",
+              "action-destructive": "#FF1E56"
+            },
+            fontFamily: {
+              "display": ["Space Grotesk", "sans-serif"],
+              "mono": ["JetBrains Mono", "monospace"]
+            },
+            borderRadius: { "DEFAULT": "0rem", "lg": "0rem", "xl": "0rem", "full": "0rem" },
+            borderWidth: { DEFAULT: "2px", "0": "0", "2": "2px", "3": "3px", "4": "4px" },
+          },
+        },
+      }
+    </script>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<!-- TopNavBar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b-2 border-solid border-black bg-white px-6 py-3">
+<div class="flex items-center gap-4 text-black">
+<div class="size-6">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M44 11.2727C44 14.0109 39.8386 16.3957 33.69 17.6364C39.8386 18.877 44 21.2618 44 24C44 26.7382 39.8386 29.123 33.69 30.3636C39.8386 31.6043 44 33.9891 44 36.7273C44 40.7439 35.0457 44 24 44C12.9543 44 4 40.7439 4 36.7273C4 33.9891 8.16144 31.6043 14.31 30.3636C8.16144 29.123 4 26.7382 4 24C4 21.2618 8.16144 18.877 14.31 17.6364C8.16144 16.3957 4 14.0109 4 11.2727C4 7.25611 12.9543 4 24 4C35.0457 4 44 7.25611 44 11.2727Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-black text-xl font-bold leading-tight tracking-[-0.015em]">Stitch Content Editor</h2>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden border-2 border-black bg-action-secondary px-6 py-2 text-sm font-bold leading-normal text-black transition-all hard-shadow-sm hard-shadow-hover">
+<span class="truncate">Save Draft</span>
+</button>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden border-2 border-black bg-action-primary px-6 py-2 text-sm font-bold leading-normal text-black transition-all hard-shadow-sm hard-shadow-hover">
+<span class="truncate">Publish</span>
+</button>
+</div>
+</header>
+<main class="flex-1">
+<div class="grid grid-cols-12 gap-0">
+<!-- Left Column: Navigation & Metadata -->
+<aside class="col-span-12 md:col-span-4 lg:col-span-3 border-r-2 border-black bg-white p-6 min-h-[calc(100vh-68px)] flex flex-col gap-8">
+<!-- SideNavBar (modified for content type) -->
+<div>
+<h3 class="text-xs uppercase font-bold text-gray-500 mb-2">Content Type</h3>
+<div class="flex h-12 flex-1 items-center justify-center border-2 border-black bg-gray-200 p-1">
+<label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden border-2 border-transparent has-[:checked]:border-black has-[:checked]:bg-white has-[:checked]:hard-shadow-sm text-black text-sm font-bold leading-normal">
+<span class="truncate">Lesson</span>
+<input checked="" class="invisible w-0" name="content-type" type="radio" value="Lesson"/>
+</label>
+<label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden border-2 border-transparent has-[:checked]:border-black has-[:checked]:bg-white has-[:checked]:hard-shadow-sm text-black text-sm font-bold leading-normal">
+<span class="truncate">Quiz</span>
+<input class="invisible w-0" name="content-type" type="radio" value="Quiz"/>
+</label>
+<label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden border-2 border-transparent has-[:checked]:border-black has-[:checked]:bg-white has-[:checked]:hard-shadow-sm text-black text-sm font-bold leading-normal">
+<span class="truncate">Challenge</span>
+<input class="invisible w-0" name="content-type" type="radio" value="Challenge"/>
+</label>
+</div>
+</div>
+<!-- Metadata Section -->
+<div class="flex flex-col gap-6">
+<h3 class="text-xs uppercase font-bold text-gray-500">Metadata</h3>
+<div class="flex flex-col gap-2">
+<label class="text-sm font-bold text-black" for="title">Title</label>
+<input class="border-2 border-black p-2 font-mono text-sm transition-all hard-shadow-focus focus:outline-none" id="title" placeholder="e.g., Introduction to JavaScript" type="text"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-sm font-bold text-black" for="description">Short Description</label>
+<textarea class="border-2 border-black p-2 font-mono text-sm transition-all hard-shadow-focus focus:outline-none" id="description" placeholder="A brief summary of the content..." rows="3"></textarea>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-sm font-bold text-black" for="tags">Tags</label>
+<input class="border-2 border-black p-2 font-mono text-sm transition-all hard-shadow-focus focus:outline-none" id="tags" placeholder="JavaScript, Loops, Beginner" type="text"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-sm font-bold text-black" for="difficulty">Difficulty</label>
+<select class="border-2 border-black p-2 font-mono text-sm transition-all hard-shadow-focus focus:outline-none appearance-none bg-white bg-no-repeat bg-right" id="difficulty" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCgdyPEymTMwUB43k0OEmqAwqRqgc3Avt89EJ0BRdoElHn_CLhBgeM5_ujbJ8Jwp7RsfKI2y2HDCTGRXQGmKn_yZtEpb-kum8kAi_jRcVuw_lEh9CLkNHfPO0HIU27i6K6dK5yEzIKBeWx20PtAR2u2bLJd9MqdhoPtigSbo2xoTQ4u4F7ircLwm5cZREToJ3fijtY3uSzQAXZMfkw5FyNd0a9TJcYpTQ0g9oUgsNALmWhBX08UUNndWTUyffrAGQZBhCNOnftqgg0'); background-size: 1.5em 1.5em; background-position: right 0.5rem center;">
+<option>Beginner</option>
+<option>Intermediate</option>
+<option>Advanced</option>
+</select>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-sm font-bold text-black">Cover Image</label>
+<div class="flex items-center justify-center w-full">
+<label class="flex flex-col items-center justify-center w-full h-32 border-2 border-black border-dashed cursor-pointer bg-gray-50 hover:bg-gray-100">
+<div class="flex flex-col items-center justify-center pt-5 pb-6">
+<span class="material-symbols-outlined text-gray-500">upload_file</span>
+<p class="mb-2 text-sm text-gray-500"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+</div>
+<input class="hidden" type="file"/>
+</label>
+</div>
+</div>
+</div>
+</aside>
+<!-- Right Column: Main Content Canvas -->
+<div class="col-span-12 md:col-span-8 lg:col-span-9 p-8">
+<!-- PageHeading -->
+<div class="flex flex-wrap justify-between gap-3 mb-8">
+<div class="flex min-w-72 flex-col gap-2">
+<p class="text-black text-5xl font-black leading-tight tracking-[-0.033em]">Create New Lesson</p>
+<p class="text-gray-600 text-base font-normal leading-normal">Start writing your lesson content below. Add text, images, or code snippets.</p>
+</div>
+</div>
+<!-- Content Canvas -->
+<div class="flex flex-col gap-6">
+<!-- WYSIWYG Editor Block -->
+<div class="bg-white border-2 border-black p-4 hard-shadow">
+<div class="flex items-center gap-1 border-b-2 border-black pb-2 mb-4">
+<button class="p-2 hover:bg-gray-100"><span class="material-symbols-outlined">format_bold</span></button>
+<button class="p-2 hover:bg-gray-100"><span class="material-symbols-outlined">format_italic</span></button>
+<button class="p-2 hover:bg-gray-100"><span class="material-symbols-outlined">format_list_bulleted</span></button>
+<button class="p-2 hover:bg-gray-100"><span class="material-symbols-outlined">format_list_numbered</span></button>
+<button class="p-2 hover:bg-gray-100"><span class="material-symbols-outlined">link</span></button>
+<button class="p-2 hover:bg-gray-100"><span class="material-symbols-outlined">image</span></button>
+</div>
+<div class="prose min-h-48 p-2 focus:outline-none font-mono" contenteditable="true">
+<p>Start writing your lesson here...</p>
+</div>
+</div>
+<!-- Code Editor Block -->
+<div class="bg-white border-2 border-black hard-shadow">
+<div class="flex items-center justify-between border-b-2 border-black p-2 bg-gray-100">
+<p class="text-sm font-bold font-mono">JavaScript</p>
+<button class="text-sm font-bold">Copy</button>
+</div>
+<div class="p-4 bg-[#282c34] text-white font-mono text-sm">
+<pre><code>function greet(name) {
+  console.log(`Hello, ${name}!`);
+}
+
+greet('World');</code></pre>
+</div>
+</div>
+<!-- Add Block Section -->
+<div class="flex items-center justify-center gap-4 py-6 border-2 border-dashed border-gray-400">
+<button class="flex items-center gap-2 border-2 border-black bg-white px-4 py-2 text-sm font-bold transition-all hard-shadow-sm hard-shadow-hover">
+<span class="material-symbols-outlined">add</span> Add Text Block
+                                </button>
+<button class="flex items-center gap-2 border-2 border-black bg-white px-4 py-2 text-sm font-bold transition-all hard-shadow-sm hard-shadow-hover">
+<span class="material-symbols-outlined">code</span> Add Code Snippet
+                                </button>
+<button class="flex items-center gap-2 border-2 border-black bg-white px-4 py-2 text-sm font-bold transition-all hard-shadow-sm hard-shadow-hover">
+<span class="material-symbols-outlined">image</span> Add Image
+                                </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+</body></html>

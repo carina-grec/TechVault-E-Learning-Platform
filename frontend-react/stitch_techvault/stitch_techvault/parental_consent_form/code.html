@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Parental Consent Form</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#a1e732",
+              "background-light": "#F8F8FA",
+              "background-dark": "#1b2111",
+            },
+            fontFamily: {
+              "display": ["Space Grotesk", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+      .neo-shadow {
+        box-shadow: 4px 4px 0px 0px #1E293B;
+      }
+      .neo-shadow-hover:hover {
+        box-shadow: 6px 6px 0px 0px #1E293B;
+      }
+      .form-input-neo {
+        background-color: white;
+        border: 2px solid #cbd5e1;
+        border-radius: 0.125rem;
+      }
+      .form-input-neo:focus {
+        border-color: #6d28d9;
+        outline: 2px solid transparent;
+        outline-offset: 2px;
+        --tw-ring-color: #6d28d9;
+        --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+        --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+        box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+      }
+      .form-checkbox-neo {
+        background-color: white;
+        border: 2px solid #cbd5e1;
+        border-radius: 0.125rem;
+      }
+      .form-checkbox-neo:checked {
+        border-color: #6d28d9;
+        background-color: #6d28d9;
+      }
+      .form-checkbox-neo:focus {
+         --tw-ring-color: #6d28d9;
+      }
+    </style>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark">
+<div class="relative flex min-h-screen w-full flex-col items-center justify-center p-4 sm:p-6 lg:p-8">
+<header class="fixed top-0 left-0 right-0 z-10 flex items-center justify-center bg-background-light/80 dark:bg-background-dark/80 p-4 backdrop-blur-sm">
+<div class="flex items-center gap-3 text-slate-800 dark:text-slate-200">
+<div class="size-6">
+<svg fill="currentColor" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M24 4H6V17.3333V30.6667H24V44H42V30.6667V17.3333H24V4Z" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-2xl font-bold leading-tight tracking-[-0.015em]">Stitch</h2>
+</div>
+</header>
+<main class="flex w-full max-w-2xl flex-col items-center justify-center">
+<div class="w-full rounded border-2 border-slate-800 bg-background-light dark:bg-background-dark p-6 sm:p-8 lg:p-12 neo-shadow">
+<div class="mb-8 flex flex-col gap-3 text-center">
+<h1 class="text-slate-900 dark:text-slate-100 text-4xl font-bold tracking-tighter sm:text-5xl">Parental Consent Form</h1>
+<p class="text-slate-700 dark:text-slate-300 text-base font-normal leading-normal max-w-xl mx-auto">
+                        To comply with federal law (COPPA), we require parental consent for users under the age of 13. Please fill out the form below to grant permission for your child to use Stitch.
+                    </p>
+</div>
+<form class="flex flex-col gap-6">
+<div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+<div class="flex flex-col gap-y-2">
+<label class="text-slate-700 dark:text-slate-300 text-base font-medium" for="parent-name">Parent/Guardian Full Name</label>
+<input class="form-input-neo h-12 w-full px-4 text-slate-900 placeholder:text-slate-400" id="parent-name" placeholder="Enter your full name" type="text"/>
+</div>
+<div class="flex flex-col gap-y-2">
+<label class="text-slate-700 dark:text-slate-300 text-base font-medium" for="parent-email">Parent/Guardian Email</label>
+<input class="form-input-neo h-12 w-full px-4 text-slate-900 placeholder:text-slate-400" id="parent-email" placeholder="Enter your email address" type="email"/>
+</div>
+</div>
+<div class="flex flex-col gap-y-2">
+<label class="text-slate-700 dark:text-slate-300 text-base font-medium" for="child-username">Child's Username</label>
+<input class="form-input-neo h-12 w-full px-4 text-slate-900 placeholder:text-slate-400" id="child-username" placeholder="Confirm your child's username" type="text"/>
+</div>
+<div class="space-y-4 rounded border-2 border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/20 p-4">
+<div class="relative flex items-start">
+<div class="flex h-6 items-center">
+<input class="form-checkbox-neo size-5" id="consent-checkbox" name="consent-checkbox" type="checkbox"/>
+</div>
+<div class="ml-3 text-sm leading-6">
+<label class="font-medium text-slate-700 dark:text-slate-300" for="consent-checkbox">
+                                   I have read and agree to the <a class="font-semibold text-violet-600 dark:text-violet-400 hover:underline" href="#">Terms of Service</a> and <a class="font-semibold text-violet-600 dark:text-violet-400 hover:underline" href="#">Privacy Policy</a>, and I give my consent for my child to use Stitch.
+                               </label>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-y-2">
+<label class="text-slate-700 dark:text-slate-300 text-base font-medium" for="digital-signature">Digital Signature</label>
+<p class="text-sm text-slate-500 dark:text-slate-400 -mt-1 mb-1">Please type your full name below to digitally sign this form.</p>
+<input class="form-input-neo h-12 w-full px-4 font-display text-slate-900 placeholder:text-slate-400" id="digital-signature" placeholder="Type your full name" type="text"/>
+</div>
+<div class="pt-4">
+<button class="h-14 w-full rounded bg-lime-400 text-black text-lg font-bold tracking-wide transition-transform duration-150 ease-in-out neo-shadow neo-shadow-hover active:translate-x-1 active:translate-y-1 active:shadow-none" type="submit">
+                            Submit Consent
+                        </button>
+</div>
+<div class="flex items-center justify-center gap-2 pt-2">
+<span class="material-symbols-outlined text-slate-500 dark:text-slate-400 text-base">lock</span>
+<p class="text-xs text-slate-500 dark:text-slate-400">Your information is transmitted securely.</p>
+</div>
+</form>
+</div>
+</main>
+</div>
+</body></html>
