@@ -9,5 +9,5 @@ import java.util.UUID;
 
 @Repository
 public interface QuestRepository extends JpaRepository<Quest, UUID> {
-    List<Quest> findByVaultId(UUID vaultId);
+    List<Quest> findByVaultId(Long vaultId);
 }

@@ -93,8 +93,7 @@ public class UserServiceImpl implements UserService {
                 user.getPasswordHash(),
                 user.getRole(),
                 user.getDisplayName(),
-                user.getStatus()
-        );
+                user.getStatus());
     }
 
     @Override
@@ -135,12 +134,12 @@ public class UserServiceImpl implements UserService {
                 level,
                 streak,
                 user.getAvatarUrl(),
-                user.getPreferredMascot(),
+                user.getAvatarUrl(),
                 readSettings(user),
                 linkedLearners,
                 linkedGuardians,
-                toInstant(user.getCreatedAt())
-        );
+                toInstant(user.getCreatedAt()),
+                user.getStatus());
     }
 
     @Override
@@ -154,9 +153,6 @@ public class UserServiceImpl implements UserService {
         }
         if (hasText(request.avatarUrl())) {
             user.setAvatarUrl(request.avatarUrl());
-        }
-        if (hasText(request.preferredMascot())) {
-            user.setPreferredMascot(request.preferredMascot());
         }
         if (request.settings() != null) {
             user.setSettingsJson(writeSettings(request.settings()));
@@ -245,8 +241,7 @@ public class UserServiceImpl implements UserService {
                 learner.getUsername(),
                 learner.getXp(),
                 learner.getLevel(),
-                learner.getCurrentStreak()
-        );
+                learner.getCurrentStreak());
     }
 
     private Learner findLearnerByIdentifier(String identifier) {
@@ -351,13 +346,12 @@ public class UserServiceImpl implements UserService {
 
     private UserResponseDTO mapToResponse(User user) {
         return new UserResponseDTO(
-            user.getId(),
-            user.getEmail(),
-            user.getRole(),
-            user.getDisplayName(),
-            user.getStatus(),
-            user.getCreatedAt()
-        );
+                user.getId(),
+                user.getEmail(),
+                user.getRole(),
+                user.getDisplayName(),
+                user.getStatus(),
+                user.getCreatedAt());
     }
 
     private Map<String, Object> readSettings(User user) {
@@ -365,7 +359,8 @@ public class UserServiceImpl implements UserService {
             return Map.of();
         }
         try {
-            return objectMapper.readValue(user.getSettingsJson(), new TypeReference<>() {});
+            return objectMapper.readValue(user.getSettingsJson(), new TypeReference<>() {
+            });
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Unable to parse user settings", e);
         }
@@ -381,5 +376,50 @@ public class UserServiceImpl implements UserService {
 
     private Instant toInstant(Timestamp timestamp) {
         return timestamp == null ? null : timestamp.toInstant();
+    }
+
+    @Override
+    @Transactional
+    public void initiateConsent(UUID userId, String parentEmail) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        if (!(user instanceof Learner learner)) {
+            throw new RuntimeException("User is not a learner");
+        }
+
+        Guardian guardian;
+        Optional<User> existingUser = userRepository.findByEmail(parentEmail);
+        if (existingUser.isPresent()) {
+            if (existingUser.get() instanceof Guardian g) {
+                guardian = g;
+            } else {
+                throw new RuntimeException("Email belongs to a non-guardian user");
+            }
+        } else {
+            guardian = new Guardian();
+            guardian.setEmail(parentEmail);
+            guardian.setRole(UserRole.GUARDIAN);
+            guardian.setStatus(AccountStatus.ACTIVE);
+            guardian.setDisplayName("Parent");
+            // Set a dummy password or handle passwordless creation properly
+            guardian.setPasswordHash(passwordEncoder.encode(UUID.randomUUID().toString()));
+            guardian = userRepository.save(guardian);
+        }
+
+        if (learner.getGuardians() == null) {
+            learner.setGuardians(new java.util.HashSet<>());
+        }
+        learner.getGuardians().add(guardian);
+
+        if (guardian.getMonitoredLearners() == null) {
+            guardian.setMonitoredLearners(new java.util.HashSet<>());
+        }
+        guardian.getMonitoredLearners().add(learner);
+
+        userRepository.save(learner);
+        userRepository.save(guardian);
+
+        // Mock email sending
+        System.out.println("Sending consent email to " + parentEmail + " for learner " + learner.getUsername());
     }
 }

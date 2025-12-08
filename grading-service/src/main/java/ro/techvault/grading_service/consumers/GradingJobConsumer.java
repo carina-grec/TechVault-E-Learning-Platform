@@ -27,8 +27,8 @@ public class GradingJobConsumer {
     private final ObjectMapper objectMapper;
 
     public GradingJobConsumer(SubmissionRepository submissionRepository,
-                              PistonClient pistonClient,
-                              ObjectMapper objectMapper) {
+            PistonClient pistonClient,
+            ObjectMapper objectMapper) {
         this.submissionRepository = submissionRepository;
         this.pistonClient = pistonClient;
         this.objectMapper = objectMapper;
@@ -92,18 +92,48 @@ public class GradingJobConsumer {
     }
 
     private void executeTestSuite(Submission submission,
-                                  SubmissionGradingJob job,
-                                  List<TestCasePayload> testCases) {
+            SubmissionGradingJob job,
+            List<TestCasePayload> testCases) {
         log.info("Running {} test case(s) for submission {}", testCases.size(), job.submissionId());
         List<TestCaseResult> results = new ArrayList<>();
         int passed = 0;
+        // Auto-wrap Python code if missing main block
+        String finalCode = job.submittedCode();
+        if ("python".equalsIgnoreCase(job.language()) && !finalCode.contains("if __name__")) {
+            finalCode = finalCode + "\n\n"
+                    + """
+                            import sys
+                            import ast
+
+                            if __name__ == "__main__":
+                                input_data = sys.stdin.read().strip()
+                                if input_data:
+                                    try:
+                                        arg = ast.literal_eval(input_data)
+                                    except:
+                                        arg = input_data
+
+                                    # Find the last defined function
+                                    candidates = [obj for name, obj in list(locals().items())
+                                                  if callable(obj) and not name.startswith('__') and name != 'exit' and name != 'quit']
+
+                                    if candidates:
+                                        fn = candidates[-1]
+                                        try:
+                                            res = fn(arg)
+                                            if res is not None:
+                                                print(res)
+                                        except Exception as e:
+                                            print(e, file=sys.stderr)
+                                        """;
+        }
+
         for (TestCasePayload testCase : testCases) {
             try {
                 PistonExecutionResponse response = pistonClient.execute(
                         job.language(),
-                        job.submittedCode(),
-                        testCase.input()
-                );
+                        finalCode,
+                        testCase.input());
                 var run = response != null ? response.run() : null;
                 String stdout = run != null ? safe(run.stdout()) : "";
                 String stderr = run != null ? safe(run.stderr()) : "";
@@ -126,8 +156,7 @@ public class GradingJobConsumer {
                         exitCode,
                         stdout,
                         stderr,
-                        null
-                ));
+                        null));
             } catch (Exception ex) {
                 log.warn("Test case execution failed for submission {}: {}", submission.getId(), ex.getMessage());
                 results.add(new TestCaseResult(
@@ -139,8 +168,7 @@ public class GradingJobConsumer {
                         null,
                         "",
                         ex.getMessage(),
-                        ex.getMessage()
-                ));
+                        ex.getMessage()));
             }
         }
 
@@ -154,8 +182,7 @@ public class GradingJobConsumer {
                 passed,
                 testCases.size(),
                 score,
-                results
-        )));
+                results)));
     }
 
     private String normalize(String value) {
@@ -180,13 +207,13 @@ public class GradingJobConsumer {
             Integer exitCode,
             String stdout,
             String stderr,
-            String error
-    ) {}
+            String error) {
+    }
 
     private record TestSuiteSummary(
             int passed,
             int total,
             double score,
-            List<TestCaseResult> results
-    ) {}
+            List<TestCaseResult> results) {
+    }
 }

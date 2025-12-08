@@ -40,9 +40,9 @@ public class DataSeeder implements CommandLineRunner {
     private final PasswordEncoder passwordEncoder;
 
     public DataSeeder(UserRepository userRepository,
-                      LearnerRepository learnerRepository,
-                      GuardianRepository guardianRepository,
-                      PasswordEncoder passwordEncoder) {
+            LearnerRepository learnerRepository,
+            GuardianRepository guardianRepository,
+            PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.learnerRepository = learnerRepository;
         this.guardianRepository = guardianRepository;
@@ -74,7 +74,6 @@ public class DataSeeder implements CommandLineRunner {
         learner.setStatus(AccountStatus.ACTIVE);
         learner.setDisplayName("Maya Sparks");
         learner.setAvatarUrl("https://cdn.techvault/mock/maya.png");
-        learner.setPreferredMascot("Pixel");
         learner.setUsername("maya-sparks");
         learner.setAge(12);
         learner.setXp(250);

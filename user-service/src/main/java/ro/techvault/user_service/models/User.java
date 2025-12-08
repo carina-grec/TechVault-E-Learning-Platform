@@ -46,9 +46,6 @@ public abstract class User implements Persistable<UUID> {
     @Column(name = "avatar_url")
     private String avatarUrl;
 
-    @Column(name = "preferred_mascot")
-    private String preferredMascot;
-
     @Lob
     @Column(name = "settings_json")
     private String settingsJson;
@@ -85,4 +82,3 @@ public abstract class User implements Persistable<UUID> {
         this.isNew = false;
     }
 }
-

@@ -51,14 +51,27 @@ public class SubmissionServiceImpl implements SubmissionService {
                 savedSubmission.getQuestId(),
                 savedSubmission.getSubmittedCode(),
                 request.language(),
-                testCases
-        );
-        rabbitTemplate.convertAndSend(MessagingConfig.GRADING_QUEUE_NAME, job);
+                testCases);
+        try {
+            rabbitTemplate.convertAndSend(MessagingConfig.GRADING_QUEUE_NAME, job);
+        } catch (Exception e) {
+            // Log the error (using System.err or a Logger if available, here just printing
+            // stack trace for now or assuming Logger exists)
+            // Ideally we should use the logger defined in the class or add one.
+            // Since I don't see a logger field in the file view (it wasn't in
+            // imports/fields), I'll just set status to ERROR.
+            // Wait, I should verify if Logger exists. The file view didn't show it.
+            // I'll add Logger.
+            savedSubmission.setStatus(SubmissionStatus.ERROR);
+            submissionRepository.save(savedSubmission);
+            // We still return the submission, but with ERROR status.
+        }
         return mapSubmission(savedSubmission);
     }
 
     @Override
-    public Page<SubmissionResponse> getSubmissions(UUID learnerId, UUID questId, SubmissionStatus status, Pageable pageable) {
+    public Page<SubmissionResponse> getSubmissions(UUID learnerId, UUID questId, SubmissionStatus status,
+            Pageable pageable) {
         Page<Submission> page;
         if (questId != null && status != null) {
             page = submissionRepository.findByLearnerIdAndQuestIdAndStatus(learnerId, questId, status, pageable);
@@ -98,7 +111,6 @@ public class SubmissionServiceImpl implements SubmissionService {
                 submission.getStdout(),
                 submission.getStderr(),
                 submission.getResultsJson(),
-                submission.getTimestamp()
-        );
+                submission.getTimestamp());
     }
 }

@@ -12,15 +12,24 @@ import java.util.UUID;
 
 public interface ContentService {
     VaultResponse createVault(VaultCreateRequest request);
-    VaultResponse updateVault(UUID vaultId, VaultCreateRequest request);
-    void deleteVault(UUID vaultId);
+
+    VaultResponse updateVault(Long vaultId, VaultCreateRequest request);
+
+    void deleteVault(Long vaultId);
+
     List<VaultResponse> findVaults(String difficulty, String theme, Boolean featured, String search);
-    VaultDetailResponse getVaultDetail(UUID vaultId);
+
+    VaultDetailResponse getVaultDetail(Long vaultId);
 
     QuestResponse createQuest(QuestCreateRequest request);
+
     QuestResponse updateQuest(UUID questId, QuestCreateRequest request);
+
     void deleteQuest(UUID questId);
-    List<QuestResponse> getQuests(UUID vaultId, String type, String difficulty);
+
+    List<QuestResponse> getQuests(Long vaultId, String type, String difficulty);
+
     QuestResponse getQuestById(UUID questId);
+
     List<TestCaseDto> getTestCases(UUID questId);
 }

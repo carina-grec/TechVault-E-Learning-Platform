@@ -15,6 +15,7 @@ public class QuestFactory {
         Quest quest = switch (questType) {
             case CODE_CHALLENGE -> buildCodeChallenge(request);
             case QUIZ -> new Quiz();
+            case LESSON -> buildLesson(request);
         };
 
         quest.setTitle(request.title());
@@ -49,5 +50,12 @@ public class QuestFactory {
             challenge.setGradingStrategy(request.gradingStrategy());
         }
         return challenge;
+    }
+
+    private ro.techvault.content_service.models.Lesson buildLesson(QuestCreateRequest request) {
+        ro.techvault.content_service.models.Lesson lesson = new ro.techvault.content_service.models.Lesson();
+        lesson.setContent(request.content());
+        lesson.setVideoUrl(request.videoUrl());
+        return lesson;
     }
 }

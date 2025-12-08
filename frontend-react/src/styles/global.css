@@ -15,11 +15,11 @@
   }
 
   body {
-    @apply bg-ivory text-onyx font-body antialiased;
+    @apply bg-background-light text-onyx font-body antialiased;
   }
 
   .dark body {
-    @apply bg-charcoal text-mutedSilver;
+    @apply bg-background-dark text-white;
   }
 
   a {
@@ -51,14 +51,22 @@
   }
 
   .neo-card {
-    @apply rounded-lg border border-onyx/10 bg-white shadow-soft dark:border-mutedSilver/20 dark:bg-charcoal;
+    @apply rounded-xl border-2 border-onyx bg-white shadow-hard dark:border-white dark:bg-background-dark dark:shadow-none;
   }
 
   .neo-brut {
-    @apply rounded-lg border border-onyx bg-ivory shadow-depth dark:border-mutedSilver dark:bg-onyx;
+    @apply rounded-lg border-2 border-onyx bg-ivory shadow-hard dark:border-white dark:bg-onyx;
   }
 
   .soft-container {
     @apply max-w-screen-xl w-full mx-auto px-4 sm:px-6 lg:px-10;
+  }
+  
+  .neo-toggle-base {
+    box-shadow: inset 2px 2px 0px #e2e8f0;
+  }
+  
+  .neo-toggle-label:has(:checked) {
+    @apply shadow-hard translate-x-[-2px] translate-y-[-2px] border-2 border-onyx;
   }
 }

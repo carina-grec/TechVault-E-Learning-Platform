@@ -2,10 +2,8 @@ package ro.techvault.content_service.dtos;
 
 import ro.techvault.content_service.enums.ContentStatus;
 
-import java.util.UUID;
-
 public record VaultResponse(
-        UUID id,
+        Long id,
         String title,
         String description,
         String theme,
@@ -13,9 +11,8 @@ public record VaultResponse(
         String category,
         String difficulty,
         String heroHighlight,
-        String mascotName,
         boolean featured,
         ContentStatus status,
         int displayOrder,
-        int questCount
-) {}
+        int questCount) {
+}

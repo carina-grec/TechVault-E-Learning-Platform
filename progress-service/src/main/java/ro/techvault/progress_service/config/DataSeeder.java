@@ -5,19 +5,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
-import ro.techvault.progress_service.enums.BadgeCriteriaType;
 import ro.techvault.progress_service.enums.SubmissionStatus;
-import ro.techvault.progress_service.models.Badge;
-import ro.techvault.progress_service.models.LearnerBadge;
 import ro.techvault.progress_service.models.LearnerVaultProgress;
 import ro.techvault.progress_service.models.Submission;
-import ro.techvault.progress_service.repositories.BadgeRepository;
-import ro.techvault.progress_service.repositories.LearnerBadgeRepository;
 import ro.techvault.progress_service.repositories.LearnerVaultProgressRepository;
 import ro.techvault.progress_service.repositories.SubmissionRepository;
 
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.UUID;
 
 @Component
@@ -30,47 +23,18 @@ public class DataSeeder implements CommandLineRunner {
     private static final Logger log = LoggerFactory.getLogger(DataSeeder.class);
 
     private final SubmissionRepository submissionRepository;
-    private final BadgeRepository badgeRepository;
-    private final LearnerBadgeRepository learnerBadgeRepository;
     private final LearnerVaultProgressRepository learnerVaultProgressRepository;
 
     public DataSeeder(SubmissionRepository submissionRepository,
-                      BadgeRepository badgeRepository,
-                      LearnerBadgeRepository learnerBadgeRepository,
-                      LearnerVaultProgressRepository learnerVaultProgressRepository) {
+            LearnerVaultProgressRepository learnerVaultProgressRepository) {
         this.submissionRepository = submissionRepository;
-        this.badgeRepository = badgeRepository;
-        this.learnerBadgeRepository = learnerBadgeRepository;
         this.learnerVaultProgressRepository = learnerVaultProgressRepository;
     }
 
     @Override
     public void run(String... args) {
-        seedBadges();
         seedProgress();
         seedSubmissions();
-    }
-
-    private void seedBadges() {
-        if (badgeRepository.count() > 0) {
-            return;
-        }
-
-        Badge badge = new Badge();
-        badge.setId(UUID.fromString("00000000-0000-0000-0000-000000000201"));
-        badge.setName("Star Seeker");
-        badge.setDescription("Complete five quests without failing.");
-        badge.setIconUrl("/badges/star-seeker.svg");
-        badge.setCriteriaType(BadgeCriteriaType.COMPLETE_QUESTS);
-        badge.setCriteriaValue("5");
-        badgeRepository.save(badge);
-
-        LearnerBadge learnerBadge = new LearnerBadge();
-        learnerBadge.setId(UUID.fromString("00000000-0000-0000-0000-000000000301"));
-        learnerBadge.setLearnerId(SEEDED_LEARNER_ID);
-        learnerBadge.setBadgeId(badge.getId());
-        learnerBadge.setUnlockedAt(Timestamp.from(Instant.now()));
-        learnerBadgeRepository.save(learnerBadge);
     }
 
     private void seedProgress() {

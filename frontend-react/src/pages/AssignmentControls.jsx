@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import MainLayout from '../layouts/MainLayout.jsx';
 import Section from '../components/Section.jsx';
 import Card from '../components/Card.jsx';
@@ -9,9 +10,11 @@ import { useAuth } from '../context/AuthContext.jsx';
 
 export default function AssignmentControls() {
   const { token } = useAuth();
+  const navigate = useNavigate();
   const [learners, setLearners] = useState([]);
   const [activeLearner, setActiveLearner] = useState(null);
   const [vaults, setVaults] = useState([]);
+  const [filter, setFilter] = useState('');
 
   useEffect(() => {
     if (!token) return;
@@ -22,11 +25,13 @@ export default function AssignmentControls() {
     api.getVaults({}, token).then((res) => setVaults(res || []));
   }, [token]);
 
+  const filteredVaults = vaults.filter(v => v.title.toLowerCase().includes(filter.toLowerCase()));
+
   return (
     <MainLayout fullWidth>
       <Section
         title="Assignment controls"
-        description="Select a learner and choose which vaults to highlight."
+        description="Select a learner and view available vaults."
       />
       <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-[320px,1fr]">
         <aside className="space-y-4">
@@ -52,14 +57,17 @@ export default function AssignmentControls() {
         </aside>
 
         <section className="space-y-4">
-          <Card className="flex items-center justify-between">
-            <p className="font-semibold text-onyx dark:text-softGold">Assign vaults to {activeLearner?.displayName || '...'}</p>
-            <Button variant="secondary" size="sm">
-              Filter vaults
-            </Button>
+          <Card className="flex items-center justify-between gap-4">
+            <p className="font-semibold text-onyx dark:text-softGold whitespace-nowrap">Vaults for {activeLearner?.displayName || '...'}</p>
+            <input
+              className="w-full max-w-xs rounded-md border border-onyx/20 px-3 py-1.5 text-sm"
+              placeholder="Filter vaults..."
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+            />
           </Card>
           <div className="space-y-3">
-            {vaults.map((item) => (
+            {filteredVaults.map((item) => (
               <Card key={item.id} className="flex flex-col gap-3 md:flex-row md:items-center">
                 <div className="flex flex-1 items-center gap-3">
                   <div className="flex size-12 items-center justify-center rounded-lg bg-sand text-onyx">
@@ -73,15 +81,13 @@ export default function AssignmentControls() {
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Button size="sm" variant="secondary">
-                    Highlight
-                  </Button>
-                  <Button size="sm" variant="success">
+                  <Button size="sm" variant="success" onClick={() => navigate(`/vaults/${item.id}`)}>
                     View quests
                   </Button>
                 </div>
               </Card>
             ))}
+            {filteredVaults.length === 0 && <p className="text-center text-mutedSilver py-4">No vaults found.</p>}
           </div>
         </section>
       </div>

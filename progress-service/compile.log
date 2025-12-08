@@ -1,0 +1,66 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -------------------< ro.techvault:progress-service >--------------------
+[INFO] Building grading-service 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.1:clean (default-clean) @ progress-service ---
+[INFO] Deleting D:\webdev\TechVault-E-Learning-Platform\progress-service\target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ progress-service ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 0 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ progress-service ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 26 source files with javac [debug parameters release 17] to target\classes
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] /D:/webdev/TechVault-E-Learning-Platform/progress-service/src/main/java/ro/techvault/progress_service/services/LearnerProgressService.java:[30,22] cannot find symbol
+  symbol:   class Submission
+  location: class ro.techvault.progress_service.services.LearnerProgressService
+[ERROR] /D:/webdev/TechVault-E-Learning-Platform/progress-service/src/main/java/ro/techvault/progress_service/services/LearnerProgressService.java:[32,81] cannot find symbol
+  symbol:   variable SubmissionStatus
+  location: class ro.techvault.progress_service.services.LearnerProgressService
+[ERROR] /D:/webdev/TechVault-E-Learning-Platform/progress-service/src/main/java/ro/techvault/progress_service/services/LearnerProgressService.java:[58,17] cannot find symbol
+  symbol:   class LearnerVaultProgress
+  location: class ro.techvault.progress_service.services.LearnerProgressService
+[ERROR] /D:/webdev/TechVault-E-Learning-Platform/progress-service/src/main/java/ro/techvault/progress_service/services/LearnerProgressService.java:[69,69] cannot find symbol
+  symbol:   variable SubmissionStatus
+  location: class ro.techvault.progress_service.services.LearnerProgressService
+[ERROR] /D:/webdev/TechVault-E-Learning-Platform/progress-service/src/main/java/ro/techvault/progress_service/services/LearnerProgressService.java:[70,67] cannot find symbol
+  symbol:   variable SubmissionStatus
+  location: class ro.techvault.progress_service.services.LearnerProgressService
+[INFO] 5 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  7.406 s
+[INFO] Finished at: 2025-12-08T19:55:03+02:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.14.1:compile (default-compile) on project progress-service: Compilation failure: Compilation failure: 
+[ERROR] /D:/webdev/TechVault-E-Learning-Platform/progress-service/src/main/java/ro/techvault/progress_service/services/LearnerProgressService.java:[30,22] cannot find symbol
+[ERROR]   symbol:   class Submission
+[ERROR]   location: class ro.techvault.progress_service.services.LearnerProgressService
+[ERROR] /D:/webdev/TechVault-E-Learning-Platform/progress-service/src/main/java/ro/techvault/progress_service/services/LearnerProgressService.java:[32,81] cannot find symbol
+[ERROR]   symbol:   variable SubmissionStatus
+[ERROR]   location: class ro.techvault.progress_service.services.LearnerProgressService
+[ERROR] /D:/webdev/TechVault-E-Learning-Platform/progress-service/src/main/java/ro/techvault/progress_service/services/LearnerProgressService.java:[58,17] cannot find symbol
+[ERROR]   symbol:   class LearnerVaultProgress
+[ERROR]   location: class ro.techvault.progress_service.services.LearnerProgressService
+[ERROR] /D:/webdev/TechVault-E-Learning-Platform/progress-service/src/main/java/ro/techvault/progress_service/services/LearnerProgressService.java:[69,69] cannot find symbol
+[ERROR]   symbol:   variable SubmissionStatus
+[ERROR]   location: class ro.techvault.progress_service.services.LearnerProgressService
+[ERROR] /D:/webdev/TechVault-E-Learning-Platform/progress-service/src/main/java/ro/techvault/progress_service/services/LearnerProgressService.java:[70,67] cannot find symbol
+[ERROR]   symbol:   variable SubmissionStatus
+[ERROR]   location: class ro.techvault.progress_service.services.LearnerProgressService
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

@@ -18,9 +18,8 @@ import java.util.UUID;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class QuestResponse {
 
-
     private UUID id;
-    private UUID vaultId;
+    private Long vaultId;
     private String title;
     private String questType;
     private int order;
@@ -34,6 +33,8 @@ public class QuestResponse {
     private String worldTheme;
     private String estimatedTime;
     private String hints;
+    private String content;
+    private String videoUrl;
     private GradingStrategyType gradingStrategy;
     private List<TestCaseDto> testCases;
 

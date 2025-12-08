@@ -38,4 +38,24 @@ public class AuthController {
     public ResponseEntity<AuthenticatedUserDto> me(@RequestHeader("Authorization") String authorization) {
         return ResponseEntity.ok(authFacade.getCurrentUser(authorization));
     }
+
+    @PostMapping("/consent-request")
+    public ResponseEntity<Void> initiateConsent(
+            @RequestHeader("Authorization") String authorization,
+            @RequestBody ro.techvault.authservice.dtos.ConsentRequest request) {
+        authFacade.initiateConsent(authorization, request.getParentEmail());
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<AuthResponse> refresh(
+            @RequestBody ro.techvault.authservice.dtos.RefreshTokenRequest request) {
+        return ResponseEntity.ok(authFacade.refreshToken(request.getRefreshToken()));
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(@RequestBody ro.techvault.authservice.dtos.RefreshTokenRequest request) {
+        authFacade.logout(request.getRefreshToken());
+        return ResponseEntity.ok().build();
+    }
 }

@@ -7,4 +7,5 @@ import ro.techvault.content_service.models.Vault;
 import java.util.UUID;
 
 @Repository
-public interface VaultRepository extends JpaRepository<Vault, UUID> {}
+public interface VaultRepository extends JpaRepository<Vault, Long> {
+}

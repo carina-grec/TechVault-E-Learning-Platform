@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 public record QuestCreateRequest(
-        UUID vaultId,
+        Long vaultId,
         String type,
         String title,
         int order,
@@ -18,6 +18,8 @@ public record QuestCreateRequest(
         String language,
         String starterCode,
         String hints,
+        String content,
+        String videoUrl,
         GradingStrategyType gradingStrategy,
-        List<TestCaseDto> testCases
-) {}
+        List<TestCaseDto> testCases) {
+}

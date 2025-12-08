@@ -27,21 +27,19 @@ public class PublicContentController {
             @RequestParam(required = false) String difficulty,
             @RequestParam(required = false) String theme,
             @RequestParam(required = false) Boolean featured,
-            @RequestParam(required = false) String search
-    ) {
+            @RequestParam(required = false) String search) {
         return ResponseEntity.ok(contentService.findVaults(difficulty, theme, featured, search));
     }
 
     @GetMapping("/vaults/{vaultId}")
-    public ResponseEntity<VaultDetailResponse> getVault(@PathVariable UUID vaultId) {
+    public ResponseEntity<VaultDetailResponse> getVault(@PathVariable Long vaultId) {
         return ResponseEntity.ok(contentService.getVaultDetail(vaultId));
     }
 
     @GetMapping("/quests")
     public ResponseEntity<List<QuestResponse>> getQuests(
-            @RequestParam(required = false) UUID vaultId,
-            @RequestParam(required = false) String difficulty
-    ) {
+            @RequestParam(required = false) Long vaultId,
+            @RequestParam(required = false) String difficulty) {
         return ResponseEntity.ok(contentService.getQuests(vaultId, null, difficulty));
     }
 

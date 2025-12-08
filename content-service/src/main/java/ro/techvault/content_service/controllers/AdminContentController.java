@@ -27,14 +27,13 @@ public class AdminContentController {
 
     @PutMapping("/vaults/{vaultId}")
     public ResponseEntity<VaultResponse> updateVault(
-            @PathVariable UUID vaultId,
-            @RequestBody VaultCreateRequest request
-    ) {
+            @PathVariable Long vaultId,
+            @RequestBody VaultCreateRequest request) {
         return ResponseEntity.ok(contentService.updateVault(vaultId, request));
     }
 
     @DeleteMapping("/vaults/{vaultId}")
-    public ResponseEntity<Void> deleteVault(@PathVariable UUID vaultId) {
+    public ResponseEntity<Void> deleteVault(@PathVariable Long vaultId) {
         contentService.deleteVault(vaultId);
         return ResponseEntity.noContent().build();
     }
@@ -44,8 +43,7 @@ public class AdminContentController {
             @RequestParam(required = false) String difficulty,
             @RequestParam(required = false) String theme,
             @RequestParam(required = false) Boolean featured,
-            @RequestParam(required = false) String search
-    ) {
+            @RequestParam(required = false) String search) {
         return ResponseEntity.ok(contentService.findVaults(difficulty, theme, featured, search));
     }
 
@@ -57,8 +55,7 @@ public class AdminContentController {
     @PutMapping("/quests/{questId}")
     public ResponseEntity<QuestResponse> updateQuest(
             @PathVariable UUID questId,
-            @RequestBody QuestCreateRequest request
-    ) {
+            @RequestBody QuestCreateRequest request) {
         return ResponseEntity.ok(contentService.updateQuest(questId, request));
     }
 
@@ -70,11 +67,9 @@ public class AdminContentController {
 
     @GetMapping("/quests")
     public ResponseEntity<List<QuestResponse>> listQuests(
-            @RequestParam(required = false) UUID vaultId,
+            @RequestParam(required = false) Long vaultId,
             @RequestParam(required = false) String type,
-            @RequestParam(required = false) String difficulty
-    ) {
+            @RequestParam(required = false) String difficulty) {
         return ResponseEntity.ok(contentService.getQuests(vaultId, type, difficulty));
     }
 }
-

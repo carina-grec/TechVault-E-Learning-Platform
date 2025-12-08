@@ -47,7 +47,7 @@ public class ContentServiceImpl implements ContentService {
     }
 
     @Override
-    public VaultResponse updateVault(UUID vaultId, VaultCreateRequest request) {
+    public VaultResponse updateVault(Long vaultId, VaultCreateRequest request) {
         Vault vault = vaultRepository.findById(vaultId)
                 .orElseThrow(() -> new RuntimeException("Vault not found: " + vaultId));
         applyVaultFields(vault, request);
@@ -56,7 +56,7 @@ public class ContentServiceImpl implements ContentService {
     }
 
     @Override
-    public void deleteVault(UUID vaultId) {
+    public void deleteVault(Long vaultId) {
         if (!vaultRepository.existsById(vaultId)) {
             throw new RuntimeException("Vault not found");
         }
@@ -73,7 +73,7 @@ public class ContentServiceImpl implements ContentService {
     }
 
     @Override
-    public VaultDetailResponse getVaultDetail(UUID vaultId) {
+    public VaultDetailResponse getVaultDetail(Long vaultId) {
         Vault vault = vaultRepository.findById(vaultId)
                 .orElseThrow(() -> new RuntimeException("Vault not found"));
         List<QuestResponse> quests = questRepository.findByVaultId(vaultId).stream()
@@ -117,6 +117,9 @@ public class ContentServiceImpl implements ContentService {
             if (request.testCases() != null) {
                 applyTestCases(challenge, request.testCases());
             }
+        } else if (quest instanceof ro.techvault.content_service.models.Lesson lesson) {
+            lesson.setContent(request.content());
+            lesson.setVideoUrl(request.videoUrl());
         }
         Quest saved = questRepository.save(quest);
         return mapQuest(saved);
@@ -131,11 +134,12 @@ public class ContentServiceImpl implements ContentService {
     }
 
     @Override
-    public List<QuestResponse> getQuests(UUID vaultId, String type, String difficulty) {
+    public List<QuestResponse> getQuests(Long vaultId, String type, String difficulty) {
         return questRepository.findAll().stream()
                 .filter(quest -> vaultId == null || quest.getVault().getId().equals(vaultId))
                 .filter(quest -> !StringUtils.hasText(type) || quest.getQuestType().name().equalsIgnoreCase(type))
-                .filter(quest -> !StringUtils.hasText(difficulty) || difficulty.equalsIgnoreCase(defaultString(quest.getDifficulty())))
+                .filter(quest -> !StringUtils.hasText(difficulty)
+                        || difficulty.equalsIgnoreCase(defaultString(quest.getDifficulty())))
                 .sorted(Comparator.comparingInt(Quest::getOrder))
                 .map(this::mapQuest)
                 .collect(Collectors.toList());
@@ -169,7 +173,6 @@ public class ContentServiceImpl implements ContentService {
         vault.setCategory(request.category());
         vault.setDifficulty(request.difficulty());
         vault.setHeroHighlight(request.heroHighlight());
-        vault.setMascotName(request.mascotName());
         if (request.featured() != null) {
             vault.setFeatured(request.featured());
         }
@@ -208,12 +211,10 @@ public class ContentServiceImpl implements ContentService {
                 vault.getCategory(),
                 vault.getDifficulty(),
                 vault.getHeroHighlight(),
-                vault.getMascotName(),
                 vault.isFeatured(),
                 vault.getStatus(),
                 vault.getDisplayOrder(),
-                questCount
-        );
+                questCount);
     }
 
     private QuestResponse mapQuest(Quest quest) {
@@ -221,7 +222,8 @@ public class ContentServiceImpl implements ContentService {
                 .id(quest.getId())
                 .vaultId(quest.getVault().getId())
                 .title(quest.getTitle())
-                .questType(quest.getQuestType() == null ? quest.getClass().getSimpleName() : quest.getQuestType().name())
+                .questType(
+                        quest.getQuestType() == null ? quest.getClass().getSimpleName() : quest.getQuestType().name())
                 .order(quest.getOrder())
                 .xpValue(quest.getXpValue())
                 .status(quest.getStatus())
@@ -236,6 +238,9 @@ public class ContentServiceImpl implements ContentService {
                     .hints(challenge.getHints())
                     .gradingStrategy(challenge.getGradingStrategy())
                     .testCases(mapTestCases(challenge));
+        } else if (quest instanceof ro.techvault.content_service.models.Lesson lesson) {
+            builder.content(lesson.getContent())
+                    .videoUrl(lesson.getVideoUrl());
         }
         return builder.build();
     }
@@ -279,8 +284,7 @@ public class ContentServiceImpl implements ContentService {
                     testCase.getDescription() != null ? testCase.getDescription() : "Case " + index,
                     testCase.getInput(),
                     testCase.getExpectedOutput(),
-                    testCase.isHidden()
-            ));
+                    testCase.isHidden()));
             index++;
         }
         return mapped;

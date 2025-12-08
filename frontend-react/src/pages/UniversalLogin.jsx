@@ -1,27 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import MainLayout from '../layouts/MainLayout.jsx';
-import Card from '../components/Card.jsx';
-import Input from '../components/Input.jsx';
-import { Button } from '../components/Button.jsx';
-import { Badge } from '../components/Badge.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 
-const roleOptions = [
-  { label: 'Learner', value: 'LEARNER' },
-  { label: 'Guardian', value: 'GUARDIAN' },
-  { label: 'Admin', value: 'ADMIN' },
-];
-
-const roleRedirect = {
-  LEARNER: '/',
-  GUARDIAN: '/guardian',
-  ADMIN: '/admin/cms',
-};
-
-export default function UniversalLogin() {
-  const [mode, setMode] = useState('login');
-  const [role, setRole] = useState('LEARNER');
+export default function UniversalLogin({ initialMode = 'login' }) {
+  const [mode, setMode] = useState(initialMode);
+  const [role, setRole] = useState('LEARNER'); // Default for register
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
@@ -31,9 +14,28 @@ export default function UniversalLogin() {
   const navigate = useNavigate();
   const { login, register, isAuthenticated, user, setError, error } = useAuth();
 
+  const roleRedirect = {
+    LEARNER: '/',
+    GUARDIAN: '/guardian',
+    ADMIN: '/admin/cms',
+  };
+
+  useEffect(() => {
+    setMode(initialMode);
+  }, [initialMode]);
+
+  const isChildRegistration = React.useRef(false);
+
   useEffect(() => {
     if (isAuthenticated && user) {
-      navigate(roleRedirect[user.role] || '/');
+      const isUnder13 = (user.age !== undefined && user.age !== null && Number(user.age) < 13) || isChildRegistration.current;
+      const isPending = user.status === 'PENDING_CONSENT';
+
+      if (isPending || isUnder13) {
+        navigate('/coppa-verification');
+      } else {
+        navigate(roleRedirect[user.role] || '/');
+      }
     }
   }, [isAuthenticated, user, navigate]);
 
@@ -45,14 +47,28 @@ export default function UniversalLogin() {
         await login(email, password);
         setStatus('Welcome back! Redirecting...');
       } else {
-        await register({
+        const regAge = age ? Number(age) : null;
+
+        // Flag as child registration before calling API to prevent race condition in useEffect
+        if (regAge && regAge < 13) {
+          isChildRegistration.current = true;
+        }
+
+        const res = await register({
           email,
           password,
           role,
           displayName,
-          age: age ? Number(age) : null,
+          age: regAge,
           username: username || email,
         });
+
+        // Manual COPPA check if backend doesn't set status immediately
+        if (regAge && regAge < 13) {
+          navigate('/coppa-verification');
+          return;
+        }
+
         setStatus('Account created. Redirecting...');
       }
     } catch (err) {
@@ -62,60 +78,128 @@ export default function UniversalLogin() {
     }
   };
 
+  const toggleMode = () => setMode(mode === 'login' ? 'register' : 'login');
+
   return (
-    <MainLayout hideChrome>
-      <div className="flex min-h-[80vh] flex-col items-center justify-center">
-        <Card className="w-full max-w-xl shadow-depth border border-onyx/10">
-          <div className="flex flex-col items-center gap-2 pb-6 text-center">
-            <div className="flex items-center gap-2">
-              <Badge variant="accent">Stitch</Badge>
-              <p className="font-display text-2xl font-bold text-onyx dark:text-softGold">TechVault</p>
+    <div className="relative flex min-h-screen w-full flex-col items-center justify-center bg-indigo-50 p-4 font-display">
+      <div className="layout-content-container w-full max-w-md flex-1 flex flex-col items-center justify-center">
+        <div className="w-full rounded-xl border-2 border-slate-900 bg-white p-6 sm:p-8 shadow-[8px_8px_0px_#1e293b]">
+          <div className="flex flex-col items-center gap-2 pb-6">
+            <div className="flex items-center gap-3">
+              <span className="material-symbols-outlined text-4xl text-slate-900">pinch</span>
+              <span className="font-display text-4xl font-bold text-slate-900">Stitch</span>
             </div>
-            <h1 className="text-3xl font-display font-bold text-onyx dark:text-softGold">
-              {mode === 'login' ? 'Log in to your account' : 'Create your account'}
+            <h1 className="text-slate-900 tracking-tight text-2xl font-bold leading-tight text-center">
+              {mode === 'login' ? 'Log in to your account' : 'Create an account'}
             </h1>
-            <p className="text-mutedSilver">Choose your role and continue.</p>
           </div>
-          <form className="space-y-4" onSubmit={handleSubmit}>
-            <div>
-              <p className="mb-2 text-sm font-semibold text-onyx dark:text-softGold">I am a...</p>
-              <div className="grid grid-cols-3 gap-2 rounded-lg border border-onyx/10 bg-stone/40 p-2 dark:border-mutedSilver/20 dark:bg-onyx">
-                {roleOptions.map((option) => (
-                  <Button
-                    key={option.value}
-                    type="button"
-                    variant={role === option.value ? 'accent' : 'secondary'}
-                    className="w-full"
-                    onClick={() => setRole(option.value)}
-                  >
-                    {option.label}
-                  </Button>
-                ))}
-              </div>
-            </div>
-            <div className="space-y-4">
-              <Input id="login-email" label="Email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
-              <Input id="login-password" type="password" label="Password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required />
-              {mode === 'register' && (
-                <div className="space-y-3">
-                  <Input id="display-name" label="Display name" placeholder="Alex Coder" value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
-                  <Input id="username" label="Username" placeholder="@techvault" value={username} onChange={(e) => setUsername(e.target.value)} />
-                  <Input id="age" label="Age" type="number" placeholder="12" value={age} onChange={(e) => setAge(e.target.value)} />
+
+          <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+            {mode === 'register' && (
+              <div>
+                <p className="text-slate-900 text-base font-medium leading-normal pb-2 px-1">I am a...</p>
+                <div className="flex p-1">
+                  <div className="flex h-12 flex-1 items-center justify-center rounded-lg border-2 border-slate-900 bg-slate-100 p-1 shadow-[inset_2px_2px_0px_#e2e8f0]">
+                    {['Learner', 'Guardian', 'Admin'].map((r) => {
+                      const val = r.toUpperCase();
+                      const isChecked = role === val;
+                      return (
+                        <label key={val} className={`flex cursor-pointer h-full grow items-center justify-center rounded-md px-2 text-slate-900 text-sm font-bold leading-normal transition-all duration-150 ease-in-out ${isChecked ? 'bg-lime-300 shadow-[4px_4px_0px_#0f172a] -translate-x-[2px] -translate-y-[2px] border-2 border-slate-900' : ''}`}>
+                          <span className="truncate">{r}</span>
+                          <input
+                            className="invisible w-0 absolute"
+                            type="radio"
+                            name="role-selector"
+                            value={val}
+                            checked={isChecked}
+                            onChange={() => setRole(val)}
+                          />
+                        </label>
+                      );
+                    })}
+                  </div>
                 </div>
-              )}
+              </div>
+            )}
+
+            {mode === 'register' && (
+              <div className="flex flex-col w-full gap-4">
+                <label className="flex flex-col w-full">
+                  <p className="text-slate-900 text-base font-medium leading-normal pb-2 px-1">Display Name</p>
+                  <input
+                    className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-400 border-2 border-slate-900 bg-white h-14 placeholder:text-slate-500 p-[15px] text-base font-normal leading-normal shadow-[4px_4px_0px_#0f172a] hover:shadow-[6px_6px_0px_#0f172a] transition-all"
+                    placeholder="Display Name"
+                    value={displayName}
+                    onChange={(e) => setDisplayName(e.target.value)}
+                  />
+                </label>
+                <label className="flex flex-col w-full">
+                  <p className="text-slate-900 text-base font-medium leading-normal pb-2 px-1">Username</p>
+                  <input
+                    className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-400 border-2 border-slate-900 bg-white h-14 placeholder:text-slate-500 p-[15px] text-base font-normal leading-normal shadow-[4px_4px_0px_#0f172a] hover:shadow-[6px_6px_0px_#0f172a] transition-all"
+                    placeholder="Username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                  />
+                </label>
+                <label className="flex flex-col w-full">
+                  <p className="text-slate-900 text-base font-medium leading-normal pb-2 px-1">Age</p>
+                  <input
+                    type="number"
+                    className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-400 border-2 border-slate-900 bg-white h-14 placeholder:text-slate-500 p-[15px] text-base font-normal leading-normal shadow-[4px_4px_0px_#0f172a] hover:shadow-[6px_6px_0px_#0f172a] transition-all"
+                    placeholder="Age"
+                    value={age}
+                    onChange={(e) => setAge(e.target.value)}
+                  />
+                </label>
+              </div>
+            )}
+
+            <div className="flex w-full flex-col gap-4">
+              <label className="flex flex-col w-full">
+                <p className="text-slate-900 text-base font-medium leading-normal pb-2 px-1">Email</p>
+                <input
+                  className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-400 border-2 border-slate-900 bg-white h-14 placeholder:text-slate-500 p-[15px] text-base font-normal leading-normal shadow-[4px_4px_0px_#0f172a] hover:shadow-[6px_6px_0px_#0f172a] transition-all"
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </label>
+              <label className="flex flex-col w-full">
+                <p className="text-slate-900 text-base font-medium leading-normal pb-2 px-1">Password</p>
+                <input
+                  type="password"
+                  className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-400 border-2 border-slate-900 bg-white h-14 placeholder:text-slate-500 p-[15px] text-base font-normal leading-normal shadow-[4px_4px_0px_#0f172a] hover:shadow-[6px_6px_0px_#0f172a] transition-all"
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </label>
             </div>
-            <Button className="w-full" variant="success" type="submit">
-              {mode === 'login' ? `Log In as ${role.toLowerCase()}` : `Sign Up as ${role.toLowerCase()}`}
-            </Button>
-            <div className="flex flex-col items-center gap-2 text-sm text-mutedSilver">
-              <button type="button" className="underline hover:text-onyx dark:hover:text-softGold" onClick={() => setMode(mode === 'login' ? 'register' : 'login')}>
-                {mode === 'login' ? 'Need an account? Sign up' : 'Already have an account? Log in'}
+
+            <div className="pt-2">
+              <button
+                type="submit"
+                className="flex h-14 w-full items-center justify-center rounded-lg border-2 border-slate-900 bg-lime-300 px-6 text-center text-base font-bold text-slate-900 shadow-[4px_4px_0px_#1e293b] active:translate-y-[2px] active:translate-x-[2px] active:shadow-[2px_2px_0px_#1e293b] transition-all"
+              >
+                <span>{mode === 'login' ? 'Log In' : 'Sign Up'}</span>
               </button>
-              {(status || error) && <span className="text-xs text-accentRose">{status || error?.message}</span>}
             </div>
+
+            {(status || error) && <span className="text-xs text-red-600 text-center">{status || error?.message}</span>}
           </form>
-        </Card>
+
+          <div className="flex flex-col items-center justify-center gap-3 pt-6 text-center">
+            <button className="text-slate-900 text-sm font-medium underline hover:text-primary">Forgot your password?</button>
+            <button onClick={toggleMode} className="text-slate-900 text-sm font-medium">
+              {mode === 'login' ? "Don't have an account? " : "Already have an account? "}
+              <span className="font-bold underline hover:text-primary">{mode === 'login' ? 'Sign up' : 'Log in'}</span>
+            </button>
+          </div>
+        </div>
       </div>
-    </MainLayout>
+    </div>
   );
 }

@@ -22,4 +22,7 @@ public interface UserServiceClient {
 
     @GetMapping("/api/users/{id}")
     UserResponseDTO getUserById(@PathVariable("id") UUID id);
+
+    @PostMapping("/api/users/{id}/consent-request")
+    void initiateConsent(@PathVariable("id") UUID id, @RequestBody String parentEmail);
 }

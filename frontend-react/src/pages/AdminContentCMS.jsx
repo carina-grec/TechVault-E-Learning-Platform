@@ -1,307 +1,278 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import MainLayout from '../layouts/MainLayout.jsx';
-import Section from '../components/Section.jsx';
-import Card from '../components/Card.jsx';
-import { Button } from '../components/Button.jsx';
-import Badge from '../components/Badge.jsx';
-import Input from '../components/Input.jsx';
 import { api } from '../api/client.js';
 import { useAuth } from '../context/AuthContext.jsx';
 
-const defaultVault = {
-  title: '',
-  description: '',
-  theme: '',
-  slug: '',
-  category: '',
-  difficulty: '',
-  heroHighlight: '',
-  mascotName: '',
-  featured: false,
-  status: 'DRAFT',
-  displayOrder: 1,
-};
-
-const defaultQuest = {
-  vaultId: '',
-  type: 'CODE_CHALLENGE',
-  title: '',
-  order: 1,
-  xpValue: 50,
-  difficulty: 'Beginner',
-  worldTheme: '',
-  estimatedTime: '20m',
-  description: '',
-  language: 'javascript',
-  starterCode: '',
-  hints: '',
-  gradingStrategy: 'UNIT_TEST',
-  testCases: [],
-};
+// Styling constants
+const TAB_ACTIVE = "flex flex-col items-center justify-center border-b-[4px] border-b-slate-900 text-slate-900 pb-3 pt-4 cursor-pointer";
+const TAB_INACTIVE = "flex flex-col items-center justify-center border-b-[4px] border-b-transparent text-slate-500 pb-3 pt-4 hover:text-slate-900 hover:border-b-slate-400 cursor-pointer";
 
 export default function AdminContentCMS() {
   const { token } = useAuth();
+  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState('VAULTS');
   const [vaults, setVaults] = useState([]);
   const [quests, setQuests] = useState([]);
-  const [vaultForm, setVaultForm] = useState(defaultVault);
-  const [questForm, setQuestForm] = useState(defaultQuest);
-  const [editingVaultId, setEditingVaultId] = useState(null);
-  const [editingQuestId, setEditingQuestId] = useState(null);
-  const [status, setStatus] = useState(null);
+  const [lessons, setLessons] = useState([]);
+  const [quizzes, setQuizzes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
 
+  // Initial Load
   useEffect(() => {
-    loadVaults();
-    loadQuests();
+    if (token) {
+      fetchAllContent();
+    }
   }, [token]);
 
-  const loadVaults = async () => {
+  const fetchAllContent = async () => {
+    setLoading(true);
     try {
-      const data = await api.getAdminVaults(token);
-      setVaults(data || []);
-    } catch (err) {
-      setStatus(err.message);
+      const [vData, qData, lData, zData] = await Promise.all([
+        api.getAdminVaults(token),
+        api.getAdminQuests(token),
+        api.getAdminLessons(token).catch(() => []), // Fallback if API missing
+        api.getAdminQuizzes(token).catch(() => [])
+      ]);
+      setVaults(vData || []);
+      setQuests(qData || []);
+      setLessons(lData || []);
+      setQuizzes(zData || []);
+    } catch (e) {
+      console.error("Failed to load content", e);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const loadQuests = async (params = {}) => {
-    try {
-      const data = await api.getAdminQuests(token, params);
-      setQuests(data || []);
-    } catch (err) {
-      setStatus(err.message);
-    }
+  const filteredVaults = vaults.filter(v => v.title.toLowerCase().includes(searchTerm.toLowerCase()));
+  const filteredQuests = quests.filter(q => q.title.toLowerCase().includes(searchTerm.toLowerCase()));
+  const filteredLessons = lessons.filter(l => l.title.toLowerCase().includes(searchTerm.toLowerCase()));
+  const filteredQuizzes = quizzes.filter(z => z.title.toLowerCase().includes(searchTerm.toLowerCase()));
+
+  const handleCreate = () => {
+    if (activeTab === 'VAULTS') navigate('/vault/create');
+    else if (activeTab === 'QUESTS') navigate('/quest-editor');
+    else if (activeTab === 'LESSONS') navigate('/lesson-editor');
+    else if (activeTab === 'QUIZZES') navigate('/quiz-editor');
   };
 
-  const saveVault = async () => {
-    try {
-      const payload = { ...vaultForm, displayOrder: Number(vaultForm.displayOrder) || 0 };
-      if (editingVaultId) {
-        await api.updateVault(token, editingVaultId, payload);
-      } else {
-        await api.createVault(token, payload);
-      }
-      setVaultForm(defaultVault);
-      setEditingVaultId(null);
-      loadVaults();
-      setStatus('Vault saved.');
-    } catch (err) {
-      setStatus(err.message);
-    }
-  };
+  // Render Helpers
+  const renderVaultsTable = () => (
+    <div className="overflow-x-auto">
+      <table className="w-full border-collapse">
+        <thead className="border-b-2 border-slate-900">
+          <tr>
+            <th className="px-4 py-3 text-left text-slate-900 text-sm font-bold uppercase tracking-wider">Vault Title</th>
+            <th className="px-4 py-3 text-left text-slate-900 text-sm font-bold uppercase tracking-wider">Description</th>
+            <th className="px-4 py-3 text-left text-slate-900 text-sm font-bold uppercase tracking-wider">Status</th>
+            <th className="px-4 py-3 text-left text-slate-900 text-sm font-bold uppercase tracking-wider">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredVaults.length > 0 ? filteredVaults.map((vault) => (
+            <tr key={vault.id} className="bg-white border-b-2 border-slate-900 last:border-b-0 hover:bg-slate-50 transition-colors">
+              <td className="px-4 py-4 text-slate-900 text-sm font-medium">{vault.title}</td>
+              <td className="px-4 py-4 text-slate-600 text-sm font-medium truncate max-w-[200px]">{vault.description}</td>
+              <td className="px-4 py-4">
+                <span className={`inline-flex items-center justify-center rounded-md px-3 py-1 text-xs font-bold border-2 border-slate-900 ${vault.status === 'PUBLISHED' ? 'bg-green-200 text-green-900' : 'bg-yellow-200 text-yellow-900'}`}>
+                  {vault.status}
+                </span>
+              </td>
+              <td className="px-4 py-4">
+                <button
+                  onClick={() => navigate(`/vault/create?edit=${vault.id}`)}
+                  className="text-slate-900 text-sm font-bold hover:text-[#00B8A9] transition-colors"
+                >
+                  Edit
+                </button>
+              </td>
+            </tr>
+          )) : (
+            <tr><td colSpan="4" className="p-4 text-center text-slate-500">No vaults found.</td></tr>
+          )}
+        </tbody>
+      </table>
+    </div>
+  );
 
-  const saveQuest = async () => {
-    try {
-      const payload = {
-        ...questForm,
-        order: Number(questForm.order) || 0,
-        xpValue: Number(questForm.xpValue) || 0,
-        testCases: questForm.testCases.map((tc) => ({
-          ...tc,
-          hidden: Boolean(tc.hidden),
-        })),
-      };
-      if (editingQuestId) {
-        await api.updateQuest(token, editingQuestId, payload);
-      } else {
-        await api.createQuest(token, payload);
-      }
-      setQuestForm(defaultQuest);
-      setEditingQuestId(null);
-      loadQuests();
-      setStatus('Quest saved.');
-    } catch (err) {
-      setStatus(err.message);
-    }
-  };
+  const renderQuestsTable = () => (
+    <div className="overflow-x-auto">
+      <table className="w-full border-collapse">
+        <thead className="border-b-2 border-slate-900">
+          <tr>
+            <th className="px-4 py-3 text-left text-slate-900 text-sm font-bold uppercase tracking-wider">Quest Title</th>
+            <th className="px-4 py-3 text-left text-slate-900 text-sm font-bold uppercase tracking-wider">Type</th>
+            <th className="px-4 py-3 text-left text-slate-900 text-sm font-bold uppercase tracking-wider">XP</th>
+            <th className="px-4 py-3 text-left text-slate-900 text-sm font-bold uppercase tracking-wider">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredQuests.length > 0 ? filteredQuests.map((quest) => (
+            <tr key={quest.id} className="bg-white border-b-2 border-slate-900 last:border-b-0 hover:bg-slate-50 transition-colors">
+              <td className="px-4 py-4 text-slate-900 text-sm font-medium">{quest.title}</td>
+              <td className="px-4 py-4 text-slate-600 text-sm font-medium">{quest.type}</td>
+              <td className="px-4 py-4 text-slate-600 text-sm font-medium">{quest.xpValue} XP</td>
+              <td className="px-4 py-4">
+                <button
+                  onClick={() => navigate(`/quest-editor?id=${quest.id}`)}
+                  className="text-slate-900 text-sm font-bold hover:text-[#00B8A9] transition-colors"
+                >
+                  Edit
+                </button>
+              </td>
+            </tr>
+          )) : (
+            <tr><td colSpan="4" className="p-4 text-center text-slate-500">No quests found.</td></tr>
+          )}
+        </tbody>
+      </table>
+    </div>
+  );
 
-  const addTestCase = () => {
-    setQuestForm((prev) => ({
-      ...prev,
-      testCases: [...prev.testCases, { description: '', input: '', expectedOutput: '', hidden: false }],
-    }));
-  };
+  const renderLessonsTable = () => (
+    <div className="overflow-x-auto">
+      <table className="w-full border-collapse">
+        <thead className="border-b-2 border-slate-900">
+          <tr>
+            <th className="px-4 py-3 text-left text-slate-900 text-sm font-bold uppercase tracking-wider">Lesson Title</th>
+            <th className="px-4 py-3 text-left text-slate-900 text-sm font-bold uppercase tracking-wider">XP</th>
+            <th className="px-4 py-3 text-left text-slate-900 text-sm font-bold uppercase tracking-wider">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredLessons.length > 0 ? filteredLessons.map((lesson) => (
+            <tr key={lesson.id} className="bg-white border-b-2 border-slate-900 last:border-b-0 hover:bg-slate-50 transition-colors">
+              <td className="px-4 py-4 text-slate-900 text-sm font-medium">{lesson.title}</td>
+              <td className="px-4 py-4 text-slate-600 text-sm font-medium">{lesson.xpValue} XP</td>
+              <td className="px-4 py-4">
+                <button
+                  onClick={() => navigate(`/lesson-editor?id=${lesson.id}`)}
+                  className="text-slate-900 text-sm font-bold hover:text-[#00B8A9] transition-colors"
+                >
+                  Edit
+                </button>
+              </td>
+            </tr>
+          )) : (
+            <tr><td colSpan="3" className="p-4 text-center text-slate-500">No lessons found.</td></tr>
+          )}
+        </tbody>
+      </table>
+    </div>
+  );
 
-  const updateTestCase = (index, field, value) => {
-    setQuestForm((prev) => {
-      const next = [...prev.testCases];
-      next[index] = { ...next[index], [field]: value };
-      return { ...prev, testCases: next };
-    });
-  };
-
-  const editVault = (vault) => {
-    setEditingVaultId(vault.id);
-    setVaultForm({
-      title: vault.title,
-      description: vault.description,
-      theme: vault.theme,
-      slug: vault.slug,
-      category: vault.category,
-      difficulty: vault.difficulty,
-      heroHighlight: vault.heroHighlight,
-      mascotName: vault.mascotName,
-      featured: vault.featured,
-      status: vault.status,
-      displayOrder: vault.displayOrder,
-    });
-  };
-
-  const editQuest = (quest) => {
-    setEditingQuestId(quest.id);
-    setQuestForm({
-      ...defaultQuest,
-      ...quest,
-      testCases: quest.testCases || [],
-    });
-  };
-
-  const deleteVault = async (id) => {
-    try {
-      await api.deleteVault(token, id);
-      loadVaults();
-    } catch (err) {
-      setStatus(err.message);
-    }
-  };
-
-  const deleteQuest = async (id) => {
-    try {
-      await api.deleteQuest(token, id);
-      loadQuests();
-    } catch (err) {
-      setStatus(err.message);
-    }
-  };
+  const renderQuizzesTable = () => (
+    <div className="overflow-x-auto">
+      <table className="w-full border-collapse">
+        <thead className="border-b-2 border-slate-900">
+          <tr>
+            <th className="px-4 py-3 text-left text-slate-900 text-sm font-bold uppercase tracking-wider">Quiz Title</th>
+            <th className="px-4 py-3 text-left text-slate-900 text-sm font-bold uppercase tracking-wider">Questions</th>
+            <th className="px-4 py-3 text-left text-slate-900 text-sm font-bold uppercase tracking-wider">XP</th>
+            <th className="px-4 py-3 text-left text-slate-900 text-sm font-bold uppercase tracking-wider">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredQuizzes.length > 0 ? filteredQuizzes.map((quiz) => (
+            <tr key={quiz.id} className="bg-white border-b-2 border-slate-900 last:border-b-0 hover:bg-slate-50 transition-colors">
+              <td className="px-4 py-4 text-slate-900 text-sm font-medium">{quiz.title}</td>
+              <td className="px-4 py-4 text-slate-600 text-sm font-medium">{quiz.questions?.length || 0}</td>
+              <td className="px-4 py-4 text-slate-600 text-sm font-medium">{quiz.xpValue} XP</td>
+              <td className="px-4 py-4">
+                <button
+                  onClick={() => navigate(`/quiz-editor?id=${quiz.id}`)}
+                  className="text-slate-900 text-sm font-bold hover:text-[#00B8A9] transition-colors"
+                >
+                  Edit
+                </button>
+              </td>
+            </tr>
+          )) : (
+            <tr><td colSpan="4" className="p-4 text-center text-slate-500">No quizzes found.</td></tr>
+          )}
+        </tbody>
+      </table>
+    </div>
+  );
 
   return (
-    <MainLayout fullWidth>
-      <Section
-        title="Content management"
-        description="Review and curate vaults, quests, and lessons."
-        actions={<Button variant="accent" onClick={() => { setVaultForm(defaultVault); setEditingVaultId(null); }}>New vault</Button>}
-      />
-      {status && <p className="mb-4 text-sm text-mutedSilver">{status}</p>}
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[320px,1fr]">
-        <aside className="space-y-4">
-          <Card title="Vault" subtitle={editingVaultId ? 'Update existing vault' : 'Create new vault'}>
-            <div className="space-y-3 text-sm">
-              <Input label="Title" value={vaultForm.title} onChange={(e) => setVaultForm({ ...vaultForm, title: e.target.value })} />
-              <Input label="Description" value={vaultForm.description} onChange={(e) => setVaultForm({ ...vaultForm, description: e.target.value })} />
-              <Input label="Slug" value={vaultForm.slug} onChange={(e) => setVaultForm({ ...vaultForm, slug: e.target.value })} />
-              <Input label="Difficulty" value={vaultForm.difficulty} onChange={(e) => setVaultForm({ ...vaultForm, difficulty: e.target.value })} />
-              <Input label="Display order" type="number" value={vaultForm.displayOrder} onChange={(e) => setVaultForm({ ...vaultForm, displayOrder: e.target.value })} />
-              <label className="flex items-center gap-2 text-xs text-mutedSilver">
-                <input type="checkbox" checked={vaultForm.featured} onChange={(e) => setVaultForm({ ...vaultForm, featured: e.target.checked })} /> Featured
-              </label>
-              <div className="flex justify-end gap-2">
-                <Button size="sm" variant="secondary" onClick={() => { setVaultForm(defaultVault); setEditingVaultId(null); }}>Reset</Button>
-                <Button size="sm" variant="accent" onClick={saveVault}>Save</Button>
-              </div>
-            </div>
-          </Card>
-          <Card title="Quest" subtitle={editingQuestId ? 'Update quest' : 'Create quest'}>
-            <div className="space-y-3 text-sm">
-              <Input label="Vault ID" value={questForm.vaultId} onChange={(e) => setQuestForm({ ...questForm, vaultId: e.target.value })} />
-              <Input label="Title" value={questForm.title} onChange={(e) => setQuestForm({ ...questForm, title: e.target.value })} />
-              <Input label="Order" type="number" value={questForm.order} onChange={(e) => setQuestForm({ ...questForm, order: e.target.value })} />
-              <Input label="XP value" type="number" value={questForm.xpValue} onChange={(e) => setQuestForm({ ...questForm, xpValue: e.target.value })} />
-              <Input label="Difficulty" value={questForm.difficulty} onChange={(e) => setQuestForm({ ...questForm, difficulty: e.target.value })} />
-              <Input label="Estimated time" value={questForm.estimatedTime} onChange={(e) => setQuestForm({ ...questForm, estimatedTime: e.target.value })} />
-              <Input label="Language" value={questForm.language} onChange={(e) => setQuestForm({ ...questForm, language: e.target.value })} />
-              <label className="flex flex-col gap-1 text-xs text-mutedSilver">
-                Description
-                <textarea className="rounded-md border border-onyx/20 bg-white p-2 text-onyx dark:border-mutedSilver/30 dark:bg-onyx dark:text-mutedSilver" value={questForm.description} onChange={(e) => setQuestForm({ ...questForm, description: e.target.value })} />
-              </label>
-              <label className="flex flex-col gap-1 text-xs text-mutedSilver">
-                Starter code
-                <textarea className="rounded-md border border-onyx/20 bg-white p-2 font-mono text-xs text-onyx dark:border-mutedSilver/30 dark:bg-onyx dark:text-mutedSilver" value={questForm.starterCode} onChange={(e) => setQuestForm({ ...questForm, starterCode: e.target.value })} />
-              </label>
-              <label className="flex flex-col gap-1 text-xs text-mutedSilver">
-                Hints
-                <textarea className="rounded-md border border-onyx/20 bg-white p-2 text-onyx dark:border-mutedSilver/30 dark:bg-onyx dark:text-mutedSilver" value={questForm.hints} onChange={(e) => setQuestForm({ ...questForm, hints: e.target.value })} />
-              </label>
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <p className="text-xs font-semibold text-onyx dark:text-softGold">Test cases</p>
-                  <Button size="sm" variant="ghost" onClick={addTestCase}>Add</Button>
+    <MainLayout fullWidth={true}>
+      <div className="bg-[#f7f6f8] dark:bg-[#171121] min-h-screen p-8 font-display">
+        <div className="max-w-7xl mx-auto">
+          {/* Header */}
+          <header className="flex flex-wrap justify-between items-center gap-4 mb-6">
+            <h1 className="text-slate-900 dark:text-slate-100 text-4xl font-bold leading-tight tracking-tighter">Content Management</h1>
+            <button
+              onClick={handleCreate}
+              className="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-md h-12 px-6 bg-[#FF37A6] text-white text-sm font-bold leading-normal tracking-wide border-2 border-slate-900 shadow-[4px_4px_0px_#000] hover:translate-y-[-2px] hover:translate-x-[-2px] transition-transform"
+            >
+              <span className="truncate">Create New</span>
+            </button>
+          </header>
+
+          <div className="bg-white dark:bg-slate-800 border-2 border-slate-900 dark:border-slate-200 rounded-md shadow-[4px_4px_0px_#000]">
+            {/* Tabs */}
+            <div className="border-b-2 border-slate-900 dark:border-slate-200">
+              <div className="flex px-4 gap-4 overflow-x-auto">
+                <div
+                  onClick={() => setActiveTab('VAULTS')}
+                  className={activeTab === 'VAULTS' ? TAB_ACTIVE : TAB_INACTIVE}
+                >
+                  <p className={`text-sm font-bold leading-normal ${activeTab === 'VAULTS' ? 'text-slate-900 dark:text-slate-100' : ''}`}>All Vaults ({vaults.length})</p>
                 </div>
-                {questForm.testCases.map((tc, idx) => (
-                  <div key={idx} className="rounded-md border border-onyx/10 p-2 dark:border-mutedSilver/20">
-                    <Input label="Description" value={tc.description} onChange={(e) => updateTestCase(idx, 'description', e.target.value)} />
-                    <Input label="Input" value={tc.input} onChange={(e) => updateTestCase(idx, 'input', e.target.value)} />
-                    <Input label="Expected output" value={tc.expectedOutput} onChange={(e) => updateTestCase(idx, 'expectedOutput', e.target.value)} />
-                    <label className="flex items-center gap-2 text-xs text-mutedSilver">
-                      <input type="checkbox" checked={tc.hidden} onChange={(e) => updateTestCase(idx, 'hidden', e.target.checked)} /> Hidden
-                    </label>
-                  </div>
-                ))}
+                <div
+                  onClick={() => setActiveTab('QUESTS')}
+                  className={activeTab === 'QUESTS' ? TAB_ACTIVE : TAB_INACTIVE}
+                >
+                  <p className={`text-sm font-bold leading-normal ${activeTab === 'QUESTS' ? 'text-slate-900 dark:text-slate-100' : ''}`}>Quests ({quests.length})</p>
+                </div>
+                <div
+                  onClick={() => setActiveTab('LESSONS')}
+                  className={activeTab === 'LESSONS' ? TAB_ACTIVE : TAB_INACTIVE}
+                >
+                  <p className={`text-sm font-bold leading-normal ${activeTab === 'LESSONS' ? 'text-slate-900 dark:text-slate-100' : ''}`}>Lessons ({lessons.length})</p>
+                </div>
+                <div
+                  onClick={() => setActiveTab('QUIZZES')}
+                  className={activeTab === 'QUIZZES' ? TAB_ACTIVE : TAB_INACTIVE}
+                >
+                  <p className={`text-sm font-bold leading-normal ${activeTab === 'QUIZZES' ? 'text-slate-900 dark:text-slate-100' : ''}`}>Quizzes ({quizzes.length})</p>
+                </div>
               </div>
-              <div className="flex justify-end gap-2">
-                <Button size="sm" variant="secondary" onClick={() => { setQuestForm(defaultQuest); setEditingQuestId(null); }}>Reset</Button>
-                <Button size="sm" variant="accent" onClick={saveQuest}>Save quest</Button>
+            </div>
+
+            {/* Search Bar */}
+            <div className="p-4 border-b-2 border-slate-900 dark:border-slate-200">
+              <div className="flex items-center border-2 border-slate-900 dark:border-slate-200 rounded-md bg-white dark:bg-slate-900 shadow-[2px_2px_0px_#000]">
+                <div className="text-slate-500 flex items-center justify-center pl-3">
+                  <span className="material-symbols-outlined text-2xl">search</span>
+                </div>
+                <input
+                  className="w-full flex-1 resize-none overflow-hidden rounded-md text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-0 border-none bg-transparent h-10 placeholder:text-slate-500 px-2 text-base font-medium"
+                  placeholder="Search content..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
               </div>
             </div>
-          </Card>
-        </aside>
 
-        <div className="space-y-6">
-          <Card title="Vaults">
-            <div className="overflow-x-auto">
-              <table className="w-full min-w-[640px] border-collapse text-sm">
-                <thead>
-                  <tr className="text-left text-mutedSilver">
-                    <th className="border-b border-onyx/10 pb-2 pr-4 font-semibold">Vault title</th>
-                    <th className="border-b border-onyx/10 pb-2 pr-4 font-semibold">Difficulty</th>
-                    <th className="border-b border-onyx/10 pb-2 pr-4 font-semibold">Status</th>
-                    <th className="border-b border-onyx/10 pb-2 font-semibold text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {vaults.map((item) => (
-                    <tr key={item.id} className="border-b border-onyx/5 last:border-b-0">
-                      <td className="py-3 pr-4 font-semibold text-onyx dark:text-softGold">{item.title}</td>
-                      <td className="py-3 pr-4 text-mutedSilver">{item.difficulty}</td>
-                      <td className="py-3 pr-4"><Badge variant={item.status === 'PUBLISHED' ? 'success' : 'neutral'}>{item.status}</Badge></td>
-                      <td className="py-3 text-right flex justify-end gap-2">
-                        <Button size="sm" variant="ghost" onClick={() => editVault(item)}>Edit</Button>
-                        <Button size="sm" variant="ghost" onClick={() => deleteVault(item.id)}>Delete</Button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            {/* Content Table */}
+            <div className="p-4">
+              {loading ? (
+                <div className="text-center py-10 text-slate-500">Loading content...</div>
+              ) : (
+                <>
+                  {activeTab === 'VAULTS' && renderVaultsTable()}
+                  {activeTab === 'QUESTS' && renderQuestsTable()}
+                  {activeTab === 'LESSONS' && renderLessonsTable()}
+                  {activeTab === 'QUIZZES' && renderQuizzesTable()}
+                </>
+              )}
             </div>
-          </Card>
 
-          <Card title="Quests">
-            <div className="overflow-x-auto">
-              <table className="w-full min-w-[720px] border-collapse text-sm">
-                <thead>
-                  <tr className="text-left text-mutedSilver">
-                    <th className="border-b border-onyx/10 pb-2 pr-4 font-semibold">Title</th>
-                    <th className="border-b border-onyx/10 pb-2 pr-4 font-semibold">Vault</th>
-                    <th className="border-b border-onyx/10 pb-2 pr-4 font-semibold">XP</th>
-                    <th className="border-b border-onyx/10 pb-2 pr-4 font-semibold">Status</th>
-                    <th className="border-b border-onyx/10 pb-2 font-semibold text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {quests.map((quest) => (
-                    <tr key={quest.id} className="border-b border-onyx/5 last:border-b-0">
-                      <td className="py-3 pr-4 font-semibold text-onyx dark:text-softGold">{quest.title}</td>
-                      <td className="py-3 pr-4 text-mutedSilver">{quest.vaultId}</td>
-                      <td className="py-3 pr-4 text-mutedSilver">{quest.xpValue}</td>
-                      <td className="py-3 pr-4"><Badge variant={quest.status === 'PUBLISHED' ? 'success' : 'neutral'}>{quest.status}</Badge></td>
-                      <td className="py-3 text-right flex justify-end gap-2">
-                        <Button size="sm" variant="ghost" onClick={() => editQuest(quest)}>Edit</Button>
-                        <Button size="sm" variant="ghost" onClick={() => deleteQuest(quest.id)}>Delete</Button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </Card>
+          </div>
         </div>
       </div>
     </MainLayout>

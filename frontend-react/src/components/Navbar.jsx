@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, Link } from 'react-router-dom';
 import { ThemeToggle } from './ThemeToggle.jsx';
 import { Button } from './Button.jsx';
 import { cn } from '../lib/cn.js';
@@ -7,17 +7,13 @@ import { useAuth } from '../context/AuthContext.jsx';
 
 const roleLinks = {
   LEARNER: [
-    { label: 'Dashboard', to: '/' },
     { label: 'Vaults', to: '/vaults' },
-    { label: 'Dojo', to: '/quests' },
   ],
   GUARDIAN: [
     { label: 'Guardian', to: '/guardian' },
-    { label: 'Assignments', to: '/assignments' },
   ],
   ADMIN: [
     { label: 'Content', to: '/admin/cms' },
-    { label: 'Analytics', to: '/analytics' },
     { label: 'Users', to: '/admin/users' },
   ],
 };
@@ -36,15 +32,14 @@ export function Navbar({ className }) {
   };
 
   return (
-    <header className={cn('w-full border-b border-onyx/10 bg-ivory/80 backdrop-blur dark:border-mutedSilver/20 dark:bg-charcoal/80', className)}>
-      <div className="soft-container flex items-center justify-between gap-4 py-4">
+    <header className={cn('w-full border-b-2 border-onyx bg-white py-4 shadow-hard dark:bg-charcoal dark:border-mutedSilver', className)}>
+      <div className="soft-container flex items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="flex size-10 items-center justify-center rounded-lg border border-onyx/10 bg-softGold text-charcoal font-bold shadow-depth dark:border-mutedSilver/40 dark:bg-deepViolet dark:text-softGold">
             TV
           </div>
           <div>
             <p className="font-display text-lg font-semibold text-onyx dark:text-softGold">TechVault</p>
-            <p className="text-xs text-mutedSilver">Boho x Emo minimal</p>
           </div>
         </div>
         <nav className="hidden items-center gap-3 lg:flex">
@@ -72,15 +67,18 @@ export function Navbar({ className }) {
           )}
           {isAuthenticated && (
             <div className="flex items-center gap-2">
-              <div className="hidden sm:flex flex-col text-right">
-                <span className="text-xs text-mutedSilver leading-none">Signed in</span>
-                <span className="text-sm font-semibold text-onyx dark:text-softGold">
-                  {profile?.displayName || user?.displayName || user?.email}
-                </span>
+              <div className="flex items-center gap-3">
+                <div
+                  className="size-9 rounded-full border border-onyx bg-cover bg-center"
+                  style={{ backgroundImage: `url("https://api.dicebear.com/7.x/notionists/svg?seed=${profile?.username || user?.username || 'user'}")` }}
+                ></div>
+                <div className="hidden sm:flex flex-col text-right">
+                  <span className="text-xs text-mutedSilver leading-none">Signed in</span>
+                  <span className="text-sm font-semibold text-onyx dark:text-softGold">
+                    {profile?.displayName || user?.displayName || user?.email}
+                  </span>
+                </div>
               </div>
-              <Button variant="ghost" size="sm" onClick={() => navigate('/settings')}>
-                Settings
-              </Button>
               <Button variant="accent" size="sm" onClick={handleLogout}>
                 Logout
               </Button>

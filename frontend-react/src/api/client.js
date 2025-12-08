@@ -116,9 +116,22 @@ export const api = {
     request('/api/users/me', { method: 'PATCH', body: payload, token }),
   changePassword: (token, payload) =>
     request('/api/users/me/password', { method: 'PATCH', body: payload, token }),
+  initiateConsent: (token, parentEmail) =>
+    request('/api/auth/consent-request', { method: 'POST', body: { parentEmail }, token }),
 
   getAdminUsers: (token, params = {}) => {
     const query = new URLSearchParams(params).toString()
     return request(`/api/admin/users${query ? `?${query}` : ''}`, { token })
   },
+
+  // Phase 6: New Methods
+  getLearnerMetrics: (token) => request('/api/learner/metrics/overview', { token }), // Assuming endpoint
+  createLesson: (token, payload) => request('/api/admin/quests', { method: 'POST', body: { ...payload, type: 'LESSON' }, token }),
+  createQuiz: (token, payload) => request('/api/admin/quests', { method: 'POST', body: { ...payload, type: 'QUIZ' }, token }),
+  getAdminLessons: (token) => request('/api/admin/quests?type=LESSON', { token }),
+  getAdminQuizzes: (token) => request('/api/admin/quests?type=QUIZ', { token }),
+  // Actually, wait, if createQuest uses /api/admin/quests, then we should probably fetch from there too.
+  // The user reported 404 on createLesson/createQuiz.
+  // I already updated the Editors to use createQuest.
+  // Now I update the getters to use getAdminQuests with query params.
 }

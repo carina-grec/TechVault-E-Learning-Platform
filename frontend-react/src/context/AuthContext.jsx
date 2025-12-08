@@ -6,10 +6,54 @@ const TOKEN_KEY = 'techvault_token';
 
 export function AuthProvider({ children }) {
   const [token, setToken] = useState(() => (typeof window === 'undefined' ? null : window.localStorage.getItem(TOKEN_KEY)));
+  const [refreshToken, setRefreshToken] = useState(() => (typeof window === 'undefined' ? null : window.localStorage.getItem('techvault_refresh_token')));
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(!!token);
   const [error, setError] = useState(null);
+
+  const persistToken = (newToken, newRefreshToken) => {
+    setToken(newToken);
+    setRefreshToken(newRefreshToken);
+    if (typeof window !== 'undefined') {
+      if (newToken) {
+        window.localStorage.setItem(TOKEN_KEY, newToken);
+        if (newRefreshToken) window.localStorage.setItem('techvault_refresh_token', newRefreshToken);
+      } else {
+        window.localStorage.removeItem(TOKEN_KEY);
+        window.localStorage.removeItem('techvault_refresh_token');
+      }
+    }
+  };
+
+  const logout = async () => {
+    if (refreshToken) {
+      try {
+        await api.logout({ refreshToken });
+      } catch (e) {
+        console.warn('Logout failed', e);
+      }
+    }
+    persistToken(null, null);
+    setUser(null);
+    setProfile(null);
+  };
+
+  const login = async (email, password) => {
+    setError(null);
+    const res = await api.login({ email, password });
+    persistToken(res.token, res.refreshToken);
+    setUser(res.user);
+    return res.user;
+  };
+
+  const register = async (payload) => {
+    setError(null);
+    const res = await api.register(payload);
+    persistToken(res.token, res.refreshToken);
+    setUser(res.user);
+    return res.user;
+  };
 
   useEffect(() => {
     if (!token) {
@@ -29,7 +73,17 @@ export function AuthProvider({ children }) {
       .catch((err) => {
         console.error('Failed to load session', err);
         if (cancelled) return;
-        logout();
+        // Try to refresh token
+        if (refreshToken) {
+          api.refreshToken({ refreshToken })
+            .then(res => {
+              persistToken(res.token, res.refreshToken);
+              setUser(res.user);
+            })
+            .catch(() => logout());
+        } else {
+          logout();
+        }
       })
       .finally(() => {
         if (!cancelled) {
@@ -58,39 +112,6 @@ export function AuthProvider({ children }) {
       cancelled = true;
     };
   }, [token, user?.id]);
-
-  const persistToken = (newToken) => {
-    setToken(newToken);
-    if (typeof window !== 'undefined') {
-      if (newToken) {
-        window.localStorage.setItem(TOKEN_KEY, newToken);
-      } else {
-        window.localStorage.removeItem(TOKEN_KEY);
-      }
-    }
-  };
-
-  const login = async (email, password) => {
-    setError(null);
-    const res = await api.login({ email, password });
-    persistToken(res.token);
-    setUser(res.user);
-    return res.user;
-  };
-
-  const register = async (payload) => {
-    setError(null);
-    const res = await api.register(payload);
-    persistToken(res.token);
-    setUser(res.user);
-    return res.user;
-  };
-
-  const logout = () => {
-    persistToken(null);
-    setUser(null);
-    setProfile(null);
-  };
 
   const refreshProfile = async () => {
     if (!token) return null;

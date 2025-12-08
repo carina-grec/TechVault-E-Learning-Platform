@@ -259,7 +259,7 @@ services:
     volumes:
       - piston-data:/piston/packages
     environment:
-      - PISTON_USE_CGROUPS=false
+      - PISTON_DISABLE_CGROUPS=true
     networks:
       - techvault-network
 
@@ -278,7 +278,7 @@ services:
       until curl -sf http://piston-service:2000/api/v2/runtimes >/dev/null; do
         sleep 2
       done
-      for spec in python=3.10.0 java=15.0.2; do
+      for spec in python=3.10.0 java=15.0.2 node=18.15.0; do
         lang="$${spec%%=*}"
         ver="$${spec#*=}"
         echo "Ensuring runtime $${lang}-$${ver} is installed"
@@ -300,5 +300,8 @@ services:
       - "5173:80"
     depends_on:
       - api-gateway
+    volumes:
+      - ./frontend-react:/usr/src/app
+      - /usr/src/app/node_modules
     networks:
       - techvault-network

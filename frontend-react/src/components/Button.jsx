@@ -3,28 +3,28 @@ import { cn } from '../lib/cn.js';
 
 const variants = {
   primary:
-    'bg-sand text-charcoal border border-onyx/30 shadow-soft hover:-translate-y-0.5 hover:shadow-depth active:translate-y-0',
+    'bg-primary text-white border-2 border-onyx shadow-hard hover:-translate-y-0.5 hover:shadow-hard-hover active:translate-y-0 active:shadow-hard',
   secondary:
-    'bg-white text-onyx border border-onyx/30 shadow-soft hover:bg-sand/40 hover:shadow-depth',
-  ghost: 'text-onyx hover:bg-sand/40 dark:text-mutedSilver dark:hover:bg-onyx',
+    'bg-white text-onyx border-2 border-onyx shadow-hard hover:-translate-y-0.5 hover:shadow-hard-hover active:translate-y-0 active:shadow-hard',
+  ghost: 'text-onyx hover:bg-black/5 dark:text-white dark:hover:bg-white/10',
   accent:
-    'bg-accentRose text-charcoal border border-onyx/40 shadow-soft hover:shadow-depth',
-  dark: 'bg-charcoal text-softGold border border-onyx shadow-soft hover:shadow-depth',
+    'bg-accentRose text-white border-2 border-onyx shadow-hard hover:-translate-y-0.5 hover:shadow-hard-hover active:translate-y-0 active:shadow-hard',
+  dark: 'bg-onyx text-white border-2 border-white shadow-hard hover:-translate-y-0.5 hover:shadow-hard-hover active:translate-y-0 active:shadow-hard',
   success:
-    'bg-accentLime text-charcoal border border-onyx/30 shadow-soft hover:shadow-depth',
+    'bg-accentLime text-onyx border-2 border-onyx shadow-hard hover:-translate-y-0.5 hover:shadow-hard-hover active:translate-y-0 active:shadow-hard',
 };
 
 const sizes = {
   sm: 'px-3 py-1.5 text-sm',
-  md: 'px-4 py-2 text-sm',
-  lg: 'px-5 py-3 text-base',
+  md: 'px-6 py-3 text-base',
+  lg: 'px-8 py-4 text-lg',
 };
 
 export function Button({ as: Tag = 'button', variant = 'primary', size = 'md', className, children, ...props }) {
   return (
     <Tag
       className={cn(
-        'inline-flex items-center justify-center gap-2 rounded-lg font-semibold transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-deepViolet focus-visible:ring-offset-2 dark:focus-visible:ring-softGold',
+        'inline-flex items-center justify-center gap-2 rounded-lg font-bold transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
         variants[variant],
         sizes[size],
         className,

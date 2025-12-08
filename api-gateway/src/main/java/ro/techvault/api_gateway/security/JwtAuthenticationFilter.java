@@ -42,13 +42,17 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
     public void init() {
         this.secretKey = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
         if (openPathConfig == null || openPathConfig.isBlank()) {
-            this.openPaths = List.of();
+            this.openPaths = new java.util.ArrayList<>();
         } else {
-            this.openPaths = Arrays.stream(openPathConfig.split(","))
+            this.openPaths = new java.util.ArrayList<>(Arrays.stream(openPathConfig.split(","))
                     .map(String::trim)
                     .filter(s -> !s.isEmpty())
-                    .toList();
+                    .toList());
         }
+        this.openPaths.add("/api/vaults/**");
+        this.openPaths.add("/api/quests/**");
+        this.openPaths.add("/api/vaults");
+        this.openPaths.add("/api/quests");
     }
 
     @Override
@@ -60,7 +64,16 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
         }
 
         String path = exchange.getRequest().getURI().getPath();
-        if (isOpenPath(path)) {
+        System.out.println("Processing request for path: " + path);
+
+        if (path.startsWith("/api/vaults") || path.startsWith("/api/quests")) {
+            System.out.println("Path " + path + " is explicitly allowed via startsWith");
+            return chain.filter(exchange);
+        }
+
+        boolean open = isOpenPath(path);
+        System.out.println("Is open path? " + open);
+        if (open) {
             return chain.filter(exchange);
         }
 

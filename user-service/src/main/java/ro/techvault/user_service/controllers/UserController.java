@@ -31,9 +31,15 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    @GetMapping(value="/internal/email/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/internal/email/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<InternalUserResponse> getUserDetailsByEmail(@PathVariable String email) {
         InternalUserResponse userDetails = userService.getUserDetailsByEmail(email);
         return ResponseEntity.ok(userDetails);
+    }
+
+    @PostMapping("/{id}/consent-request")
+    public ResponseEntity<Void> initiateConsent(@PathVariable UUID id, @RequestBody String parentEmail) {
+        userService.initiateConsent(id, parentEmail);
+        return ResponseEntity.ok().build();
     }
 }

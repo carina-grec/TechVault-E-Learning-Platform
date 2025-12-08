@@ -43,18 +43,16 @@ public class AuthFacadeImpl implements AuthFacade {
                 request.getRole(),
                 resolveDisplayName(request),
                 request.getUsername(),
-                request.getAge()
-        );
-
+                request.getAge());
 
         UserResponseDTO userResponse = userServiceClient.createUser(userRequest);
 
         String jwtToken = jwtTokenProvider.generateToken(
                 userResponse.getId(),
-                userResponse.getRole()
-        );
+                userResponse.getRole());
+        String refreshToken = createRefreshToken(userResponse.getId());
 
-        return new AuthResponse(jwtToken, mapToAuthenticatedUser(userResponse));
+        return new AuthResponse(jwtToken, refreshToken, mapToAuthenticatedUser(userResponse));
     }
 
     private static final Logger log = LoggerFactory.getLogger(AuthFacadeImpl.class);
@@ -102,11 +100,8 @@ public class AuthFacadeImpl implements AuthFacade {
         // --- STEP 3: Check account status ---
         log.info("Checking account status for {}. Status is: {}", user.email(), user.status());
 
-        if (user.status() != AccountStatus.ACTIVE) {
+        if (user.status() != AccountStatus.ACTIVE && user.status() != AccountStatus.PENDING_CONSENT) {
             log.warn("Login failed for {}: Account status is {}.", user.email(), user.status());
-            if (user.status() == AccountStatus.PENDING_CONSENT) {
-                throw new RuntimeException("Account is pending guardian consent.");
-            }
             if (user.status() == AccountStatus.SUSPENDED) {
                 throw new RuntimeException("Account is suspended.");
             }
@@ -118,18 +113,17 @@ public class AuthFacadeImpl implements AuthFacade {
         log.info("Login successful, generating token for user ID: {}", user.id());
         String jwtToken = jwtTokenProvider.generateToken(
                 user.id(),
-                user.role()
-        );
+                user.role());
+        String refreshToken = createRefreshToken(user.id());
 
         // --- STEP 5: Return the response ---
         AuthenticatedUserDto authenticatedUser = new AuthenticatedUserDto(
                 user.id(),
                 user.email(),
                 user.displayName(),
-                user.role()
-        );
+                user.role());
 
-        return new AuthResponse(jwtToken, authenticatedUser);
+        return new AuthResponse(jwtToken, refreshToken, authenticatedUser);
     }
 
     @Override
@@ -166,7 +160,50 @@ public class AuthFacadeImpl implements AuthFacade {
                 userResponse.getId(),
                 userResponse.getEmail(),
                 userResponse.getDisplayName(),
-                userResponse.getRole()
-        );
+                userResponse.getRole());
+    }
+
+    @Override
+    public void initiateConsent(String authorizationHeader, String parentEmail) {
+        String token = extractToken(authorizationHeader);
+        if (!jwtTokenProvider.validateToken(token)) {
+            throw new BadCredentialsException("Invalid session token.");
+        }
+        UUID userId = UUID.fromString(jwtTokenProvider.getUserIdFromJWT(token));
+        userServiceClient.initiateConsent(userId, parentEmail);
+    }
+
+    @Autowired
+    private ro.techvault.authservice.repositories.RefreshTokenRepository refreshTokenRepository;
+
+    @Override
+    public AuthResponse refreshToken(String refreshToken) {
+        return refreshTokenRepository.findByToken(refreshToken)
+                .map(token -> {
+                    if (token.getExpiryDate().isBefore(java.time.Instant.now())) {
+                        refreshTokenRepository.delete(token);
+                        throw new RuntimeException("Refresh token was expired. Please make a new signin request");
+                    }
+
+                    UserResponseDTO user = userServiceClient.getUserById(token.getUserId());
+                    String jwtToken = jwtTokenProvider.generateToken(user.getId(), user.getRole());
+
+                    return new AuthResponse(jwtToken, refreshToken, mapToAuthenticatedUser(user));
+                })
+                .orElseThrow(() -> new RuntimeException("Refresh token is not in database!"));
+    }
+
+    @Override
+    public void logout(String refreshToken) {
+        refreshTokenRepository.findByToken(refreshToken).ifPresent(refreshTokenRepository::delete);
+    }
+
+    private String createRefreshToken(UUID userId) {
+        ro.techvault.authservice.models.RefreshToken refreshToken = new ro.techvault.authservice.models.RefreshToken();
+        refreshToken.setUserId(userId);
+        refreshToken.setExpiryDate(java.time.Instant.now().plusMillis(86400000)); // 24 hours
+        refreshToken.setToken(UUID.randomUUID().toString());
+        refreshToken = refreshTokenRepository.save(refreshToken);
+        return refreshToken.getToken();
     }
 }

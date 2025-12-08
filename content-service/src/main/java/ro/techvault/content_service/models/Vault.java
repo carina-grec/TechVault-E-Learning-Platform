@@ -1,4 +1,5 @@
 package ro.techvault.content_service.models;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,10 +17,11 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Vault implements Persistable<UUID> {
+public class Vault {
 
     @Id
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @Transient
     private boolean isNew = true;
 
@@ -54,29 +56,13 @@ public class Vault implements Persistable<UUID> {
     @Column(nullable = false, name = "display_order")
     private int displayOrder = 0;
 
-    @OneToMany(
-            mappedBy = "vault",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
+    @OneToMany(mappedBy = "vault", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("order ASC")
     private List<Quest> quests;
-
-    @Override
-    public boolean isNew() {
-        return isNew || id == null;
-    }
 
     @PostLoad
     @PostPersist
     private void markNotNew() {
-        this.isNew = false;
-    }
-
-    @PrePersist
-    private void ensureId() {
-        if (id == null) {
-            id = UUID.randomUUID();
-        }
+        // this.isNew = false;
     }
 }

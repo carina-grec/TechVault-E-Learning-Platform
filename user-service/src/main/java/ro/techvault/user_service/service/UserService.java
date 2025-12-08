@@ -17,13 +17,24 @@ import java.util.UUID;
 
 public interface UserService {
     UserResponseDTO createUser(CreateUserRequestDTO createUserRequestDTO);
+
     UserResponseDTO getUserById(UUID id);
+
     InternalUserResponse getUserDetailsByEmail(String email);
+
     UserProfileResponse getCurrentUserProfile(UUID userId);
+
     UserProfileResponse updateProfile(UUID userId, UpdateProfileRequest request);
+
     void changePassword(UUID userId, ChangePasswordRequest request);
+
     Page<UserResponseDTO> getUsers(Pageable pageable, UserRole roleFilter);
+
     UserResponseDTO adminUpdateUser(UUID userId, AdminUserUpdateRequest request);
+
     java.util.List<GuardianLearnerResponse> getGuardianLearners(UUID guardianId);
+
     GuardianLearnerResponse linkGuardianToLearner(UUID guardianId, GuardianLinkRequest request);
+
+    void initiateConsent(UUID userId, String parentEmail);
 }
