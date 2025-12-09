@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import MainLayout from '../layouts/MainLayout.jsx';
 import { api } from '../api/client.js';
 import { useAuth } from '../context/AuthContext.jsx';
@@ -7,13 +7,15 @@ import { useAuth } from '../context/AuthContext.jsx';
 export default function QuizEditor() {
     const { token } = useAuth();
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const quizId = searchParams.get('id');
 
     const [formData, setFormData] = useState({
         title: '',
         description: '',
         xpValue: 50,
         questions: [
-            { text: 'What is 2 + 2?', options: ['3', '4', '5'], correctAnswer: '1' } // Example default
+            { text: 'What is 2 + 2?', options: ['3', '4', '5'], correctAnswer: '1' }
         ]
     });
     const [isLoading, setIsLoading] = useState(false);
@@ -24,13 +26,46 @@ export default function QuizEditor() {
     useEffect(() => {
         if (token) {
             api.getAdminVaults(token).then(setVaults).catch(console.error);
+            if (quizId) loadQuiz(quizId);
         }
-    }, [token]);
+    }, [token, quizId]);
+
+    const loadQuiz = async (id) => {
+        setIsLoading(true);
+        try {
+            const data = await api.getQuest(id, token);
+            let parsedQuestions = [];
+            try {
+                if (data.content) parsedQuestions = JSON.parse(data.content);
+            } catch (e) { console.error("Failed to parse quiz content", e); }
+
+            setFormData({
+                ...data,
+                questions: parsedQuestions.length > 0 ? parsedQuestions : (data.questions || []),
+                vaultId: data.vaultId || ''
+            });
+        } catch (err) {
+            setStatus({ type: 'error', message: err.message });
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     const handleSave = async () => {
         setStatus({ type: 'loading', message: 'Saving quiz...' });
         try {
-            await api.createQuest(token, { ...formData, type: 'QUIZ' });
+            // Serialize questions into content field
+            const payload = {
+                ...formData,
+                type: 'QUIZ',
+                content: JSON.stringify(formData.questions)
+            };
+
+            if (quizId) {
+                await api.updateQuest(token, quizId, payload);
+            } else {
+                await api.createQuest(token, payload);
+            }
             setStatus({ type: 'success', message: 'Quiz saved successfully!' });
             setTimeout(() => navigate('/admin/cms'), 1500);
         } catch (err) {

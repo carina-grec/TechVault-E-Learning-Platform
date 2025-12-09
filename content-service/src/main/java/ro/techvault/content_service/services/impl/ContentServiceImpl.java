@@ -38,6 +38,9 @@ public class ContentServiceImpl implements ContentService {
     @Autowired
     private QuestFactory questFactory;
 
+    @Autowired
+    private com.fasterxml.jackson.databind.ObjectMapper objectMapper;
+
     @Override
     public VaultResponse createVault(VaultCreateRequest request) {
         Vault vault = applyVaultFields(new Vault(), request);
@@ -91,6 +94,9 @@ public class ContentServiceImpl implements ContentService {
         quest.setVault(vault);
         if (quest instanceof CodeChallenge challenge) {
             applyTestCases(challenge, request.testCases());
+        } else if (quest instanceof ro.techvault.content_service.models.Quiz quiz) {
+            quiz.setTextDescription(request.description());
+            applyQuizContent(quiz, request.content());
         }
         Quest savedQuest = questRepository.save(quest);
         return mapQuest(savedQuest);
@@ -120,6 +126,9 @@ public class ContentServiceImpl implements ContentService {
         } else if (quest instanceof ro.techvault.content_service.models.Lesson lesson) {
             lesson.setContent(request.content());
             lesson.setVideoUrl(request.videoUrl());
+        } else if (quest instanceof ro.techvault.content_service.models.Quiz quiz) {
+            quiz.setTextDescription(request.description());
+            applyQuizContent(quiz, request.content());
         }
         Quest saved = questRepository.save(quest);
         return mapQuest(saved);
@@ -241,6 +250,9 @@ public class ContentServiceImpl implements ContentService {
         } else if (quest instanceof ro.techvault.content_service.models.Lesson lesson) {
             builder.content(lesson.getContent())
                     .videoUrl(lesson.getVideoUrl());
+        } else if (quest instanceof ro.techvault.content_service.models.Quiz quiz) {
+            builder.description(quiz.getTextDescription());
+            builder.content(serializeQuizContent(quiz));
         }
         return builder.build();
     }
@@ -288,5 +300,77 @@ public class ContentServiceImpl implements ContentService {
             index++;
         }
         return mapped;
+    }
+
+    private void applyQuizContent(ro.techvault.content_service.models.Quiz quiz, String contentJson) {
+        if (!StringUtils.hasText(contentJson))
+            return;
+        try {
+            // Expected Format: [{ "text": "...", "options": ["..."], "correctAnswer": "0"
+            // }]
+            List<java.util.Map<String, Object>> questionsData = objectMapper.readValue(contentJson,
+                    new com.fasterxml.jackson.core.type.TypeReference<>() {
+                    });
+
+            List<ro.techvault.content_service.models.QuizQuestion> questions = new ArrayList<>();
+            for (java.util.Map<String, Object> qData : questionsData) {
+                ro.techvault.content_service.models.QuizQuestion bq = new ro.techvault.content_service.models.QuizQuestion();
+                bq.setText((String) qData.get("text"));
+                bq.setQuiz(quiz);
+
+                List<String> opts = (List<String>) qData.get("options");
+                String correctIdxStr = String.valueOf(qData.get("correctAnswer"));
+                int correctIdx = Integer.parseInt(correctIdxStr);
+
+                List<ro.techvault.content_service.models.QuizAnswer> answers = new ArrayList<>();
+                for (int i = 0; i < opts.size(); i++) {
+                    ro.techvault.content_service.models.QuizAnswer ba = new ro.techvault.content_service.models.QuizAnswer();
+                    ba.setText(opts.get(i));
+                    ba.setCorrect(i == correctIdx);
+                    ba.setQuestion(bq);
+                    answers.add(ba);
+                }
+                bq.setAnswers(answers);
+                questions.add(bq);
+            }
+
+            if (quiz.getQuestions() == null) {
+                quiz.setQuestions(questions);
+            } else {
+                quiz.getQuestions().clear();
+                quiz.getQuestions().addAll(questions);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to parse quiz content: " + e.getMessage(), e);
+        }
+    }
+
+    private String serializeQuizContent(ro.techvault.content_service.models.Quiz quiz) {
+        if (quiz.getQuestions() == null || quiz.getQuestions().isEmpty())
+            return "[]";
+        try {
+            List<java.util.Map<String, Object>> list = new ArrayList<>();
+            for (ro.techvault.content_service.models.QuizQuestion q : quiz.getQuestions()) {
+                java.util.Map<String, Object> map = new java.util.HashMap<>();
+                map.put("text", q.getText());
+
+                List<String> options = new ArrayList<>();
+                int correctIdx = 0;
+                if (q.getAnswers() != null) {
+                    for (int i = 0; i < q.getAnswers().size(); i++) {
+                        ro.techvault.content_service.models.QuizAnswer a = q.getAnswers().get(i);
+                        options.add(a.getText());
+                        if (a.isCorrect())
+                            correctIdx = i;
+                    }
+                }
+                map.put("options", options);
+                map.put("correctAnswer", String.valueOf(correctIdx));
+                list.add(map);
+            }
+            return objectMapper.writeValueAsString(list);
+        } catch (Exception e) {
+            return "[]";
+        }
     }
 }

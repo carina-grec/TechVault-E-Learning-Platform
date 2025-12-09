@@ -87,7 +87,7 @@ export default function GuardianDashboard() {
   );
 
   return (
-    <div className="relative flex min-h-screen w-full flex-col bg-[#f7f6f8] dark:bg-[#171121] overflow-x-hidden font-display">
+    <div className="relative flex min-h-screen w-full flex-col overflow-x-hidden font-display">
       <div className="layout-container flex h-full grow flex-col">
         {/* Custom Header matching code.html somewhat, but integrating into MainLayout usually implies keeping the MainLayout nav. 
              However, the reference has a specific header. For consistency with previous phases, we might want to put this INSIDE MainLayout 

@@ -48,12 +48,11 @@ export default function CoppaAgeVerification() {
     <MainLayout hideChrome>
       <div
         className="relative flex min-h-screen w-full flex-col items-center justify-center bg-indigo-50 dark:bg-charcoal p-4 sm:p-6 font-display"
-        style={{ backgroundImage: `url('https://lh3.googleusercontent.com/aida-public/AB6AXuCFlNcIdTdxLvhMnhDcZK1qcpqoLwNJY01uTip-rxaWTNF7DMEHOS9KrO184vf1l00nn_pF58Zqfmb3OtoZHV7BQGSesLGSYTN_JhdtNdqEVrYALfq8Ipz6YAt2T4GcHW_aHMkTNGkgTo0P8JrFaSnlt3pjvA8bxQe7Vgz1u-mu_XNiW-tMvXuzc4vVoj6Dph2mSuPox4uzEZKwim5hVYBytxMh8mJRbnVy_0J6Zre0hML-4OA6l4gEUv-tb2Gnd7WDpnbSQ1i6hpw')` }}
       >
         <div className="w-full max-w-md bg-white border-4 border-black rounded-none shadow-[8px_8px_0px_0px_#000000] p-6 sm:p-8 space-y-6">
           <h1 className="text-black font-bold text-3xl font-display leading-tight">Looks like you need a hand!</h1>
           <p className="text-black text-base font-normal leading-normal font-display">
-            To make sure your coding journey is safe and fun, users under 13 need a parent's permission to join Stitch.
+            To make sure your coding journey is safe and fun, users under 13 need a parent's permission to join TechVault.
             No problem, just ask them for a little help!
           </p>
 

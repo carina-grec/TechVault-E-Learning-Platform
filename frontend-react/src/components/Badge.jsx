@@ -6,7 +6,7 @@ const variants = {
   success: 'bg-accentLime text-charcoal border border-onyx/30',
   info: 'bg-accentBlue text-charcoal border border-onyx/20',
   warning: 'bg-softGold text-charcoal border border-onyx/20',
-  accent: 'bg-accentRose text-charcoal border border-onyx/20',
+  accent: 'bg-accentLime text-charcoal border border-onyx/20',
   dark: 'bg-charcoal text-softGold border border-onyx',
 };
 

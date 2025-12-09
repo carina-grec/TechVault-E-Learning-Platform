@@ -22,7 +22,7 @@ export default function AdminUsers() {
   return (
     <MainLayout>
       <Section title="Users" description="Manage learners, guardians, and admins." />
-      {error && <p className="text-accentRose">{error}</p>}
+      {error && <p className="text-red-600">{error}</p>}
       <Card>
         <div className="overflow-x-auto">
           <table className="w-full min-w-[640px] border-collapse text-sm">

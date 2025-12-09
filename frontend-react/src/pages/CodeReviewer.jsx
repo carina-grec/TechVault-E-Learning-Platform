@@ -47,7 +47,7 @@ export default function CodeReviewer() {
         </div>
       </Section>
 
-      {error && <p className="text-accentRose">{error}</p>}
+      {error && <p className="text-red-600">{error}</p>}
 
       <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Card title="Submissions">
@@ -76,7 +76,7 @@ export default function CodeReviewer() {
                 <p>Quest ID: {selected.questId}</p>
                 <p>Score: {selected.score ?? 'n/a'}</p>
                 {selected.stdout && <pre className="rounded bg-sand/60 p-2 text-xs text-onyx dark:bg-onyx dark:text-mutedSilver">{selected.stdout}</pre>}
-                {selected.stderr && <pre className="rounded bg-accentRose/10 p-2 text-xs text-onyx dark:bg-onyx dark:text-accentRose">{selected.stderr}</pre>}
+                {selected.stderr && <pre className="rounded bg-accentRose/10 p-2 text-xs text-onyx dark:bg-onyx dark:text-red-600">{selected.stderr}</pre>}
               </div>
             ) : (
               <p className="text-mutedSilver">Select a submission to review.</p>
@@ -93,7 +93,7 @@ export default function CodeReviewer() {
                     </div>
                     <p className="text-xs text-mutedSilver">Expected: {r.expectedOutput}</p>
                     <p className="text-xs text-mutedSilver">Actual: {r.actualOutput}</p>
-                    {r.error && <p className="text-xs text-accentRose">Error: {r.error}</p>}
+                    {r.error && <p className="text-xs text-red-600">Error: {r.error}</p>}
                   </div>
                 ))}
               </div>

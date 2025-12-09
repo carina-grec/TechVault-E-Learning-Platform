@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import MainLayout from '../layouts/MainLayout.jsx';
 import { api } from '../api/client.js';
 import { useAuth } from '../context/AuthContext.jsx';
@@ -7,6 +7,9 @@ import { useAuth } from '../context/AuthContext.jsx';
 export default function LessonEditor() {
     const { token } = useAuth();
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const lessonId = searchParams.get('id');
+    console.log("LessonEditor Loaded. ID:", lessonId); // DEBUG: Verify code update
 
     const [formData, setFormData] = useState({
         title: '',
@@ -23,13 +26,34 @@ export default function LessonEditor() {
     useEffect(() => {
         if (token) {
             api.getAdminVaults(token).then(setVaults).catch(console.error);
+            if (lessonId) loadLesson(lessonId);
         }
-    }, [token]);
+    }, [token, lessonId]);
+
+    const loadLesson = async (id) => {
+        setIsLoading(true);
+        try {
+            const data = await api.getQuest(id, token);
+            setFormData({
+                ...data,
+                vaultId: data.vaultId || ''
+            });
+        } catch (err) {
+            setStatus({ type: 'error', message: err.message });
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     const handleSave = async () => {
         setStatus({ type: 'loading', message: 'Saving lesson...' });
         try {
-            await api.createQuest(token, { ...formData, type: 'LESSON' });
+            const payload = { ...formData, type: 'LESSON' };
+            if (lessonId) {
+                await api.updateQuest(token, lessonId, payload);
+            } else {
+                await api.createQuest(token, payload);
+            }
             setStatus({ type: 'success', message: 'Lesson saved successfully!' });
             setTimeout(() => navigate('/admin/cms'), 1500);
         } catch (err) {

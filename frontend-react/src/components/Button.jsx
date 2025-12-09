@@ -8,7 +8,7 @@ const variants = {
     'bg-white text-onyx border-2 border-onyx shadow-hard hover:-translate-y-0.5 hover:shadow-hard-hover active:translate-y-0 active:shadow-hard',
   ghost: 'text-onyx hover:bg-black/5 dark:text-white dark:hover:bg-white/10',
   accent:
-    'bg-accentRose text-white border-2 border-onyx shadow-hard hover:-translate-y-0.5 hover:shadow-hard-hover active:translate-y-0 active:shadow-hard',
+    'bg-accentLime text-onyx border-2 border-onyx shadow-hard hover:-translate-y-0.5 hover:shadow-hard-hover active:translate-y-0 active:shadow-hard',
   dark: 'bg-onyx text-white border-2 border-white shadow-hard hover:-translate-y-0.5 hover:shadow-hard-hover active:translate-y-0 active:shadow-hard',
   success:
     'bg-accentLime text-onyx border-2 border-onyx shadow-hard hover:-translate-y-0.5 hover:shadow-hard-hover active:translate-y-0 active:shadow-hard',

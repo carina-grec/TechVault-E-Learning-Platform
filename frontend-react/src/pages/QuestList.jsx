@@ -50,7 +50,7 @@ export default function QuestList() {
         <Button type="submit" variant="secondary">Filter</Button>
       </form>
       {loading && <p className="text-mutedSilver">Loading quests...</p>}
-      {error && <p className="text-accentRose">{error}</p>}
+      {error && <p className="text-red-600">{error}</p>}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {quests.map((quest) => (
           <Card key={quest.id} className="flex flex-col gap-3">

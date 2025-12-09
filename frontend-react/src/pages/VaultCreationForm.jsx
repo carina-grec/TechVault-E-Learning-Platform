@@ -67,7 +67,7 @@ export default function VaultCreationForm() {
 
   return (
     <MainLayout fullWidth={true}>
-      <div className="bg-[#f7f6f8] dark:bg-[#171121] min-h-screen p-4 sm:p-10 font-display flex flex-col items-center">
+      <div className="min-h-screen p-4 sm:p-10 font-display flex flex-col items-center">
         <div className="w-full max-w-[960px]">
           {/* Header */}
           <div className="flex flex-wrap justify-between gap-3 p-4 mb-8">

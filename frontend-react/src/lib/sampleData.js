@@ -5,7 +5,7 @@ export const learnerStats = [
 ];
 
 export const badges = [
-  { title: 'Python Novice', description: 'Completed your first script', icon: 'code', color: 'bg-accentRose/70' },
+  { title: 'Python Novice', description: 'Completed your first script', icon: 'code', color: 'bg-accentLime/70' },
   { title: '10-Day Streak', description: 'Coded for 10 days in a row', icon: 'local_fire_department', color: 'bg-accentLime/70' },
   { title: 'First Function', description: 'Wrote and called a function', icon: 'function', color: 'bg-softGold/60' },
 ];

@@ -24,7 +24,7 @@ export default function VaultMapTwo() {
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <Card className="lg:col-span-2 overflow-hidden border border-onyx/10 shadow-depth">
-          <div className="aspect-video rounded-lg bg-gradient-to-br from-accentBlue/40 via-softGold/60 to-accentRose/50 flex items-center justify-center text-charcoal">
+          <div className="aspect-video rounded-lg bg-gradient-to-br from-accentBlue/40 via-softGold/60 to-accentLime/50 flex items-center justify-center text-charcoal">
             <span className="text-lg font-semibold">Interactive map placeholder</span>
           </div>
         </Card>

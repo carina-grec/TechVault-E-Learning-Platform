@@ -87,7 +87,7 @@ export default function UniversalLogin({ initialMode = 'login' }) {
           <div className="flex flex-col items-center gap-2 pb-6">
             <div className="flex items-center gap-3">
               <span className="material-symbols-outlined text-4xl text-slate-900">pinch</span>
-              <span className="font-display text-4xl font-bold text-slate-900">Stitch</span>
+              <span className="font-display text-4xl font-bold text-slate-900">TechVault</span>
             </div>
             <h1 className="text-slate-900 tracking-tight text-2xl font-bold leading-tight text-center">
               {mode === 'login' ? 'Log in to your account' : 'Create an account'}

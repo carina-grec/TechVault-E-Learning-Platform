@@ -31,7 +31,7 @@ export default function AnalyticsReport() {
 
   return (
     <MainLayout fullWidth={true}>
-      <div className="bg-[#f7f6f8] dark:bg-[#171121] min-h-screen p-6 lg:p-10 font-display">
+      <div className="min-h-screen p-6 lg:p-10 font-display">
         <div className="mx-auto max-w-7xl">
           {/* Page Heading & Chips */}
           <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
@@ -103,9 +103,9 @@ export default function AnalyticsReport() {
               <div className="grid grid-cols-1 gap-4 items-end justify-items-center flex-1">
                 {[
                   { label: 'Variables', width: '85%', color: 'bg-violet-600' },
-                  { label: 'Loops', width: '70%', color: 'bg-pink-500' },
+                  { label: 'Loops', width: '70%', color: 'bg-lime-400' },
                   { label: 'Functions', width: '95%', color: 'bg-violet-600' },
-                  { label: 'Arrays', width: '60%', color: 'bg-pink-500' },
+                  { label: 'Arrays', width: '60%', color: 'bg-lime-400' },
                   { label: 'Objects', width: '40%', color: 'bg-violet-600' },
                 ].map((item, idx) => (
                   <div key={idx} className="w-full flex items-center gap-4">

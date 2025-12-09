@@ -58,7 +58,7 @@ export default function UserSettings() {
 
   return (
     <MainLayout fullWidth={true}>
-      <div className="flex-1 px-4 py-8 sm:px-6 lg:px-8 bg-[#f7f6f8] dark:bg-[#171121] min-h-screen font-display">
+      <div className="flex-1 px-4 py-8 sm:px-6 lg:px-8 min-h-screen font-display">
         <div className="mx-auto max-w-4xl space-y-12">
 
           {/* Page Heading */}
@@ -219,7 +219,7 @@ export default function UserSettings() {
           </section>
 
           {/* Footer Save */}
-          <div className="sticky bottom-0 mt-12 py-4 bg-[#f7f6f8] dark:bg-[#171121] border-t-2 border-slate-200 dark:border-slate-800">
+          <div className="sticky bottom-0 mt-12 py-4 border-t-2 border-slate-200 dark:border-slate-800">
             <div className="mx-auto flex max-w-4xl justify-end">
               <button className="flex h-14 w-full cursor-pointer items-center justify-center rounded-lg border-2 border-slate-900 bg-lime-400 px-8 text-lg font-bold tracking-wide text-slate-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] active:translate-x-0 active:translate-y-0 active:shadow-none sm:w-auto transition-all">
                 Save Changes

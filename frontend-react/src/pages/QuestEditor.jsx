@@ -9,6 +9,7 @@ export default function QuestEditor() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const questId = searchParams.get('id');
+  console.log("QuestEditor Loaded. ID:", questId); // DEBUG: Verify code update
 
   const [formData, setFormData] = useState({
     title: 'Array Summation Challenge',
@@ -37,12 +38,13 @@ export default function QuestEditor() {
   const loadQuest = async (id) => {
     setIsLoading(true);
     try {
-      const data = await api.getQuest(token, id); // Assuming this API exists
-      // specific mapping might be needed depending on API response
+      const data = await api.getQuest(id, token); // Corrected arg order: id, token
+
       setFormData({
         ...data,
         testCases: data.testCases || [],
-        difficulty: data.difficulty || 'Easy'
+        difficulty: data.difficulty || 'Easy',
+        vaultId: data.vaultId || ''
       });
     } catch (err) {
       setStatus({ type: 'error', message: err.message });

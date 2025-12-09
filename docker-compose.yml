@@ -202,7 +202,7 @@ services:
       - SPRING_JPA_HIBERNATE_DDLAUTO=update
       - PISTON_BASE_URL=http://piston-service:2000/api/v2/execute
       - PISTON_LANGUAGE_MAP_PYTHON=3.10.0
-      - PISTON_LANGUAGE_MAP_JAVASCRIPT=18.15.0
+      - PISTON_LANGUAGE_MAP_NODE=18.15.0
       - PISTON_LANGUAGE_MAP_JAVA=15.0.2
 
   cdn-service:

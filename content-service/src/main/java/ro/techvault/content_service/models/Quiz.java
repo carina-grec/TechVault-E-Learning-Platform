@@ -16,11 +16,10 @@ import java.util.List;
 @Setter
 public class Quiz extends Quest {
 
-    @OneToMany(
-            mappedBy = "quiz",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
+    @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("id ASC")
     private List<QuizQuestion> questions;
+
+    @Column(name = "quiz_description", length = 2048)
+    private String textDescription;
 }

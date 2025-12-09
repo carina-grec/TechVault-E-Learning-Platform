@@ -6,10 +6,10 @@ export default {
     extend: {
       colors: {
         // Stitch Colors
-        primary: '#7937eb',
+        primary: '#65a30d',
         'background-light': '#f7f6f8',
         'background-dark': '#171121',
-        
+
         // Legacy/Compat Colors (keeping some for safety, but overriding main ones)
         ivory: '#f9f5ec',
         sand: '#e6dcc7',
@@ -40,7 +40,7 @@ export default {
         'hard-lg': '8px 8px 0px #1e293b',
         'hard-sm-hover': '2px 2px 0px #1e293b',
         'hard-hover': '6px 6px 0px #1e293b',
-        
+
         // Legacy
         soft: '0 10px 30px rgba(15, 18, 24, 0.08)',
         depth: '6px 6px 0 rgba(17, 24, 39, 0.18)',

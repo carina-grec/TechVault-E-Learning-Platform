@@ -46,10 +46,21 @@ export default function AdminContentCMS() {
     }
   };
 
+  // Filter content by type and search term
   const filteredVaults = vaults.filter(v => v.title.toLowerCase().includes(searchTerm.toLowerCase()));
-  const filteredQuests = quests.filter(q => q.title.toLowerCase().includes(searchTerm.toLowerCase()));
-  const filteredLessons = lessons.filter(l => l.title.toLowerCase().includes(searchTerm.toLowerCase()));
-  const filteredQuizzes = quizzes.filter(z => z.title.toLowerCase().includes(searchTerm.toLowerCase()));
+
+  // specificQuests = Code Challenges (from generic quests list)
+  const filteredQuests = quests
+    .filter(q => q.questType === 'CODE_CHALLENGE')
+    .filter(q => q.title.toLowerCase().includes(searchTerm.toLowerCase()));
+
+  // specificLessons = Lessons (from lessons state)
+  const filteredLessons = lessons
+    .filter(l => l.title.toLowerCase().includes(searchTerm.toLowerCase()));
+
+  // specificQuizzes = Quizzes (from quizzes state)
+  const filteredQuizzes = quizzes
+    .filter(z => z.title.toLowerCase().includes(searchTerm.toLowerCase()));
 
   const handleCreate = () => {
     if (activeTab === 'VAULTS') navigate('/vault/create');
@@ -112,7 +123,7 @@ export default function AdminContentCMS() {
           {filteredQuests.length > 0 ? filteredQuests.map((quest) => (
             <tr key={quest.id} className="bg-white border-b-2 border-slate-900 last:border-b-0 hover:bg-slate-50 transition-colors">
               <td className="px-4 py-4 text-slate-900 text-sm font-medium">{quest.title}</td>
-              <td className="px-4 py-4 text-slate-600 text-sm font-medium">{quest.type}</td>
+              <td className="px-4 py-4 text-slate-600 text-sm font-medium">{quest.questType}</td>
               <td className="px-4 py-4 text-slate-600 text-sm font-medium">{quest.xpValue} XP</td>
               <td className="px-4 py-4">
                 <button
@@ -199,7 +210,7 @@ export default function AdminContentCMS() {
 
   return (
     <MainLayout fullWidth={true}>
-      <div className="bg-[#f7f6f8] dark:bg-[#171121] min-h-screen p-8 font-display">
+      <div className="min-h-screen p-8 font-display">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <header className="flex flex-wrap justify-between items-center gap-4 mb-6">

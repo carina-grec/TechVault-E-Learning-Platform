@@ -44,8 +44,7 @@ public class PistonClient {
                 properties.getCompileTimeout(),
                 properties.getRunTimeout(),
                 properties.getCompileMemoryLimit(),
-                properties.getRunMemoryLimit()
-        );
+                properties.getRunMemoryLimit());
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -84,11 +83,10 @@ public class PistonClient {
             Map.entry("py3", "python"),
             Map.entry("python3", "python"),
             Map.entry("python2", "python"),
-            Map.entry("javascript", "javascript"),
-            Map.entry("js", "javascript"),
-            Map.entry("nodejs", "javascript"),
-            Map.entry("node", "javascript")
-    );
+            Map.entry("javascript", "node"),
+            Map.entry("js", "node"),
+            Map.entry("nodejs", "node"),
+            Map.entry("node", "node"));
 
     private String normalizeLanguage(String language) {
         if (language == null || language.isBlank()) {
@@ -98,7 +96,7 @@ public class PistonClient {
         cleaned = cleaned.replace('_', '-');
         cleaned = cleaned.replace(" ", "-");
         // strip version or alias suffixes like python-3.10.0 or python:3.10
-        for (char delimiter : new char[]{'-', ':', '@'}) {
+        for (char delimiter : new char[] { '-', ':', '@' }) {
             int idx = cleaned.indexOf(delimiter);
             if (idx > 0) {
                 cleaned = cleaned.substring(0, idx);
